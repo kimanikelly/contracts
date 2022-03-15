@@ -1,5 +1,5 @@
 {
-  "name": "hardhat-project",
+  "name": "kimani-test",
   "main":"index.ts",
   "version": "1.0.0",
   "engines":{
