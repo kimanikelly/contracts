@@ -1,10 +1,11 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.12;
 
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Token is ERC20,Ownable {
+contract Token is Initializable,ERC20,Ownable {
 
     constructor(string memory name,string memory symbol) ERC20(name,symbol) {
      
