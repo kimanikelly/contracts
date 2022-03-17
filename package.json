@@ -1,9 +1,6 @@
 {
   "name": "kimani-test-3",
   "version": "1.0.0",
-  "scripts": {
-    "build":"tsc"
-  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
