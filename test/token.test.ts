@@ -1,13 +1,9 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-
-import { Token } from "../typechain";
-
 import { expect, use } from "chai";
-
 import { solidity } from "ethereum-waffle";
-
 import { ethers } from "hardhat";
 import { BigNumber, Event } from "ethers";
+import { Token } from "../typechain";
 
 use(solidity);
 
@@ -189,12 +185,6 @@ describe("Token", function () {
       const logs = receipt.events?.slice(-1) as Event[];
 
       expect(logs[0].event).to.equal("Transfer");
-    });
-
-    it("Should revert if amount exceeds limit", async () => {
-      await expect(
-        token.connect(signers[2]).fundAccount(101)
-      ).to.be.revertedWith("Token: Mint limit exceeded");
     });
   });
 });
