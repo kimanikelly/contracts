@@ -11,7 +11,6 @@ contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
         __ERC20_init(name,symbol);
 
         __Ownable_init();
-        
     }
 
 //    function fund(uint256 amount) public onlyOwner {

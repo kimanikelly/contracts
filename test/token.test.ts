@@ -4,7 +4,7 @@ import { expect, use } from "chai";
 import { solidity } from "ethereum-waffle";
 import { ethers, upgrades } from "hardhat";
 import { BigNumber, Event } from "ethers";
-import { Token } from "../typechain";
+import { Token, Token__factory } from "../typechain";
 
 use(solidity);
 
@@ -17,32 +17,46 @@ describe("Token", function () {
     signers = await ethers.getSigners();
 
     // Returns the Token.sol contract factory
-    const Token = await ethers.getContractFactory("Token", signers[0]);
+    const Token: Token__factory = await ethers.getContractFactory(
+      "Token",
+      signers[0]
+    );
 
-    const token = await upgrades.deployProxy(Token, ["Test Token", "TT"]);
-
-    console.log(token);
+    // Deploys and initializes the Token.sol proxy as an upgradeable contract
+    token = (await upgrades.deployProxy(Token, ["Test Token", "TT"])) as Token;
   });
 
-  describe("#Constructor", () => {
+  describe("#initializer", () => {
+    it("Should emit the OwnershipTransferred emit on deployment", async () => {
+      const filter = token.filters.OwnershipTransferred(null, null);
+
+      const queryFilter = (await token.queryFilter(filter))[0];
+
+      expect(queryFilter.args.previousOwner).to.equal(
+        ethers.constants.AddressZero
+      );
+
+      expect(queryFilter.args.newOwner).to.equal(signers[0].address);
+    });
+
+    it("Should get the owner", async () => {
+      const owner: string = await token.owner();
+      expect(owner).to.equal(signers[0].address);
+    });
+
     it("Should get the name", async () => {
-      // const name: string = await token.name();
-      // expect(name).to.equal("TEST TOKEN");
+      const name: string = await token.name();
+      expect(name).to.equal("Test Token");
     });
 
     it("Should get the symbol", async () => {
-      // const symbol: string = await token.symbol();
-      // expect(symbol).to.equal("TT");
+      const symbol: string = await token.symbol();
+      expect(symbol).to.equal("TT");
     });
 
     it("Should get the decimals", async () => {
-      // const decimals: number = await token.decimals();
-      // expect(decimals).to.equal(18);
-    });
-
-    it("Should have a totalSupply of zero before the initial mint", async () => {
-      // const totalSupply: BigNumber = await token.totalSupply();
-      // expect(totalSupply).to.equal(0);
+      const decimals: number = await token.decimals();
+      expect(decimals).to.equal(18);
     });
   });
 
