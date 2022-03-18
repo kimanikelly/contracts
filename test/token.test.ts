@@ -10,6 +10,7 @@ use(solidity);
 describe("Token", function () {
   let token: Token;
   let signers: SignerWithAddress[];
+  let mintAmt = 100;
 
   beforeEach(async () => {
     // Returns the Hardhat test accounts
@@ -56,6 +57,14 @@ describe("Token", function () {
     it("Should get the decimals", async () => {
       const decimals: number = await token.decimals();
       expect(decimals).to.equal(18);
+    });
+  });
+
+  describe("#mint", async () => {
+    it("Should revert if not called by the owner", async () => {
+      await expect(token.connect(signers[1]).mint(mintAmt)).to.be.revertedWith(
+        "Ownable: caller is not the owner"
+      );
     });
   });
 
