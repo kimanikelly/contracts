@@ -3,13 +3,15 @@ pragma solidity ^0.8.12;
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-contract Token is Initializable,ERC20Upgradeable {
-
+contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
 
     function initialize(string memory name, string memory symbol) public initializer  {
         __ERC20_init(name,symbol);
+
+        __Ownable_init();
+        
     }
 
 //    function fund(uint256 amount) public onlyOwner {
