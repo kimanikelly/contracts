@@ -32,6 +32,8 @@ describe("Token", function () {
 
       const queryFilter = (await token.queryFilter(filter))[0];
 
+      expect(queryFilter.event).to.equal("OwnershipTransferred");
+
       expect(queryFilter.args.previousOwner).to.equal(
         ethers.constants.AddressZero
       );
@@ -65,6 +67,32 @@ describe("Token", function () {
       await expect(token.connect(signers[1]).mint(mintAmt)).to.be.revertedWith(
         "Ownable: caller is not the owner"
       );
+    });
+
+    it("Should revert if the mint amount is 0", async () => {
+      await expect(token.mint(0)).to.be.revertedWith(
+        "Token: Amount cannot be 0"
+      );
+    });
+
+    it("Should mint and emit the Transfer event", async () => {
+      const preMintBal = await token.balanceOf(token.address);
+      expect(preMintBal.toNumber()).to.equal(0);
+
+      await token.mint(mintAmt);
+
+      const filter = token.filters.Transfer(null, null, null);
+
+      const queryFilter = (await token.queryFilter(filter))[0];
+
+      expect(queryFilter.args.from).to.equal(ethers.constants.AddressZero);
+
+      expect(queryFilter.args.to).to.equal(token.address);
+
+      expect(queryFilter.args.value.toNumber()).to.equal(mintAmt);
+
+      const postMintBal = await token.balanceOf(token.address);
+      expect(postMintBal.toNumber()).to.equal(mintAmt);
     });
   });
 
