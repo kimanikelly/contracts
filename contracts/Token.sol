@@ -8,7 +8,7 @@ import "hardhat/console.sol";
 
 contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
     
-    event SetFundAmount(uint256 previousAmount, uint256 newAmount);
+    event FundAmountSet(uint256 previousAmount, uint256 newAmount);
 
     uint256 public fundAmount;
 
@@ -23,16 +23,19 @@ contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
         _mint(address(this), amount);
     }
 
-    function setFundAmount(uint256 amount) public onlyOwner {
+    function setFundAmount(uint256 amount) public onlyOwner  {
 
-        // The value of fund amount before setting to a new value
+        // The value of the current fundAmount
         uint256 previousAmount = fundAmount;
 
-        // Sets the new fund to the amount passed in as an argument
+        // Prevents the fundAmount from being set to 0
+        require(amount > 0, "Token: Amount cannot be set to 0");
+
+        // Sets the new fundAmount
         fundAmount = amount;
 
         // Emits the SetFundAmount event with the previousAmount and amount arguments
-        emit SetFundAmount(previousAmount, amount);
+        emit FundAmountSet(previousAmount, amount);
        
     }
 

@@ -2,7 +2,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect, use } from "chai";
 import { solidity } from "ethereum-waffle";
 import { ethers, upgrades } from "hardhat";
-import { BigNumber, Event } from "ethers";
+import { BigNumber, ContractTransaction, Event } from "ethers";
 import { Token, Token__factory } from "../typechain";
 
 use(solidity);
@@ -106,11 +106,44 @@ describe("Token", function () {
     });
   });
 
-  describe.only("#setFundAmount", () => {
-    it("Should revert setFundAmount if the caller is not the owner", async () => {
+  describe("#setFundAmount", () => {
+    const offChainFundAmt: BigNumber = ethers.BigNumber.from(10000);
+
+    it("Should revert if the caller is not the owner", async () => {
       await expect(
         token.connect(signers[1]).setFundAmount(10000)
       ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+
+    it("Should revert if the fund amount is 0 ", async () => {
+      await expect(token.setFundAmount(0)).to.be.revertedWith(
+        "Token: Amount cannot be set to 0"
+      );
+    });
+
+    it("Should return the fund amount as 0 before the initial set", async () => {
+      const initialFundAmount: BigNumber = await token.fundAmount();
+      expect(initialFundAmount.toNumber()).to.equal(0);
+    });
+
+    it("Should set the fund amount", async () => {
+      await token.setFundAmount(offChainFundAmt);
+
+      const filter = token.filters.FundAmountSet(null, null);
+
+      const queryFilter = (await token.queryFilter(filter))[0];
+
+      expect(queryFilter.event).to.equal("FundAmountSet");
+
+      expect(queryFilter.args?.previousAmount.toNumber()).to.equal(0);
+
+      expect(queryFilter.args?.newAmount.toNumber()).to.equal(
+        offChainFundAmt.toNumber()
+      );
+
+      const onChainFundAmt: BigNumber = await token.fundAmount();
+
+      expect(onChainFundAmt.toNumber()).to.equal(offChainFundAmt.toNumber());
     });
   });
 
