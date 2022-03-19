@@ -75,10 +75,7 @@ describe("Token", function () {
       );
     });
 
-    it("Should mint and emit the Transfer event", async () => {
-      const preMintBal = await token.balanceOf(token.address);
-      expect(preMintBal.toNumber()).to.equal(0);
-
+    it("Should emit the Transfer event", async () => {
       await token.mint(mintAmt);
 
       const filter = token.filters.Transfer(null, null, null);
@@ -90,6 +87,13 @@ describe("Token", function () {
       expect(queryFilter.args.to).to.equal(token.address);
 
       expect(queryFilter.args.value.toNumber()).to.equal(mintAmt);
+    });
+
+    it("Should mint to the Token contract", async () => {
+      const preMintBal = await token.balanceOf(token.address);
+      expect(preMintBal.toNumber()).to.equal(0);
+
+      await token.mint(mintAmt);
 
       const postMintBal = await token.balanceOf(token.address);
       expect(postMintBal.toNumber()).to.equal(mintAmt);
