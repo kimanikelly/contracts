@@ -111,7 +111,7 @@ describe("Token", function () {
 
     it("Should revert if the caller is not the owner", async () => {
       await expect(
-        token.connect(signers[1]).setFundAmount(10000)
+        token.connect(signers[1]).setFundAmount(offChainFundAmt)
       ).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
@@ -148,26 +148,50 @@ describe("Token", function () {
   });
 
   describe("#fundAccount", async () => {
-    let mintAmt = 200;
+    let mintAmt = 400;
+    let offChainFundAmt = 200;
+
     beforeEach(async () => {
       await token.mint(mintAmt);
 
-      await token.setFundAmount(200);
+      await token.setFundAmount(offChainFundAmt);
     });
 
-    it("Should revert if the amount exceeds the limit", async () => {
-      token.connect(signers[1]).fundAccount();
+    it("Should revert if the amount exceeds the Token balance ", async () => {
+      await token.connect(signers[1]).fundAccount();
+
+      await token.connect(signers[2]).fundAccount();
+
+      await expect(token.connect(signers[3]).fundAccount()).to.be.revertedWith(
+        "ERC20: transfer amount exceeds balance"
+      );
     });
 
-    it.skip("Should revert if the amount exceeds the Token balance ", async () => {
-      // await token.connect(signers[1]).fundAccount(100);
-      // await token.connect(signers[2]).fundAccount(100);
-      // await expect(token.connect(signers[3]).fundAccount(1)).to.be.revertedWith(
-      //   "ERC20: transfer amount exceeds balance"
-      // );
-    });
+    it("Should fund an account", async () => {
+      const tokenPreFund: BigNumber = await token.balanceOf(token.address);
+      expect(tokenPreFund.toNumber()).to.equal(mintAmt);
 
-    it("Testing", async () => {});
+      const accountPreFund: BigNumber = await token.balanceOf(
+        signers[1].address
+      );
+      expect(accountPreFund.toNumber()).to.equal(0);
+
+      await token.connect(signers[1]).fundAccount();
+
+      const filter = token.filters.Transfer(null, null, null);
+
+      const queryFilter = await token.queryFilter(filter);
+
+      const transferEvent = queryFilter.slice(-1);
+
+      expect(transferEvent[0].event).to.equal("Transfer");
+
+      expect(transferEvent[0].args.from).to.equal(token.address);
+
+      expect(transferEvent[0].args.to).to.equal(signers[1].address);
+
+      expect(transferEvent[0].args.value.toNumber()).to.equal(offChainFundAmt);
+    });
   });
 
   describe("#Ownership", () => {

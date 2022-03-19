@@ -12,14 +12,18 @@ contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
 
     uint256 public fundAmount;
 
+    uint256 internal amountCheck;
+
     function initialize(string memory name, string memory symbol) public initializer  {
         __ERC20_init(name,symbol);
 
         __Ownable_init();
+
+        amountCheck = 0;
     }
 
    function mint(uint256 amount) public onlyOwner {
-        require(amount > 0, "Token: Amount cannot be 0");
+        require(amount > amountCheck, "Token: Amount cannot be 0");
         _mint(address(this), amount);
     }
 
@@ -29,7 +33,7 @@ contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
         uint256 previousAmount = fundAmount;
 
         // Prevents the fundAmount from being set to 0
-        require(amount > 0, "Token: Amount cannot be set to 0");
+        require(amount > amountCheck, "Token: Amount cannot be set to 0");
 
         // Sets the new fundAmount
         fundAmount = amount;
@@ -41,7 +45,9 @@ contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
 
     function fundAccount() public {
 
+        // Transfers the fundAmount to the msg.sender
         ERC20Upgradeable(address(this)).transfer(msg.sender, fundAmount);
+
     }
 }
 
