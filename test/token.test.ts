@@ -106,6 +106,37 @@ describe("Token", function () {
     });
   });
 
+  describe.only("#setFundAmount", () => {
+    it("Should revert setFundAmount if the caller is not the owner", async () => {
+      await expect(
+        token.connect(signers[1]).setFundAmount(10000)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+  });
+
+  describe("#fundAccount", async () => {
+    let mintAmt = 200;
+    beforeEach(async () => {
+      await token.mint(mintAmt);
+
+      await token.setFundAmount(200);
+    });
+
+    it("Should revert if the amount exceeds the limit", async () => {
+      token.connect(signers[1]).fundAccount();
+    });
+
+    it.skip("Should revert if the amount exceeds the Token balance ", async () => {
+      // await token.connect(signers[1]).fundAccount(100);
+      // await token.connect(signers[2]).fundAccount(100);
+      // await expect(token.connect(signers[3]).fundAccount(1)).to.be.revertedWith(
+      //   "ERC20: transfer amount exceeds balance"
+      // );
+    });
+
+    it("Testing", async () => {});
+  });
+
   describe("#Ownership", () => {
     it("Should revert if transferOwnership is not called by the owner", async () => {
       const prevOwner = await token.owner();

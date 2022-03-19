@@ -4,8 +4,13 @@ pragma solidity ^0.8.12;
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "hardhat/console.sol";
 
 contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
+    
+    event SetFundAmount(uint256 previousAmount, uint256 newAmount);
+
+    uint256 public fundAmount;
 
     function initialize(string memory name, string memory symbol) public initializer  {
         __ERC20_init(name,symbol);
@@ -18,10 +23,23 @@ contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
         _mint(address(this), amount);
     }
 
-//     function fundAccount(uint256 amount) public {
-//         require(amount <= 100, "Token: Mint limit exceeded");
-//         ERC20(address(this)).transfer(msg.sender, 100);
-//     }
+    function setFundAmount(uint256 amount) public onlyOwner {
+
+        // The value of fund amount before setting to a new value
+        uint256 previousAmount = fundAmount;
+
+        // Sets the new fund to the amount passed in as an argument
+        fundAmount = amount;
+
+        // Emits the SetFundAmount event with the previousAmount and amount arguments
+        emit SetFundAmount(previousAmount, amount);
+       
+    }
+
+    function fundAccount() public {
+
+        ERC20Upgradeable(address(this)).transfer(msg.sender, fundAmount);
+    }
 }
 
 
