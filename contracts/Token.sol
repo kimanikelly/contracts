@@ -13,10 +13,10 @@ contract Token is Initializable,OwnableUpgradeable,ERC20Upgradeable{
         __Ownable_init();
     }
 
-//    function fund(uint256 amount) public onlyOwner {
-//         require(amount > 0, "Token: Insufficient fund amount");
-//         _mint(address(this), amount);
-//     }
+   function mint(uint256 amount) public onlyOwner {
+        require(amount > 0, "Token: Amount cannot be 0");
+        _mint(address(this), amount);
+    }
 
 //     function fundAccount(uint256 amount) public {
 //         require(amount <= 100, "Token: Mint limit exceeded");

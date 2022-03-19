@@ -2,39 +2,89 @@
   "manifestVersion": "3.2",
   "admin": {
     "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-    "txHash": "0x9c9044c85490fbf6093c98e96c27d4f04858bbcca6c45a38aeb6d7299bd7e055"
+    "txHash": "0xd4a0800239e8b9dca9db77f366134076c5b12251fa990fd5bb0a3e392b42602c"
   },
   "proxies": [
     {
+      "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+      "txHash": "0x08005ad3c9c81f6e708806157fd6682645bd9c6f9fb436383928b5a7faa2b499",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      "txHash": "0xef69c9777fe0810eb8ea14cf9dc3a895ea525008d224ed697dd6a94fe9506f75",
+      "kind": "transparent"
+    },
+    {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0xea4abf5eba392882db95d7fb34d24ab68d0df7725264cdc5e64d3e95ff7b16ec",
+      "txHash": "0x3b350d292170fb9e08691ed3b2d96371f5295068f0ea9d72151071950b837082",
       "kind": "transparent"
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0x9a527036ba7f58d6080238274c70f62fcb17f44a79a20fbbeae6987e68fb4fea",
+      "txHash": "0x7aa90f1747c35d618254b633ac7ee6d0a8142dd183d83a14ae21d95c9907ba20",
       "kind": "transparent"
     },
     {
       "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-      "txHash": "0xcb02c34db872d16bef9ea30a8f540a6ebdaed2c8b0894e2195c8553ce70ea7ef",
+      "txHash": "0x8df20ca2847870219fad796b4b6c6b314aa89c2499588d581f75745e86ad6042",
       "kind": "transparent"
     },
     {
       "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-      "txHash": "0x59c6249f8f83e8876f0888c436f17eb68a36cecdab9bd445d530067bdb61ec93",
+      "txHash": "0x728ba96c6b28c8137640307df05f005c96e680deabce6f7b1877ca5848510a73",
       "kind": "transparent"
     },
     {
       "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-      "txHash": "0x4854b2eef9acf2cef187106a04093f3d328195b2b8bf4280dd1d2248894d0edd",
+      "txHash": "0xfb892f4fae244cb0271c957a5d47cbecd5fa77790aca29d11fe26532310e08d1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      "txHash": "0xdb3cf887a40693f51077460b7218377e2086c197b197b4641feb0ecafc696608",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      "txHash": "0x38ef70e74dce42c5509e2b33c043e30c4a32206b21e139f4dce49b295b5d1ae3",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      "txHash": "0x53ffc234dfec037c1d26eeed290de305b331116e1de3ad49506197b42c2ebcb5",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      "txHash": "0x32d24a35875cdb24165432cc7d1ce522f3572e66df2b1faaaef447216c4fe855",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      "txHash": "0x7da1abfa3603d358761e51f062db6da12107f3480e6bdebbfa8c155a83952172",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
+      "txHash": "0x73eb928115201d6b3ea6e195839422cb270dacd0935cf7c76a55f6c240b5d826",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
+      "txHash": "0x056ebf8d6be168c1a29c9b441c7cd53fa2e94081ce0d543fc748b2c72f4f6927",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x59b670e9fA9D0A427751Af201D676719a970857b",
+      "txHash": "0xd6c1fe524d58ac773abb9ef6f473e64e1ab04d9f22866446e5459c24571cc038",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "f189e02260b6b5e751e4cd7e10d426b500ed60a81019c0fb03ec92db8fcace27": {
+    "0e68b385f36446b7b166161777f2fa0725f78ffe424f85c933b19cff88583aa6": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0x79971a7870d8438274d5b687ec2249de5ea8d64222656480055a7cbadfcac38b",
+      "txHash": "0x6a903b59ff23e4df3e6a023f0dc76349efffb558cd88a58acb8dbad37943b1ac",
       "layout": {
         "storage": [
           {
