@@ -2,7 +2,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect, use } from "chai";
 import { solidity } from "ethereum-waffle";
 import { ethers, upgrades } from "hardhat";
-import { BigNumber, Event } from "ethers";
+import { BigNumber, ContractTransaction, Event } from "ethers";
 import { Token, Token__factory } from "../typechain";
 
 use(solidity);
@@ -103,6 +103,94 @@ describe("Token", function () {
         const balance: BigNumber = await token.balanceOf(token.address);
         expect(balance.toNumber()).to.equal(mintAmt);
       });
+    });
+  });
+
+  describe("#setFundAmount", () => {
+    const offChainFundAmt: BigNumber = ethers.BigNumber.from(10000);
+
+    it("Should revert if the caller is not the owner", async () => {
+      await expect(
+        token.connect(signers[1]).setFundAmount(offChainFundAmt)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+
+    it("Should revert if the fund amount is 0 ", async () => {
+      await expect(token.setFundAmount(0)).to.be.revertedWith(
+        "Token: Amount cannot be set to 0"
+      );
+    });
+
+    it("Should return the fund amount as 0 before the initial set", async () => {
+      const initialFundAmount: BigNumber = await token.fundAmount();
+      expect(initialFundAmount.toNumber()).to.equal(0);
+    });
+
+    it("Should set the fund amount", async () => {
+      await token.setFundAmount(offChainFundAmt);
+
+      const filter = token.filters.FundAmountSet(null, null);
+
+      const queryFilter = (await token.queryFilter(filter))[0];
+
+      expect(queryFilter.event).to.equal("FundAmountSet");
+
+      expect(queryFilter.args?.previousAmount.toNumber()).to.equal(0);
+
+      expect(queryFilter.args?.newAmount.toNumber()).to.equal(
+        offChainFundAmt.toNumber()
+      );
+
+      const onChainFundAmt: BigNumber = await token.fundAmount();
+
+      expect(onChainFundAmt.toNumber()).to.equal(offChainFundAmt.toNumber());
+    });
+  });
+
+  describe("#fundAccount", async () => {
+    let mintAmt = 400;
+    let offChainFundAmt = 200;
+
+    beforeEach(async () => {
+      await token.mint(mintAmt);
+
+      await token.setFundAmount(offChainFundAmt);
+    });
+
+    it("Should revert if the amount exceeds the Token balance ", async () => {
+      await token.connect(signers[1]).fundAccount();
+
+      await token.connect(signers[2]).fundAccount();
+
+      await expect(token.connect(signers[3]).fundAccount()).to.be.revertedWith(
+        "ERC20: transfer amount exceeds balance"
+      );
+    });
+
+    it("Should fund an account", async () => {
+      const tokenPreFund: BigNumber = await token.balanceOf(token.address);
+      expect(tokenPreFund.toNumber()).to.equal(mintAmt);
+
+      const accountPreFund: BigNumber = await token.balanceOf(
+        signers[1].address
+      );
+      expect(accountPreFund.toNumber()).to.equal(0);
+
+      await token.connect(signers[1]).fundAccount();
+
+      const filter = token.filters.Transfer(null, null, null);
+
+      const queryFilter = await token.queryFilter(filter);
+
+      const transferEvent = queryFilter.slice(-1);
+
+      expect(transferEvent[0].event).to.equal("Transfer");
+
+      expect(transferEvent[0].args.from).to.equal(token.address);
+
+      expect(transferEvent[0].args.to).to.equal(signers[1].address);
+
+      expect(transferEvent[0].args.value.toNumber()).to.equal(offChainFundAmt);
     });
   });
 
