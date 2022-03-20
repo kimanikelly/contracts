@@ -2,16 +2,16 @@
   "name": "@kimanikelly/contracts",
   "version": "1.0.0",
   "license": "GPL-3.0",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/typchain/index.js",
+  "types": "./dist/typechain/index.d.ts",
   "files": [
     "./dist/**/*",
     "./dist/*"
   ],
-"scripts": {
-  "test": "hardhat test",
-  "build":"tsc"
-},
+  "scripts": {
+    "test": "hardhat test",
+    "build": "tsc"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
