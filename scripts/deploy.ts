@@ -4,6 +4,8 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers, upgrades } from "hardhat";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Token, Token__factory } from "../typechain";
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -13,15 +15,33 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  const signers = await ethers.getSigners();
+  const signers: SignerWithAddress[] = await ethers.getSigners();
 
-  const Token = await ethers.getContractFactory("Token", signers[0]);
+  // Fund amount
+  const fundAmount = 100;
 
-  const token = await upgrades.deployProxy(Token, ["Test Token", "TT"]);
+  // Returns the Token.sol contract factory
+  const Token: Token__factory = await ethers.getContractFactory(
+    "Token",
+    signers[0]
+  );
+
+  // Deploys Token.sol as an upgradeable contract
+  const token = (await upgrades.deployProxy(Token, [
+    "Test Token",
+    "TT",
+  ])) as Token;
 
   await token.deployed();
 
-  console.log(`Token deployed to ${token.address}`);
+  // Logs the Token.sol contract address
+  console.log(`Token deployed to: ${token.address}`);
+
+  // Sets the fund amount
+  await token.setFundAmount(fundAmount);
+
+  // Logs the fund amount
+  console.log(`Fund amount set to: ${(await token.fundAmount()).toNumber()}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
