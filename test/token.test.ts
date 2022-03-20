@@ -27,6 +27,12 @@ describe("Token", function () {
   });
 
   describe("#initializer", () => {
+    it("Should revert if the contract is already initialized", async () => {
+      await expect(token.initialize("Test Token", "TT")).to.be.revertedWith(
+        "Initializable: contract is already initialized"
+      );
+    });
+
     it("Should emit the OwnershipTransferred emit on deployment", async () => {
       const filter = token.filters.OwnershipTransferred(null, null);
 
