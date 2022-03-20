@@ -1,5 +1,5 @@
 {
-  "name": "kimani-test-3",
+  "name": "@kimanikelly/contracts",
   "version": "1.0.0",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
