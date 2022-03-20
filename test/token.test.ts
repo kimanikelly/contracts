@@ -75,7 +75,7 @@ describe("Token", function () {
 
     it("Should revert if the mint amount is 0", async () => {
       await expect(token.mint(0)).to.be.revertedWith(
-        "Token: Amount cannot be 0"
+        "'Token: Amount cannot be set to 0'"
       );
     });
 
