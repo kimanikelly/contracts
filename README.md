@@ -16,6 +16,8 @@ npm i
 
 ## Testing
 
+### Run the Smart Contract unit tests
+
 ```
 npx hardhat test
 ```
