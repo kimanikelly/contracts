@@ -1,5 +1,7 @@
 # @kimanikelly/contracts
 
+[![Node.js CI](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml/badge.svg)](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml)
+
 ## Installation
 
 ### Clone the repository to your local machine
