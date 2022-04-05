@@ -28,7 +28,7 @@ describe("Token", function () {
   });
 
   describe("#initializer", () => {
-    it.only("Should revert if the contract is already initialized", async () => {
+    it("Should revert if the contract is already initialized", async () => {
       await expect(token.initialize("Test Token", "TT")).to.be.revertedWith(
         "Initializable: contract is already initialized"
       );
