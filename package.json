@@ -48,6 +48,7 @@
     "@openzeppelin/contracts": "^4.5.0",
     "@openzeppelin/contracts-upgradeable": "^4.5.2",
     "@openzeppelin/hardhat-upgrades": "^1.16.1",
-    "minimist": "^1.2.6"
+    "minimist": "^1.2.6",
+    "yargs-parser": "^21.0.1"
   }
 }
