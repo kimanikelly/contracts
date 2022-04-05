@@ -1,1 +1,1 @@
-export { Token__factory } from "./typechain";
+export * from "./typechain";
