@@ -9,6 +9,7 @@
     "dist"
   ],
   "scripts": {
+    "local":"npx hardhat run --network localhost scripts/deploy.ts",
     "rinkeby": "npx hardhat run --network rinkeby scripts/deploy.ts",
     "test": "hardhat test",
     "build": "tsc"
