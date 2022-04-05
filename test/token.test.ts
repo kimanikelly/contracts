@@ -4,7 +4,6 @@ import { solidity } from "ethereum-waffle";
 import { ethers, upgrades } from "hardhat";
 import { BigNumber, ContractTransaction, Event } from "ethers";
 import { Token, Token__factory } from "../typechain";
-import * as x from "../index";
 
 use(solidity);
 

@@ -35,13 +35,10 @@ async function main() {
   await token.deployed();
 
   // Logs the Token.sol contract address
-  console.log(`Token deployed to: ${token.address}`);
+  console.log(`Token proxy deployed to: ${token.address}`);
 
   // Sets the fund amount
   await token.setFundAmount(fundAmount);
-
-  // Logs the fund amount
-  console.log(`Fund amount set to: ${(await token.fundAmount()).toNumber()}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
