@@ -4,6 +4,10 @@
   "license": "GPL-3.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "./dist/**/*",
+    "./dist/*"
+  ],
   "scripts": {
     "test": "hardhat test",
     "build": "tsc"
