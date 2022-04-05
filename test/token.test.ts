@@ -4,6 +4,7 @@ import { solidity } from "ethereum-waffle";
 import { ethers, upgrades } from "hardhat";
 import { BigNumber, ContractTransaction, Event } from "ethers";
 import { Token, Token__factory } from "../typechain";
+import * as x from "../index";
 
 use(solidity);
 
@@ -27,7 +28,7 @@ describe("Token", function () {
   });
 
   describe("#initializer", () => {
-    it("Should revert if the contract is already initialized", async () => {
+    it.only("Should revert if the contract is already initialized", async () => {
       await expect(token.initialize("Test Token", "TT")).to.be.revertedWith(
         "Initializable: contract is already initialized"
       );
