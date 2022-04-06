@@ -11,6 +11,7 @@ describe("Token", function () {
   let token: Token;
   let signers: SignerWithAddress[];
   let mintAmt = 100;
+  let mintParseAmt = ethers.utils.parseEther(mintAmt.toString());
 
   beforeEach(async () => {
     // Returns the Hardhat test accounts
@@ -85,7 +86,7 @@ describe("Token", function () {
       );
     });
 
-    it.only("Should emit the Transfer event", async () => {
+    it("Should emit the Transfer event", async () => {
       const filter = token.filters.Transfer(null, null, null);
 
       const queryFilter = (await token.queryFilter(filter))[0];
@@ -94,8 +95,7 @@ describe("Token", function () {
 
       expect(queryFilter.args.to).to.equal(token.address);
 
-      console.log(queryFilter.args.value);
-      // expect(queryFilter.args.value).to.equal();
+      expect(queryFilter.args.value).to.equal(mintParseAmt);
     });
 
     describe("#totalSupply", () => {

@@ -21,6 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface TokenInterface extends ethers.utils.Interface {
   functions: {
+    "ONE_ETH()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -42,6 +43,7 @@ interface TokenInterface extends ethers.utils.Interface {
     "transferOwnership(address)": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "ONE_ETH", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -101,6 +103,7 @@ interface TokenInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "ONE_ETH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -222,6 +225,8 @@ export class Token extends BaseContract {
   interface: TokenInterface;
 
   functions: {
+    ONE_ETH(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     allowance(
       owner: string,
       spender: string,
@@ -302,6 +307,8 @@ export class Token extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  ONE_ETH(overrides?: CallOverrides): Promise<BigNumber>;
 
   allowance(
     owner: string,
@@ -384,6 +391,8 @@ export class Token extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    ONE_ETH(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -529,6 +538,8 @@ export class Token extends BaseContract {
   };
 
   estimateGas: {
+    ONE_ETH(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -611,6 +622,8 @@ export class Token extends BaseContract {
   };
 
   populateTransaction: {
+    ONE_ETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     allowance(
       owner: string,
       spender: string,
