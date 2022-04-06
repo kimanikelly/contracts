@@ -1,6 +1,10 @@
 # @kimanikelly/contracts
 
-[![Node.js CI](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml/badge.svg)](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml)
+| Node.js CI |
+| ---------- |
+
+| [![Node.js CI](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml/badge.svg)](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml)
+|
 
 ## Installation
 
