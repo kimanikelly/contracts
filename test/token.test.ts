@@ -101,14 +101,14 @@ describe("Token", function () {
     describe("#totalSupply", () => {
       it("Should increase the totalSupply by the mint amount", async () => {
         const totalSupply: BigNumber = await token.totalSupply();
-        expect(totalSupply.toNumber()).to.equal(mintAmt);
+        expect(totalSupply).to.equal(mintParseAmt);
       });
     });
 
     describe("#balanceOf", () => {
       it("Should increase the Token contract balance by the mint amount", async () => {
         const balance: BigNumber = await token.balanceOf(token.address);
-        expect(balance.toNumber()).to.equal(mintAmt);
+        expect(balance).to.equal(mintParseAmt);
       });
     });
   });
