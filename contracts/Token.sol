@@ -56,6 +56,9 @@ contract Token is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      * @param amount The amount of ERC-20 tokens allocated to Token.sol
      */
     function mint(uint256 amount) public onlyOwner preventZeroAmount(amount) {
+        /// The amount will be multiplied by 1e18
+        amount = amount * 1 ether;
+
         /// Invokes the ERC20Upgradeable.sol _mint function
         _mint(address(this), amount);
     }
@@ -70,6 +73,9 @@ contract Token is Initializable, OwnableUpgradeable, ERC20Upgradeable {
         onlyOwner
         preventZeroAmount(amount)
     {
+        /// The amount will be multiplied by 1e18
+        amount = amount * 1 ether;
+
         /// The value of the current fundAmount
         uint256 previousAmount = fundAmount;
 
