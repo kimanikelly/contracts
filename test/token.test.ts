@@ -10,8 +10,8 @@ use(solidity);
 describe("Token", function () {
   let token: Token;
   let signers: SignerWithAddress[];
-  let mintAmt = 100;
-  let mintParseAmt = ethers.utils.parseEther(mintAmt.toString());
+  const mintAmt = 100;
+  const mintParseAmt = ethers.utils.parseEther(mintAmt.toString());
 
   beforeEach(async () => {
     // Returns the Hardhat test accounts
@@ -156,8 +156,12 @@ describe("Token", function () {
   });
 
   describe("#fundAccount", async () => {
-    let mintAmt = 400;
-    let offChainFundAmt = 200;
+    const mintAmt = 400;
+    const mintParseAmt = ethers.utils.parseEther(mintAmt.toString());
+    const offChainFundAmt = 200;
+    const offChainParseAmt = ethers.utils.parseEther(
+      offChainFundAmt.toString()
+    );
 
     beforeEach(async () => {
       await token.mint(mintAmt);
@@ -177,7 +181,7 @@ describe("Token", function () {
 
     it("Should fund an account", async () => {
       const tokenPreFund: BigNumber = await token.balanceOf(token.address);
-      expect(tokenPreFund.toNumber()).to.equal(mintAmt);
+      expect(tokenPreFund).to.equal(mintParseAmt);
 
       const accountPreFund: BigNumber = await token.balanceOf(
         signers[1].address
@@ -198,7 +202,7 @@ describe("Token", function () {
 
       expect(transferEvent[0].args.to).to.equal(signers[1].address);
 
-      expect(transferEvent[0].args.value.toNumber()).to.equal(offChainFundAmt);
+      expect(transferEvent[0].args.value).to.equal(offChainParseAmt);
     });
   });
 
