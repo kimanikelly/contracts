@@ -20,6 +20,8 @@ contract Token is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     /// Used to check against the `amount` on `mint` and `setFundAmount`.
     uint256 internal amountCheck;
 
+    uint256 public constant ONE_ETH = 1 ether;
+
     /**
      * @dev Prevents the `mint` and `setFundAmount` functions from passing in 0
      * as an argument.
@@ -57,7 +59,7 @@ contract Token is Initializable, OwnableUpgradeable, ERC20Upgradeable {
      */
     function mint(uint256 amount) public onlyOwner preventZeroAmount(amount) {
         /// The amount will be multiplied by 1e18
-        amount = amount * 1 ether;
+        amount = amount * ONE_ETH;
 
         /// Invokes the ERC20Upgradeable.sol _mint function
         _mint(address(this), amount);
@@ -74,7 +76,7 @@ contract Token is Initializable, OwnableUpgradeable, ERC20Upgradeable {
         preventZeroAmount(amount)
     {
         /// The amount will be multiplied by 1e18
-        amount = amount * 1 ether;
+        amount = amount * ONE_ETH;
 
         /// The value of the current fundAmount
         uint256 previousAmount = fundAmount;

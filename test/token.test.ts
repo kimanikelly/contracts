@@ -85,7 +85,7 @@ describe("Token", function () {
       );
     });
 
-    it("Should emit the Transfer event", async () => {
+    it.only("Should emit the Transfer event", async () => {
       const filter = token.filters.Transfer(null, null, null);
 
       const queryFilter = (await token.queryFilter(filter))[0];
@@ -94,7 +94,8 @@ describe("Token", function () {
 
       expect(queryFilter.args.to).to.equal(token.address);
 
-      expect(queryFilter.args.value.toNumber()).to.equal(mintAmt);
+      console.log(queryFilter.args.value);
+      // expect(queryFilter.args.value).to.equal();
     });
 
     describe("#totalSupply", () => {
