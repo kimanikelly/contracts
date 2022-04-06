@@ -115,6 +115,9 @@ describe("Token", function () {
 
   describe("#setFundAmount", () => {
     const offChainFundAmt: BigNumber = ethers.BigNumber.from(10000);
+    const offChainParseAmt = ethers.utils.parseEther(
+      offChainFundAmt.toString()
+    );
 
     it("Should revert if the caller is not the owner", async () => {
       await expect(
@@ -142,15 +145,13 @@ describe("Token", function () {
 
       expect(queryFilter.event).to.equal("FundAmountSet");
 
-      expect(queryFilter.args?.previousAmount.toNumber()).to.equal(0);
+      expect(queryFilter.args?.previousAmount).to.equal(0);
 
-      expect(queryFilter.args?.newAmount.toNumber()).to.equal(
-        offChainFundAmt.toNumber()
-      );
+      expect(queryFilter.args?.newAmount).to.equal(offChainParseAmt);
 
       const onChainFundAmt: BigNumber = await token.fundAmount();
 
-      expect(onChainFundAmt.toNumber()).to.equal(offChainFundAmt.toNumber());
+      expect(onChainFundAmt).to.equal(offChainParseAmt);
     });
   });
 
