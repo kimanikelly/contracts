@@ -2,7 +2,7 @@
 
 [![Node.js CI](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml/badge.svg)](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml)
 
-## Installation
+### Installation
 
 ```
 git clone https://github.com/kimanikelly/contracts.git
@@ -14,7 +14,7 @@ git clone https://github.com/kimanikelly/contracts.git
 npm i
 ```
 
-## Testing
+### Testing
 
 ```
 npx hardhat test
