@@ -4,13 +4,11 @@
 
 ## Installation
 
-### Clone the repository to your local machine
-
 ```
 git clone https://github.com/kimanikelly/contracts.git
 ```
 
-### Npm install the dependencies
+### Install Dependencies
 
 ```
 npm i
@@ -18,11 +16,11 @@ npm i
 
 ## Testing
 
-### Run the Smart Contract unit tests
-
 ```
 npx hardhat test
 ```
+
+or
 
 ```
 npm test
