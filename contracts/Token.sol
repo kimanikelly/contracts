@@ -66,8 +66,8 @@ contract Token is Initializable, OwnableUpgradeable, ERC20Upgradeable {
     }
 
     /**
-     * @dev Creates and allocates ERC-20 tokens to Token.sol. This function
-     * can only be invoked by the owner.
+     * @dev Sets the amount of ERC-20 tokens that can be transferred to the msg.sender.This function can only
+     * be invoked by the owner.
      * @param amount Sets the total amount ERC-20 tokens `fundAccount` can transfer to the msg.sender
      */
     function setFundAmount(uint256 amount)
