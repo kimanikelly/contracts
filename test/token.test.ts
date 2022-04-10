@@ -214,7 +214,7 @@ describe("Token", function () {
       ).to.be.revertedWith("Ownable: caller is not the owner");
 
       const newOwner = await token.owner();
-      expect(prevOwner).to.equal(1);
+      expect(prevOwner).to.equal(newOwner);
     });
 
     it("Should get the owner", async () => {
