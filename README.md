@@ -37,3 +37,9 @@ npm test
 Step 1 - Open one terminal and run the command `npx hardhat node` to start the local node.
 
 Step 2 - Open another terminal and run the command `npm run local` to deploy Token.sol locally.
+
+## Rinkeby Deployment
+
+### Token
+
+Step 1 - Open one terminal and run the command `npm run rinkeby`.
