@@ -4,7 +4,7 @@
 
 ## Contract Documentation
 
-- [Token](docs/token.md)
+- [Token](https://github.com/kimanikelly/contracts/blob/main/docs/token.md)
 
 ## Installation
 
