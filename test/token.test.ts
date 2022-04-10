@@ -10,7 +10,8 @@ use(solidity);
 describe("Token", function () {
   let token: Token;
   let signers: SignerWithAddress[];
-  let mintAmt = 100;
+  const mintAmt = 100;
+  const mintParseAmt = ethers.utils.parseEther(mintAmt.toString());
 
   beforeEach(async () => {
     // Returns the Hardhat test accounts
@@ -94,26 +95,29 @@ describe("Token", function () {
 
       expect(queryFilter.args.to).to.equal(token.address);
 
-      expect(queryFilter.args.value.toNumber()).to.equal(mintAmt);
+      expect(queryFilter.args.value).to.equal(mintParseAmt);
     });
 
     describe("#totalSupply", () => {
       it("Should increase the totalSupply by the mint amount", async () => {
         const totalSupply: BigNumber = await token.totalSupply();
-        expect(totalSupply.toNumber()).to.equal(mintAmt);
+        expect(totalSupply).to.equal(mintParseAmt);
       });
     });
 
     describe("#balanceOf", () => {
       it("Should increase the Token contract balance by the mint amount", async () => {
         const balance: BigNumber = await token.balanceOf(token.address);
-        expect(balance.toNumber()).to.equal(mintAmt);
+        expect(balance).to.equal(mintParseAmt);
       });
     });
   });
 
   describe("#setFundAmount", () => {
     const offChainFundAmt: BigNumber = ethers.BigNumber.from(10000);
+    const offChainParseAmt = ethers.utils.parseEther(
+      offChainFundAmt.toString()
+    );
 
     it("Should revert if the caller is not the owner", async () => {
       await expect(
@@ -141,21 +145,23 @@ describe("Token", function () {
 
       expect(queryFilter.event).to.equal("FundAmountSet");
 
-      expect(queryFilter.args?.previousAmount.toNumber()).to.equal(0);
+      expect(queryFilter.args?.previousAmount).to.equal(0);
 
-      expect(queryFilter.args?.newAmount.toNumber()).to.equal(
-        offChainFundAmt.toNumber()
-      );
+      expect(queryFilter.args?.newAmount).to.equal(offChainParseAmt);
 
       const onChainFundAmt: BigNumber = await token.fundAmount();
 
-      expect(onChainFundAmt.toNumber()).to.equal(offChainFundAmt.toNumber());
+      expect(onChainFundAmt).to.equal(offChainParseAmt);
     });
   });
 
   describe("#fundAccount", async () => {
-    let mintAmt = 400;
-    let offChainFundAmt = 200;
+    const mintAmt = 400;
+    const mintParseAmt = ethers.utils.parseEther(mintAmt.toString());
+    const offChainFundAmt = 200;
+    const offChainParseAmt = ethers.utils.parseEther(
+      offChainFundAmt.toString()
+    );
 
     beforeEach(async () => {
       await token.mint(mintAmt);
@@ -175,7 +181,7 @@ describe("Token", function () {
 
     it("Should fund an account", async () => {
       const tokenPreFund: BigNumber = await token.balanceOf(token.address);
-      expect(tokenPreFund.toNumber()).to.equal(mintAmt);
+      expect(tokenPreFund).to.equal(mintParseAmt);
 
       const accountPreFund: BigNumber = await token.balanceOf(
         signers[1].address
@@ -196,7 +202,7 @@ describe("Token", function () {
 
       expect(transferEvent[0].args.to).to.equal(signers[1].address);
 
-      expect(transferEvent[0].args.value.toNumber()).to.equal(offChainFundAmt);
+      expect(transferEvent[0].args.value).to.equal(offChainParseAmt);
     });
   });
 
