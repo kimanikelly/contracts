@@ -32,6 +32,20 @@ npm test
 
 ## Deployment
 
+A `.env` file has to be configured fro testnet deployment.
+
+- Create a `.env` file by running the command
+
+```
+touch .env
+```
+
+- Use the `.env.example` file as a template to input the credentials needed for testnet deployment inside the `.env` file.
+
+- Verify `RINKEBY_URL=https://rinkeby.infura.io/v3/<YOUR INFURA KEY>` has a valid key.
+
+- Verify the `PRIVATE_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abc1` is a valid wallet private key.
+
 ### Token Localhost Deployment
 
 - Open one terminal and run the command `npx hardhat node` to start the local node.
@@ -44,5 +58,6 @@ npm test
 
 ### Token Rinkeby Deployment
 
-- Create a `.env` file `touch .env`
 - Open one terminal and run the command `npm run rinkeby`.
+
+- The rinkeby address will print to the terminal.
