@@ -1,6 +1,6 @@
 # @kimanikelly/contracts
 
-[![Node.js CI](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml/badge.svg)](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml)
+[![Node.js CI](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml/badge.svg)](https://github.com/kimanikelly/contracts/actions/workflows/node.js.yml) [![Node.js Package](https://github.com/kimanikelly/contracts/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/kimanikelly/contracts/actions/workflows/npm-publish.yml)
 
 ## Contract Documentation
 
