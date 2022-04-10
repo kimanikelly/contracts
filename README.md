@@ -30,16 +30,19 @@ or
 npm test
 ```
 
-## Localhost Deployment
+## Deployment
 
-### Token
+### Token Localhost Deployment
 
-Step 1 - Open one terminal and run the command `npx hardhat node` to start the local node.
+- Open one terminal and run the command `npx hardhat node` to start the local node.
 
-Step 2 - Open another terminal and run the command `npm run local` to deploy Token.sol locally.
+- Open another terminal and run the command `npm run local` to deploy Token.sol locally.
+
+- The localhost address will print to the terminal.
 
 ## Rinkeby Deployment
 
-### Token
+### Token Rinkeby Deployment
 
-Step 1 - Open one terminal and run the command `npm run rinkeby`.
+- Create a `.env` file `touch .env`
+- Open one terminal and run the command `npm run rinkeby`.
