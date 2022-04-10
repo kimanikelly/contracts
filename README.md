@@ -54,8 +54,6 @@ touch .env
 
 - The localhost address will print to the terminal.
 
-## Rinkeby Deployment
-
 ### Token Rinkeby Deployment
 
 - Open one terminal and run the command `npm run rinkeby`.
