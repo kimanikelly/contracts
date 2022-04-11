@@ -1,11 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2018",
     "module": "commonjs",
-    "strict": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "declaration": true,
+    "sourceMap": true,
+    "strict": false,
     "esModuleInterop": true,
-    "outDir": "./dist",
-    "declaration": true
+    "allowSyntheticDefaultImports": true,
+    "outDir": "dist",
+    "resolveJsonModule": true
   },
-  "include": ["src"],
+  "include": [
+    "./src",
+    "./typechain",
+  ]
 }
