@@ -13,7 +13,7 @@
     "resolveJsonModule": true
   },
   "include": [
-    "./src",
-    "./typechain",
+    "./typechain", 
+    "index.ts",
   ]
 }
