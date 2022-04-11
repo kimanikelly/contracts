@@ -31,7 +31,6 @@ jobs:
       - run: npm ci
       - run: git config --global user.email "kimanikelly95@gmail.com" --
       - run: git config --global user.name "kimanikelly"
-      - run: npm version patch -m "Upgrade to %s for publishing"
       - run: npm publish --access public
       - run: git push origin main
         env:
