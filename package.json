@@ -3,8 +3,8 @@
   "version": "1.0.9",
   "description": "A Smart Contract development package for the purpose of building Blockchain specific projects.",
   "license": "GPL-3.0",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "./dist/**/*",
     "./dist/*"
