@@ -9,4 +9,5 @@
     "declaration": true
   },
   "include": ["src"],
+  "exclude": ["test","scripts"]
 }
