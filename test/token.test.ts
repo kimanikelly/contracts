@@ -18,10 +18,7 @@ describe("Token", function () {
     signers = await ethers.getSigners();
 
     // Returns the Token.sol contract factory
-    const Token: Token__factory = await ethers.getContractFactory(
-      "Token",
-      signers[0]
-    );
+    const Token = await ethers.getContractFactory("Token", signers[0]);
 
     // Deploys and initializes the Token.sol proxy as an upgradeable contract
     token = (await upgrades.deployProxy(Token, ["Test Token", "TT"])) as Token;
