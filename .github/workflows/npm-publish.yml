@@ -33,6 +33,5 @@ jobs:
       - run: git config --global user.name "kimanikelly"
       - run: npm version patch -m "Upgrade to %s for publishing"
       - run: npm publish --access public
-      - run: git push origin main
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
