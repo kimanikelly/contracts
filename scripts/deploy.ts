@@ -6,6 +6,7 @@
 import { ethers, upgrades } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Token, Token__factory } from "../typechain";
+import fs from "fs";
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -14,6 +15,8 @@ async function main() {
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
   // await hre.run('compile');
+
+  const chainId = await (await ethers.provider.getNetwork()).chainId;
 
   const signers: SignerWithAddress[] = await ethers.getSigners();
 
@@ -39,6 +42,25 @@ async function main() {
 
   // Sets the fund amount
   await token.setFundAmount(fundAmount);
+
+  // Defines the JSON object as a string
+  const jsonData = '{ "token": "" }';
+
+  // Parsed the JSON string into an object
+  const jsonObj = JSON.parse(jsonData);
+
+  // Assigns the value of token property to the token address
+  jsonObj["token"] = token.address;
+
+  // Stringify the object
+  const jsonContent = JSON.stringify(jsonObj);
+
+  fs.writeFile(`./addresses/${chainId}.json`, jsonContent, "utf8", (err) => {
+    if (err) {
+      console.log("An error occured while writing JSON Object to File.");
+      return console.log(err);
+    }
+  });
 }
 
 // We recommend this pattern to be able to use async/await everywhere

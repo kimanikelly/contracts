@@ -15,6 +15,7 @@
   
   "include": [
     "./typechain", 
+    "./addresses",
     "index.ts",
   ]
 }
