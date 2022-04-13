@@ -40,7 +40,7 @@ npm i @kimanikelly/core-contracts
 
 ### Example
 
-- [Token.sol Instance With @kimanikelly/core-contracts](docs/tokenInstance.md)
+- [Token.sol Instance With @kimanikelly/core-contracts](https://github.com/kimanikelly/contracts/blob/main/docs/tokenInstance.md)
 
 ## Deployment
 
