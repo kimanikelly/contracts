@@ -30,6 +30,18 @@ or
 npm test
 ```
 
+## NPM Package
+
+### Installation
+
+```
+npm i @kimanikelly/core-contracts
+```
+
+### Example
+
+- [Token.sol Instance With @kimanikelly/core-contracts](docs/tokenInstance.md)
+
 ## Deployment
 
 A `.env` file has to be configured fro testnet deployment.
