@@ -1,6 +1,6 @@
 {
   "name": "@kimanikelly/core-contracts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Smart Contract development package for the purpose of building Blockchain specific projects.",
   "license": "GPL-3.0",
   "main": "dist/index.js",
