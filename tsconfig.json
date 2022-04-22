@@ -17,5 +17,8 @@
     "./typechain", 
     "./addresses",
     "index.ts",
-  ]
+    "./hardhat.config.ts",
+    "./scripts/"
+  ],
+  "files": ["hardhat.config.ts"]
 }
