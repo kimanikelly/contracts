@@ -32,6 +32,10 @@ declare module "hardhat/types/runtime" {
       name: "Token",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Token__factory>;
+    getContractFactory(
+      name: "TTBank",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TTBank__factory>;
 
     getContractAt(
       name: "OwnableUpgradeable",
@@ -58,6 +62,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Token>;
+    getContractAt(
+      name: "TTBank",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TTBank>;
 
     // default types
     getContractFactory(
