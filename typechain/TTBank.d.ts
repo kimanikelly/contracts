@@ -21,15 +21,24 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface TTBankInterface extends ethers.utils.Interface {
   functions: {
-    "intitialize()": FunctionFragment;
+    "checkingAccounts(address)": FunctionFragment;
+    "initialize(address)": FunctionFragment;
+    "openAccount(bytes32,bytes32,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "savingsAccounts(address)": FunctionFragment;
+    "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "intitialize",
-    values?: undefined
+    functionFragment: "checkingAccounts",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "initialize", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "openAccount",
+    values: [BytesLike, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -37,12 +46,22 @@ interface TTBankInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "savingsAccounts",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "token", values?: undefined): string;
+  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "intitialize",
+    functionFragment: "checkingAccounts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "openAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
@@ -50,6 +69,11 @@ interface TTBankInterface extends ethers.utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "savingsAccounts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -110,7 +134,27 @@ export class TTBank extends BaseContract {
   interface: TTBankInterface;
 
   functions: {
-    intitialize(
+    checkingAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, string, string, BigNumber] & {
+        accountNumber: BigNumber;
+        accountName: string;
+        accountType: string;
+        balance: BigNumber;
+      }
+    >;
+
+    initialize(
+      _tokenAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    openAccount(
+      _accountName: BytesLike,
+      _accountType: BytesLike,
+      _balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -120,13 +164,47 @@ export class TTBank extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    savingsAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, string, string, BigNumber] & {
+        accountNumber: BigNumber;
+        accountName: string;
+        accountType: string;
+        balance: BigNumber;
+      }
+    >;
+
+    token(overrides?: CallOverrides): Promise<[string]>;
+
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  intitialize(
+  checkingAccounts(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, string, string, BigNumber] & {
+      accountNumber: BigNumber;
+      accountName: string;
+      accountType: string;
+      balance: BigNumber;
+    }
+  >;
+
+  initialize(
+    _tokenAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  openAccount(
+    _accountName: BytesLike,
+    _accountType: BytesLike,
+    _balance: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -136,17 +214,64 @@ export class TTBank extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  savingsAccounts(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, string, string, BigNumber] & {
+      accountNumber: BigNumber;
+      accountName: string;
+      accountType: string;
+      balance: BigNumber;
+    }
+  >;
+
+  token(overrides?: CallOverrides): Promise<string>;
+
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    intitialize(overrides?: CallOverrides): Promise<void>;
+    checkingAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, string, string, BigNumber] & {
+        accountNumber: BigNumber;
+        accountName: string;
+        accountType: string;
+        balance: BigNumber;
+      }
+    >;
+
+    initialize(_tokenAddress: string, overrides?: CallOverrides): Promise<void>;
+
+    openAccount(
+      _accountName: BytesLike,
+      _accountType: BytesLike,
+      _balance: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    savingsAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, string, string, BigNumber] & {
+        accountNumber: BigNumber;
+        accountName: string;
+        accountType: string;
+        balance: BigNumber;
+      }
+    >;
+
+    token(overrides?: CallOverrides): Promise<string>;
 
     transferOwnership(
       newOwner: string,
@@ -173,7 +298,20 @@ export class TTBank extends BaseContract {
   };
 
   estimateGas: {
-    intitialize(
+    checkingAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    initialize(
+      _tokenAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    openAccount(
+      _accountName: BytesLike,
+      _accountType: BytesLike,
+      _balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -183,6 +321,13 @@ export class TTBank extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    savingsAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    token(overrides?: CallOverrides): Promise<BigNumber>;
+
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -190,7 +335,20 @@ export class TTBank extends BaseContract {
   };
 
   populateTransaction: {
-    intitialize(
+    checkingAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    initialize(
+      _tokenAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    openAccount(
+      _accountName: BytesLike,
+      _accountType: BytesLike,
+      _balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -199,6 +357,13 @@ export class TTBank extends BaseContract {
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    savingsAccounts(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: string,
