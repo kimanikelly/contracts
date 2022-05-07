@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.9;
+pragma solidity 0.8.9;
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -32,18 +32,16 @@ contract TTBank is Initializable, OwnableUpgradeable {
             "TTBank: Invalid account type"
         );
 
-        // Requires the initial deposit amount to be greater than 0
+        // Requires the deposit amount to be greater than 0
         require(_balance > 0, "TTBank: Deposit amount is 0");
-
-        // Converts the wei emount to an ETH amount
-        _balance = _balance * 1 ether;
-
-        require(_balance <= token.balanceOf(msg.sender), "Balance not right");
 
         bankDetails.accountNumber++;
         bankDetails.accountName = msg.sender;
         bankDetails.accountType = _accountType;
         bankDetails.balance = _balance;
+
+        // Transfers the TEST TOKENS to the TTBank contract
+        token.transferFrom(msg.sender, address(this), _balance);
 
         // Checks if the _accountType is equal to the string "Checking"
         if (_accountType == "Checking") {

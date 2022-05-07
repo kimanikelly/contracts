@@ -10,6 +10,10 @@ describe("TT Bank", () => {
   let token: Token;
   let signers: SignerWithAddress[];
 
+  const oneEth = ethers.utils.formatUnits(
+    BigNumber.from("1000000000000000000")
+  );
+
   beforeEach(async () => {
     signers = await ethers.getSigners();
 
@@ -33,15 +37,31 @@ describe("TT Bank", () => {
   });
 
   it.only("Should revert if the account type is invalid", async () => {
+    await token.approve(ttBank.address, 100);
     await expect(
       ttBank.openAccount(ethers.utils.formatBytes32String("Investing"), 100)
     ).to.be.revertedWith("TTBank: Invalid account type");
   });
 
-  it.only("Should revert if deposit amount is zero", async () => {
+  it.only("Should revert if the deposit amount is zero", async () => {
+    await token.approve(ttBank.address, 100);
+
     await expect(
       ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 0)
     ).to.be.revertedWith("TTBank: Deposit amount is 0");
+  });
+
+  it.only("Should revert if the deposit amount exceeds the callers balance", async () => {
+    // Signers[0] approves TTBank for 200 TT
+    await token.approve(ttBank.address, BigInt(200e18));
+
+    // Reverts the function due to an insufficient balance
+    await expect(
+      ttBank.openAccount(
+        ethers.utils.formatBytes32String("Checking"),
+        BigInt(101e18)
+      )
+    ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
   });
 
   // it.only("Should be able to open a checking account", async () => {
