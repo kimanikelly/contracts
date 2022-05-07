@@ -14,11 +14,20 @@ contract TTBank is Initializable, OwnableUpgradeable {
         uint256 balance;
     }
 
+    modifier verifyAccountType(bytes32 _accountType) {
+        // Requires the _accountType to either be a Checking or Savings account
+        require(
+            _accountType == "Checking" || _accountType == "Savings",
+            "TTBank: Invalid account type"
+        );
+
+        _;
+    }
+
     Token public token;
     BankDetails private bankDetails;
     mapping(address => BankDetails[]) private checkingAccounts;
-    mapping(address => uint256) private totalBalance;
-    mapping(address => BankDetails) public savingsAccounts;
+    mapping(address => BankDetails[]) private savingsAccounts;
 
     function initialize(address _tokenAddress) public initializer {
         token = Token(_tokenAddress);
@@ -26,13 +35,10 @@ contract TTBank is Initializable, OwnableUpgradeable {
         __Ownable_init();
     }
 
-    function openAccount(bytes32 _accountType, uint256 _balance) public {
-        // Requires the _accountType to either be a Checking or Savings account
-        require(
-            _accountType == "Checking" || _accountType == "Savings",
-            "TTBank: Invalid account type"
-        );
-
+    function openAccount(bytes32 _accountType, uint256 _balance)
+        public
+        verifyAccountType(_accountType)
+    {
         // Requires the deposit amount to be greater than 0
         require(_balance > 0, "TTBank: Deposit amount is 0");
 
@@ -57,18 +63,27 @@ contract TTBank is Initializable, OwnableUpgradeable {
             // Checks if the _accountType is equal to the string "Savings"
         } else if (_accountType == "Savings") {
             // Stores the bankDetails in the savingsAccounts mapping
-            savingsAccounts[msg.sender] = bankDetails;
+            savingsAccounts[msg.sender].push(bankDetails);
         }
 
         // Transfers the TT _balance to the TTBank contract
         token.transferFrom(msg.sender, address(this), _balance);
     }
 
-    function viewCheckingByIndex(uint256 index)
+    function viewAccountByIndex(bytes32 _accountType, uint256 index)
         public
         view
+        verifyAccountType(_accountType)
         returns (BankDetails memory)
     {
-        return checkingAccounts[msg.sender][index];
+        BankDetails memory account;
+
+        if (_accountType == "Checking") {
+            account = checkingAccounts[msg.sender][index];
+        } else if (_accountType == "Savings") {
+            account = savingsAccounts[msg.sender][index];
+        }
+
+        return account;
     }
 }

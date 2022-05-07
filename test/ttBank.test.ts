@@ -78,7 +78,10 @@ describe("TT Bank", () => {
       BigInt(10e18)
     );
 
-    const onChainChecking = await ttBank.viewCheckingByIndex(0);
+    const onChainChecking = await ttBank.viewAccountByIndex(
+      ethers.utils.formatBytes32String("Checking"),
+      0
+    );
 
     expect(onChainChecking.accountNumber).to.equal(1);
     expect(onChainChecking.accountName).to.equal(signers[0].address);
@@ -86,6 +89,27 @@ describe("TT Bank", () => {
       ethers.utils.parseBytes32String(onChainChecking.accountType)
     ).to.be.equal("Checking");
     expect(onChainChecking.balance).to.equal(BigInt(10e18));
+  });
+
+  it("Should open a savings account", async () => {
+    await token.approve(ttBank.address, BigInt(100e18));
+
+    await ttBank.openAccount(
+      ethers.utils.formatBytes32String("Savings"),
+      BigInt(10e18)
+    );
+
+    const onChainSavings = await ttBank.viewAccountByIndex(
+      ethers.utils.formatBytes32String("Savings"),
+      0
+    );
+
+    expect(onChainSavings.accountNumber).to.equal(1);
+    expect(onChainSavings.accountName).to.equal(signers[0].address);
+    expect(
+      ethers.utils.parseBytes32String(onChainSavings.accountType)
+    ).to.be.equal("Savings");
+    expect(onChainSavings.balance).to.equal(BigInt(10e18));
   });
 
   // it("Should be able to open a checking account", async () => {
