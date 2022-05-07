@@ -33,7 +33,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
         );
 
         // Requires the initial deposit amount to be greater than 0
-        require(_balance > 0, "TTBank: ");
+        require(_balance > 0, "TTBank: Deposit amount is 0");
 
         // Converts the wei emount to an ETH amount
         _balance = _balance * 1 ether;

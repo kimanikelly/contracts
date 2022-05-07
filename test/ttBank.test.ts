@@ -38,6 +38,12 @@ describe("TT Bank", () => {
     ).to.be.revertedWith("TTBank: Invalid account type");
   });
 
+  it.only("Should revert if deposit amount is zero", async () => {
+    await expect(
+      ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 0)
+    ).to.be.revertedWith("TTBank: Deposit amount is 0");
+  });
+
   // it.only("Should be able to open a checking account", async () => {
   //   await ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100);
 
