@@ -28,7 +28,7 @@ interface TTBankInterface extends ethers.utils.Interface {
     "savingsAccounts(address)": FunctionFragment;
     "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "viewAccount(uint256)": FunctionFragment;
+    "viewCheckingByIndex(uint256)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "initialize", values: [string]): string;
@@ -51,7 +51,7 @@ interface TTBankInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "viewAccount",
+    functionFragment: "viewCheckingByIndex",
     values: [BigNumberish]
   ): string;
 
@@ -75,7 +75,7 @@ interface TTBankInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "viewAccount",
+    functionFragment: "viewCheckingByIndex",
     data: BytesLike
   ): Result;
 
@@ -170,7 +170,7 @@ export class TTBank extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    viewAccount(
+    viewCheckingByIndex(
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
@@ -221,7 +221,7 @@ export class TTBank extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  viewAccount(
+  viewCheckingByIndex(
     index: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
@@ -265,7 +265,7 @@ export class TTBank extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    viewAccount(
+    viewCheckingByIndex(
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
@@ -326,7 +326,7 @@ export class TTBank extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    viewAccount(
+    viewCheckingByIndex(
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -362,7 +362,7 @@ export class TTBank extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    viewAccount(
+    viewCheckingByIndex(
       index: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

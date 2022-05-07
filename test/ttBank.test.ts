@@ -36,14 +36,14 @@ describe("TT Bank", () => {
     await token.fundAccount();
   });
 
-  it.only("Should revert if the account type is invalid", async () => {
+  it("Should revert if the account type is invalid", async () => {
     await token.approve(ttBank.address, 100);
     await expect(
       ttBank.openAccount(ethers.utils.formatBytes32String("Investing"), 100)
     ).to.be.revertedWith("TTBank: Invalid account type");
   });
 
-  it.only("Should revert if the deposit amount is zero", async () => {
+  it("Should revert if the deposit amount is zero", async () => {
     await token.approve(ttBank.address, 100);
 
     await expect(
@@ -51,7 +51,7 @@ describe("TT Bank", () => {
     ).to.be.revertedWith("TTBank: Deposit amount is 0");
   });
 
-  it.only("Should revert if the deposit amount exceeds the callers balance", async () => {
+  it("Should revert if the deposit amount exceeds the callers balance", async () => {
     // Signers[0] approves TTBank for 200 TT
     await token.approve(ttBank.address, BigInt(200e18));
 
@@ -64,13 +64,31 @@ describe("TT Bank", () => {
     ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
   });
 
-  it.only("Should revert if the deposit amount exceeds the allowance", async () => {
+  it("Should revert if the deposit amount exceeds the allowance", async () => {
     await expect(
       ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100)
     ).to.be.revertedWith("ERC20: insufficient allowance");
   });
 
-  // it.only("Should be able to open a checking account", async () => {
+  it("Should open a checking account", async () => {
+    await token.approve(ttBank.address, BigInt(100e18));
+
+    await ttBank.openAccount(
+      ethers.utils.formatBytes32String("Checking"),
+      BigInt(10e18)
+    );
+
+    const onChainChecking = await ttBank.viewCheckingByIndex(0);
+
+    expect(onChainChecking.accountNumber).to.equal(1);
+    expect(onChainChecking.accountName).to.equal(signers[0].address);
+    expect(
+      ethers.utils.parseBytes32String(onChainChecking.accountType)
+    ).to.be.equal("Checking");
+    expect(onChainChecking.balance).to.equal(BigInt(10e18));
+  });
+
+  // it("Should be able to open a checking account", async () => {
   //   await ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100);
 
   //   const onChainCheckingAcct = await ttBank.viewAccount(0);

@@ -17,6 +17,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
     Token public token;
     BankDetails private bankDetails;
     mapping(address => BankDetails[]) private checkingAccounts;
+    mapping(address => uint256) private totalBalance;
     mapping(address => BankDetails) public savingsAccounts;
 
     function initialize(address _tokenAddress) public initializer {
@@ -63,7 +64,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
         token.transferFrom(msg.sender, address(this), _balance);
     }
 
-    function viewAccount(uint256 index)
+    function viewCheckingByIndex(uint256 index)
         public
         view
         returns (BankDetails memory)
