@@ -21,7 +21,6 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface TTBankInterface extends ethers.utils.Interface {
   functions: {
-    "checkingAccounts(address)": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "openAccount(bytes32,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
@@ -29,12 +28,9 @@ interface TTBankInterface extends ethers.utils.Interface {
     "savingsAccounts(address)": FunctionFragment;
     "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "viewAccount(uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "checkingAccounts",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(
     functionFragment: "openAccount",
@@ -54,11 +50,11 @@ interface TTBankInterface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "viewAccount",
+    values: [BigNumberish]
+  ): string;
 
-  decodeFunctionResult(
-    functionFragment: "checkingAccounts",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "openAccount",
@@ -76,6 +72,10 @@ interface TTBankInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "viewAccount",
     data: BytesLike
   ): Result;
 
@@ -134,18 +134,6 @@ export class TTBank extends BaseContract {
   interface: TTBankInterface;
 
   functions: {
-    checkingAccounts(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, string, string, BigNumber] & {
-        accountNumber: BigNumber;
-        accountName: string;
-        accountType: string;
-        balance: BigNumber;
-      }
-    >;
-
     initialize(
       _tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -181,19 +169,21 @@ export class TTBank extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-  };
 
-  checkingAccounts(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<
-    [BigNumber, string, string, BigNumber] & {
-      accountNumber: BigNumber;
-      accountName: string;
-      accountType: string;
-      balance: BigNumber;
-    }
-  >;
+    viewAccount(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [
+        [BigNumber, string, string, BigNumber] & {
+          accountNumber: BigNumber;
+          accountName: string;
+          accountType: string;
+          balance: BigNumber;
+        }
+      ]
+    >;
+  };
 
   initialize(
     _tokenAddress: string,
@@ -231,19 +221,19 @@ export class TTBank extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  callStatic: {
-    checkingAccounts(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, string, string, BigNumber] & {
-        accountNumber: BigNumber;
-        accountName: string;
-        accountType: string;
-        balance: BigNumber;
-      }
-    >;
+  viewAccount(
+    index: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, string, string, BigNumber] & {
+      accountNumber: BigNumber;
+      accountName: string;
+      accountType: string;
+      balance: BigNumber;
+    }
+  >;
 
+  callStatic: {
     initialize(_tokenAddress: string, overrides?: CallOverrides): Promise<void>;
 
     openAccount(
@@ -274,6 +264,18 @@ export class TTBank extends BaseContract {
       newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    viewAccount(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, string, string, BigNumber] & {
+        accountNumber: BigNumber;
+        accountName: string;
+        accountType: string;
+        balance: BigNumber;
+      }
+    >;
   };
 
   filters: {
@@ -295,11 +297,6 @@ export class TTBank extends BaseContract {
   };
 
   estimateGas: {
-    checkingAccounts(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     initialize(
       _tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -328,14 +325,14 @@ export class TTBank extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    viewAccount(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    checkingAccounts(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     initialize(
       _tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -363,6 +360,11 @@ export class TTBank extends BaseContract {
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    viewAccount(
+      index: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

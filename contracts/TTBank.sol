@@ -16,7 +16,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
 
     Token public token;
     BankDetails private bankDetails;
-    mapping(address => BankDetails) public checkingAccounts;
+    mapping(address => BankDetails[]) private checkingAccounts;
     mapping(address => BankDetails) public savingsAccounts;
 
     function initialize(address _tokenAddress) public initializer {
@@ -48,12 +48,20 @@ contract TTBank is Initializable, OwnableUpgradeable {
         // Checks if the _accountType is equal to the string "Checking"
         if (_accountType == "Checking") {
             // Stores the bankDetails in the checkingAccounts mapping
-            checkingAccounts[msg.sender] = bankDetails;
+            checkingAccounts[msg.sender].push(bankDetails);
 
             // Checks if the _accountType is equal to the string "Savings"
         } else if (_accountType == "Savings") {
             // Stores the bankDetails in the savingsAccounts mapping
             savingsAccounts[msg.sender] = bankDetails;
         }
+    }
+
+    function viewAccount(uint256 index)
+        public
+        view
+        returns (BankDetails memory)
+    {
+        return checkingAccounts[msg.sender][index];
     }
 }

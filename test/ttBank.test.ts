@@ -32,13 +32,17 @@ describe("TT Bank", () => {
     await token.fundAccount();
   });
 
-  it.only("Should be able to open a checking account", async () => {
-    await ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100);
-
-    const onChainCheckingAcct = await ttBank.checkingAccounts(
-      signers[0].address
-    );
-
-    expect(onChainCheckingAcct.accountNumber).to.equal(1);
+  it.only("Should revert if the account type is invalid", async () => {
+    await expect(
+      ttBank.openAccount(ethers.utils.formatBytes32String("Investing"), 100)
+    ).to.be.revertedWith("TTBank: Invalid account type");
   });
+
+  // it.only("Should be able to open a checking account", async () => {
+  //   await ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100);
+
+  //   const onChainCheckingAcct = await ttBank.viewAccount(0);
+
+  // expect(onChainCheckingAcct.accountNumber).to.equal(1);
+  // });
 });
