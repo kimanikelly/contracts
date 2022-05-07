@@ -39,8 +39,6 @@ describe("TT Bank", () => {
       signers[0].address
     );
 
-    console.log(onChainCheckingAcct);
-
     expect(onChainCheckingAcct.accountNumber).to.equal(1);
   });
 });
