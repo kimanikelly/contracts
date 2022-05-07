@@ -32,21 +32,15 @@ describe("TT Bank", () => {
     await token.fundAccount();
   });
 
-  it.only("Testing", async () => {
-    await ttBank.openAccount(
-      ethers.utils.formatBytes32String("Test Account"),
-      ethers.utils.formatBytes32String("Checking"),
-      100
+  it.only("Should be able to open a checking account", async () => {
+    await ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100);
+
+    const onChainCheckingAcct = await ttBank.checkingAccounts(
+      signers[0].address
     );
 
-    console.log(await ttBank.checkingAccounts(signers[0].address));
+    console.log(onChainCheckingAcct);
 
-    await ttBank.openAccount(
-      ethers.utils.formatBytes32String("Test Account"),
-      ethers.utils.formatBytes32String("Savings"),
-      100
-    );
-
-    console.log(await ttBank.savingsAccounts(signers[0].address));
+    expect(onChainCheckingAcct.accountNumber).to.equal(1);
   });
 });

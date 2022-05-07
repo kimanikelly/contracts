@@ -23,7 +23,7 @@ interface TTBankInterface extends ethers.utils.Interface {
   functions: {
     "checkingAccounts(address)": FunctionFragment;
     "initialize(address)": FunctionFragment;
-    "openAccount(bytes32,bytes32,uint256)": FunctionFragment;
+    "openAccount(bytes32,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "savingsAccounts(address)": FunctionFragment;
@@ -38,7 +38,7 @@ interface TTBankInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(
     functionFragment: "openAccount",
-    values: [BytesLike, BytesLike, BigNumberish]
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -152,7 +152,6 @@ export class TTBank extends BaseContract {
     ): Promise<ContractTransaction>;
 
     openAccount(
-      _accountName: BytesLike,
       _accountType: BytesLike,
       _balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -202,7 +201,6 @@ export class TTBank extends BaseContract {
   ): Promise<ContractTransaction>;
 
   openAccount(
-    _accountName: BytesLike,
     _accountType: BytesLike,
     _balance: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -249,7 +247,6 @@ export class TTBank extends BaseContract {
     initialize(_tokenAddress: string, overrides?: CallOverrides): Promise<void>;
 
     openAccount(
-      _accountName: BytesLike,
       _accountType: BytesLike,
       _balance: BigNumberish,
       overrides?: CallOverrides
@@ -309,7 +306,6 @@ export class TTBank extends BaseContract {
     ): Promise<BigNumber>;
 
     openAccount(
-      _accountName: BytesLike,
       _accountType: BytesLike,
       _balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -346,7 +342,6 @@ export class TTBank extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     openAccount(
-      _accountName: BytesLike,
       _accountType: BytesLike,
       _balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }

@@ -9,7 +9,7 @@ import "hardhat/console.sol";
 contract TTBank is Initializable, OwnableUpgradeable {
     struct BankDetails {
         uint256 accountNumber;
-        bytes32 accountName;
+        address accountName;
         bytes32 accountType;
         uint256 balance;
     }
@@ -25,30 +25,34 @@ contract TTBank is Initializable, OwnableUpgradeable {
         __Ownable_init();
     }
 
-    function openAccount(
-        bytes32 _accountName,
-        bytes32 _accountType,
-        uint256 _balance
-    ) public {
+    function openAccount(bytes32 _accountType, uint256 _balance) public {
+        // Requires the _accountType to either be a Checking or Savings account
         require(
             _accountType == "Checking" || _accountType == "Savings",
-            "Invalid account type"
+            "TTBank: Invalid account type"
         );
 
-        _balance = _balance * 1 ether;
+        // Requires the initial deposit amount to be greater than 0
+        require(_balance > 0, "TTBank: ");
 
-        require(_balance > 0, "Invalid balance");
+        // Converts the wei emount to an ETH amount
+        _balance = _balance * 1 ether;
 
         require(_balance <= token.balanceOf(msg.sender), "Balance not right");
 
         bankDetails.accountNumber++;
-        bankDetails.accountName = _accountName;
+        bankDetails.accountName = msg.sender;
         bankDetails.accountType = _accountType;
         bankDetails.balance = _balance;
 
+        // Checks if the _accountType is equal to the string "Checking"
         if (_accountType == "Checking") {
+            // Stores the bankDetails in the checkingAccounts mapping
             checkingAccounts[msg.sender] = bankDetails;
+
+            // Checks if the _accountType is equal to the string "Savings"
         } else if (_accountType == "Savings") {
+            // Stores the bankDetails in the savingsAccounts mapping
             savingsAccounts[msg.sender] = bankDetails;
         }
     }
