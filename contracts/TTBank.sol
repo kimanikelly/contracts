@@ -35,13 +35,18 @@ contract TTBank is Initializable, OwnableUpgradeable {
         // Requires the deposit amount to be greater than 0
         require(_balance > 0, "TTBank: Deposit amount is 0");
 
+        // Sets the accountNumber and increments it by 1 per account
         bankDetails.accountNumber++;
-        bankDetails.accountName = msg.sender;
-        bankDetails.accountType = _accountType;
-        bankDetails.balance = _balance;
 
-        // Transfers the TEST TOKENS to the TTBank contract
-        token.transferFrom(msg.sender, address(this), _balance);
+        // Sets the accountName to the callers public address
+        bankDetails.accountName = msg.sender;
+
+        // Sets the accountType to the _accountType value passed in by the msg.sender
+        // Either "Checking" or "Savings" can be accepted
+        bankDetails.accountType = _accountType;
+
+        // Sets the inital balance to the _balance value passed in by the msg.sender
+        bankDetails.balance = _balance;
 
         // Checks if the _accountType is equal to the string "Checking"
         if (_accountType == "Checking") {
@@ -53,6 +58,9 @@ contract TTBank is Initializable, OwnableUpgradeable {
             // Stores the bankDetails in the savingsAccounts mapping
             savingsAccounts[msg.sender] = bankDetails;
         }
+
+        // Transfers the TT _balance to the TTBank contract
+        token.transferFrom(msg.sender, address(this), _balance);
     }
 
     function viewAccount(uint256 index)

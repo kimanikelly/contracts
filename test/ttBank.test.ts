@@ -64,6 +64,12 @@ describe("TT Bank", () => {
     ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
   });
 
+  it.only("Should revert if the deposit amount exceeds the allowance", async () => {
+    await expect(
+      ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100)
+    ).to.be.revertedWith("ERC20: insufficient allowance");
+  });
+
   // it.only("Should be able to open a checking account", async () => {
   //   await ttBank.openAccount(ethers.utils.formatBytes32String("Checking"), 100);
 
