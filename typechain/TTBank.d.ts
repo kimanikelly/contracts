@@ -21,6 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface TTBankInterface extends ethers.utils.Interface {
   functions: {
+    "bankBalance()": FunctionFragment;
     "deposit(uint256)": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "openAccount(uint256)": FunctionFragment;
@@ -31,6 +32,10 @@ interface TTBankInterface extends ethers.utils.Interface {
     "viewAccount()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "bankBalance",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "deposit",
     values: [BigNumberish]
@@ -55,6 +60,10 @@ interface TTBankInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "bankBalance",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
@@ -77,11 +86,21 @@ interface TTBankInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
+    "AccountOpened(uint256,address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AccountOpened"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export type AccountOpenedEvent = TypedEvent<
+  [BigNumber, string, BigNumber] & {
+    accountNumber: BigNumber;
+    accountName: string;
+    balance: BigNumber;
+  }
+>;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
@@ -131,18 +150,20 @@ export class TTBank extends BaseContract {
   interface: TTBankInterface;
 
   functions: {
+    bankBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     deposit(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     initialize(
-      _tokenAddress: string,
+      tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     openAccount(
-      _balance: BigNumberish,
+      balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -172,18 +193,20 @@ export class TTBank extends BaseContract {
     >;
   };
 
+  bankBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
   deposit(
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   initialize(
-    _tokenAddress: string,
+    tokenAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   openAccount(
-    _balance: BigNumberish,
+    balance: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -211,12 +234,14 @@ export class TTBank extends BaseContract {
   >;
 
   callStatic: {
+    bankBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     deposit(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    initialize(_tokenAddress: string, overrides?: CallOverrides): Promise<void>;
+    initialize(tokenAddress: string, overrides?: CallOverrides): Promise<void>;
 
     openAccount(
-      _balance: BigNumberish,
+      balance: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -243,6 +268,24 @@ export class TTBank extends BaseContract {
   };
 
   filters: {
+    "AccountOpened(uint256,address,uint256)"(
+      accountNumber?: null,
+      accountName?: null,
+      balance?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber],
+      { accountNumber: BigNumber; accountName: string; balance: BigNumber }
+    >;
+
+    AccountOpened(
+      accountNumber?: null,
+      accountName?: null,
+      balance?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber],
+      { accountNumber: BigNumber; accountName: string; balance: BigNumber }
+    >;
+
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
@@ -261,18 +304,20 @@ export class TTBank extends BaseContract {
   };
 
   estimateGas: {
+    bankBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     deposit(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     initialize(
-      _tokenAddress: string,
+      tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     openAccount(
-      _balance: BigNumberish,
+      balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -293,18 +338,20 @@ export class TTBank extends BaseContract {
   };
 
   populateTransaction: {
+    bankBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     deposit(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      _tokenAddress: string,
+      tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     openAccount(
-      _balance: BigNumberish,
+      balance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
