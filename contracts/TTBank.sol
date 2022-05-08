@@ -10,18 +10,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
     struct BankDetails {
         uint256 accountNumber;
         address accountName;
-        bytes32 accountType;
         uint256 balance;
-    }
-
-    modifier verifyAccountType(bytes32 _accountType) {
-        // Requires the _accountType to either be a Checking or Savings account
-        require(
-            _accountType == "Checking" || _accountType == "Savings",
-            "TTBank: Invalid account type"
-        );
-
-        _;
     }
 
     modifier verifyDepositAmount(uint256 amount) {
@@ -33,8 +22,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
 
     Token public token;
     BankDetails private bankDetails;
-    mapping(address => BankDetails[]) private checkingAccounts;
-    mapping(address => BankDetails[]) private savingsAccounts;
+    mapping(address => BankDetails) private accounts;
 
     function initialize(address _tokenAddress) public initializer {
         token = Token(_tokenAddress);
@@ -42,9 +30,8 @@ contract TTBank is Initializable, OwnableUpgradeable {
         __Ownable_init();
     }
 
-    function openAccount(bytes32 _accountType, uint256 _balance)
+    function openAccount(uint256 _balance)
         public
-        verifyAccountType(_accountType)
         verifyDepositAmount(_balance)
     {
         // Sets the accountNumber and increments it by 1 per account
@@ -53,54 +40,22 @@ contract TTBank is Initializable, OwnableUpgradeable {
         // Sets the accountName to the callers public address
         bankDetails.accountName = msg.sender;
 
-        // Sets the accountType to the _accountType value passed in by the msg.sender
-        // Either "Checking" or "Savings" can be accepted
-        bankDetails.accountType = _accountType;
-
         // Sets the inital balance to the _balance value passed in by the msg.sender
         bankDetails.balance = _balance;
 
-        // Checks if the _accountType is equal to the string "Checking"
-        if (_accountType == "Checking") {
-            // Stores the bankDetails in the checkingAccounts mapping
-            checkingAccounts[msg.sender].push(bankDetails);
-
-            // Checks if the _accountType is equal to the string "Savings"
-        } else if (_accountType == "Savings") {
-            // Stores the bankDetails in the savingsAccounts mapping
-            savingsAccounts[msg.sender].push(bankDetails);
-        }
+        accounts[msg.sender] = bankDetails;
 
         // Transfers the TT _balance to the TTBank contract
         token.transferFrom(msg.sender, address(this), _balance);
     }
 
-    function deposit(
-        bytes32 _accountType,
-        uint256 index,
-        uint256 amount
-    ) public verifyAccountType(_accountType) verifyDepositAmount(amount) {
-        if (_accountType == "Checking") {
-            checkingAccounts[msg.sender][index].balance += amount;
-        }
+    function deposit(uint256 amount) public verifyDepositAmount(amount) {
+        accounts[msg.sender].balance += amount;
 
         token.transferFrom(msg.sender, address(this), amount);
     }
 
-    function viewAccountByIndex(bytes32 _accountType, uint256 index)
-        public
-        view
-        verifyAccountType(_accountType)
-        returns (BankDetails memory)
-    {
-        BankDetails memory account;
-
-        if (_accountType == "Checking") {
-            account = checkingAccounts[msg.sender][index];
-        } else if (_accountType == "Savings") {
-            account = savingsAccounts[msg.sender][index];
-        }
-
-        return account;
+    function viewAccount() public view returns (BankDetails memory) {
+        return accounts[msg.sender];
     }
 }
