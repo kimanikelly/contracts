@@ -24,6 +24,13 @@ contract TTBank is Initializable, OwnableUpgradeable {
         _;
     }
 
+    modifier verifyDepositAmount(uint256 amount) {
+        // Requires the deposit amount to be greater than 0
+        require(amount > 0, "TTBank: Deposit amount is 0");
+
+        _;
+    }
+
     Token public token;
     BankDetails private bankDetails;
     mapping(address => BankDetails[]) private checkingAccounts;
@@ -38,10 +45,8 @@ contract TTBank is Initializable, OwnableUpgradeable {
     function openAccount(bytes32 _accountType, uint256 _balance)
         public
         verifyAccountType(_accountType)
+        verifyDepositAmount(_balance)
     {
-        // Requires the deposit amount to be greater than 0
-        require(_balance > 0, "TTBank: Deposit amount is 0");
-
         // Sets the accountNumber and increments it by 1 per account
         bankDetails.accountNumber++;
 
@@ -68,6 +73,18 @@ contract TTBank is Initializable, OwnableUpgradeable {
 
         // Transfers the TT _balance to the TTBank contract
         token.transferFrom(msg.sender, address(this), _balance);
+    }
+
+    function deposit(
+        bytes32 _accountType,
+        uint256 index,
+        uint256 amount
+    ) public verifyAccountType(_accountType) verifyDepositAmount(amount) {
+        if (_accountType == "Checking") {
+            checkingAccounts[msg.sender][index].balance += amount;
+        }
+
+        token.transferFrom(msg.sender, address(this), amount);
     }
 
     function viewAccountByIndex(bytes32 _accountType, uint256 index)

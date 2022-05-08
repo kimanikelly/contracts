@@ -21,6 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface TTBankInterface extends ethers.utils.Interface {
   functions: {
+    "deposit(bytes32,uint256,uint256)": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "openAccount(bytes32,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
@@ -30,6 +31,10 @@ interface TTBankInterface extends ethers.utils.Interface {
     "viewAccountByIndex(bytes32,uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [BytesLike, BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(
     functionFragment: "openAccount",
@@ -50,6 +55,7 @@ interface TTBankInterface extends ethers.utils.Interface {
     values: [BytesLike, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "openAccount",
@@ -125,6 +131,13 @@ export class TTBank extends BaseContract {
   interface: TTBankInterface;
 
   functions: {
+    deposit(
+      _accountType: BytesLike,
+      index: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     initialize(
       _tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -165,6 +178,13 @@ export class TTBank extends BaseContract {
     >;
   };
 
+  deposit(
+    _accountType: BytesLike,
+    index: BigNumberish,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   initialize(
     _tokenAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -203,6 +223,13 @@ export class TTBank extends BaseContract {
   >;
 
   callStatic: {
+    deposit(
+      _accountType: BytesLike,
+      index: BigNumberish,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     initialize(_tokenAddress: string, overrides?: CallOverrides): Promise<void>;
 
     openAccount(
@@ -255,6 +282,13 @@ export class TTBank extends BaseContract {
   };
 
   estimateGas: {
+    deposit(
+      _accountType: BytesLike,
+      index: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     initialize(
       _tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -287,6 +321,13 @@ export class TTBank extends BaseContract {
   };
 
   populateTransaction: {
+    deposit(
+      _accountType: BytesLike,
+      index: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     initialize(
       _tokenAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
