@@ -123,6 +123,18 @@ describe.only("TT Bank", () => {
     });
   });
 
+  describe("#viewAccount", () => {
+    it("Should return zero values if the account does not exist", async () => {
+      const zeroValAcct = await ttBank.viewAccount();
+
+      expect(zeroValAcct.accountNumber).to.equal(0);
+
+      expect(zeroValAcct.accountName).to.equal(ethers.constants.AddressZero);
+
+      expect(zeroValAcct.balance).to.equal(0);
+    });
+  });
+
   describe("#deposit", () => {
     // The amount to open the account
     const initialDeposit = BigInt(10e18);
