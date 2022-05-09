@@ -16,6 +16,13 @@ contract TTBank is Initializable, OwnableUpgradeable {
         uint256 balance
     );
 
+    event Deposit(
+        uint256 accountNumber,
+        address accountName,
+        uint256 amount,
+        uint256 newBalance
+    );
+
     // Structures the bank account details
     struct BankDetails {
         uint256 accountNumber;
@@ -105,6 +112,14 @@ contract TTBank is Initializable, OwnableUpgradeable {
 
         // Transfers the deposit from the msg.sender to the bank contract
         token.safeTransferFrom(msg.sender, address(this), amount);
+
+        // Emits the Deposit event
+        emit Deposit(
+            accounts[msg.sender].accountNumber,
+            msg.sender,
+            amount,
+            accounts[msg.sender].balance
+        );
     }
 
     /**
