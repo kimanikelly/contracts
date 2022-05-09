@@ -122,6 +122,8 @@ contract TTBank is Initializable, OwnableUpgradeable {
         );
     }
 
+    function withdraw(uint256 amount) public verifyAccountExists(msg.sender) {}
+
     /**
      * @dev Returns the BankDetails of the msg.sender's account
      */

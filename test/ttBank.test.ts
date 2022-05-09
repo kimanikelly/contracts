@@ -10,9 +10,8 @@ describe.only("TT Bank", () => {
   let token: Token;
   let signers: SignerWithAddress[];
 
-  const oneEth = ethers.utils.formatUnits(
-    BigNumber.from("1000000000000000000")
-  );
+  // The amount to open the account
+  const initialDeposit = BigInt(10e18);
 
   beforeEach(async () => {
     // Returns the Hardhat test accounts
@@ -136,9 +135,6 @@ describe.only("TT Bank", () => {
   });
 
   describe("#deposit", () => {
-    // The amount to open the account
-    const initialDeposit = BigInt(10e18);
-
     beforeEach(async () => {
       for (let i = 0; i < 2; i++) {
         await token.connect(signers[1]).fundAccount();
@@ -243,6 +239,22 @@ describe.only("TT Bank", () => {
       expect(queryFilter.args.amount).to.equal(depositAmt);
 
       expect(queryFilter.args.newBalance).to.equal(initialDeposit + depositAmt);
+    });
+  });
+
+  describe.only("#withdraw", () => {
+    beforeEach(async () => {
+      await token.approve(ttBank.address, BigInt(100e18));
+
+      await ttBank.openAccount(initialDeposit);
+
+      await ttBank.deposit(BigInt(90e18));
+    });
+
+    it("Should revert if the account does not exist", async () => {
+      await expect(
+        ttBank.connect(signers[1]).withdraw(initialDeposit)
+      ).to.be.revertedWith("TTBank: Account does not exist");
     });
   });
 });

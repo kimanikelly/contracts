@@ -30,6 +30,7 @@ interface TTBankInterface extends ethers.utils.Interface {
     "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "viewAccount()": FunctionFragment;
+    "withdraw(uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -59,6 +60,10 @@ interface TTBankInterface extends ethers.utils.Interface {
     functionFragment: "viewAccount",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw",
+    values: [BigNumberish]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "bankBalance",
@@ -84,6 +89,7 @@ interface TTBankInterface extends ethers.utils.Interface {
     functionFragment: "viewAccount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "AccountOpened(uint256,address,uint256)": EventFragment;
@@ -202,6 +208,11 @@ export class TTBank extends BaseContract {
         }
       ]
     >;
+
+    withdraw(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   bankBalance(overrides?: CallOverrides): Promise<BigNumber>;
@@ -244,6 +255,11 @@ export class TTBank extends BaseContract {
     }
   >;
 
+  withdraw(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     bankBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -276,6 +292,8 @@ export class TTBank extends BaseContract {
         balance: BigNumber;
       }
     >;
+
+    withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -376,6 +394,11 @@ export class TTBank extends BaseContract {
     ): Promise<BigNumber>;
 
     viewAccount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdraw(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -410,5 +433,10 @@ export class TTBank extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     viewAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    withdraw(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
   };
 }
