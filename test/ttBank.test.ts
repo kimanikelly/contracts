@@ -211,8 +211,14 @@ describe.only("TT Bank", () => {
       // The initial balance should be 10 TT
       expect(onChainAcct.balance).to.equal(initialDeposit);
 
+      const filter = ttBank.filters.Deposit(null, null, null, null);
+
       // Deposit 20 TT into the account
       await ttBank.deposit(depositAmt);
+
+      const queryFilter = (await ttBank.queryFilter(filter))[0];
+
+      console.log(queryFilter);
 
       // Returns the bank account details after making a deposit
       const postDeposit = await ttBank.viewAccount();
@@ -225,6 +231,18 @@ describe.only("TT Bank", () => {
 
       // The bank balance should now equal the initial deposit and second deposit
       expect(bankPostDeposit).to.equal(initialDeposit + depositAmt);
+
+      expect(queryFilter.event).to.equal("Deposit");
+
+      expect(queryFilter.args.accountNumber).to.equal(
+        postDeposit.accountNumber
+      );
+
+      expect(queryFilter.args.accountName).to.equal(postDeposit.accountName);
+
+      expect(queryFilter.args.amount).to.equal(depositAmt);
+
+      expect(queryFilter.args.newBalance).to.equal(initialDeposit + depositAmt);
     });
   });
 });

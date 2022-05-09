@@ -87,10 +87,12 @@ interface TTBankInterface extends ethers.utils.Interface {
 
   events: {
     "AccountOpened(uint256,address,uint256)": EventFragment;
+    "Deposit(uint256,address,uint256,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AccountOpened"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
@@ -99,6 +101,15 @@ export type AccountOpenedEvent = TypedEvent<
     accountNumber: BigNumber;
     accountName: string;
     balance: BigNumber;
+  }
+>;
+
+export type DepositEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber] & {
+    accountNumber: BigNumber;
+    accountName: string;
+    amount: BigNumber;
+    newBalance: BigNumber;
   }
 >;
 
@@ -284,6 +295,36 @@ export class TTBank extends BaseContract {
     ): TypedEventFilter<
       [BigNumber, string, BigNumber],
       { accountNumber: BigNumber; accountName: string; balance: BigNumber }
+    >;
+
+    "Deposit(uint256,address,uint256,uint256)"(
+      accountNumber?: null,
+      accountName?: null,
+      amount?: null,
+      newBalance?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber, BigNumber],
+      {
+        accountNumber: BigNumber;
+        accountName: string;
+        amount: BigNumber;
+        newBalance: BigNumber;
+      }
+    >;
+
+    Deposit(
+      accountNumber?: null,
+      accountName?: null,
+      amount?: null,
+      newBalance?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber, BigNumber],
+      {
+        accountNumber: BigNumber;
+        accountName: string;
+        amount: BigNumber;
+        newBalance: BigNumber;
+      }
     >;
 
     "OwnershipTransferred(address,address)"(
