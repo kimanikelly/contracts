@@ -16,10 +16,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
         uint256 balance
     );
 
-    // event Deposit(
-    //     uint256 _accountNumber
-    // )
-
+    // Structures the bank account details
     struct BankDetails {
         uint256 accountNumber;
         address accountName;
@@ -29,18 +26,32 @@ contract TTBank is Initializable, OwnableUpgradeable {
     modifier verifyDepositAmount(uint256 amount) {
         // Requires the deposit amount to be greater than 0
         require(amount > 0, "TTBank: Deposit amount is 0");
+        _;
+    }
 
+    modifier verifyAccountExists(address account) {
+        // Requires the msg.sender to have an existing account
+        require(accountExists[msg.sender], "TTBank: Account does not exist");
         _;
     }
 
     // Token.sol instance
     Token public token;
 
+    // Instance of the struct BankDetails
     BankDetails private bankDetails;
 
-    // Maps the msg.senders's to their bank account details
+    // Maps the msg.sender to their bank account details
     mapping(address => BankDetails) private accounts;
 
+    // Maps the msg.sender to true/false if their account exists
+    mapping(address => bool) private accountExists;
+
+    /**
+     * @dev Deploys TTBank.sol as an upgradeable smart contract by refactoring the
+     * `constructor` with the `initialize` function
+     * @param tokenAddress The address of the Token.sol contract
+     */
     function initialize(address tokenAddress) public initializer {
         // Instantiates the Token.sol instance
         token = Token(tokenAddress);
@@ -49,6 +60,10 @@ contract TTBank is Initializable, OwnableUpgradeable {
         __Ownable_init();
     }
 
+    /**
+     * @dev Allows the msg.sender to open an account with TTBank and make an initial deposit
+     * @param balance The amount of TT the msg.sender wants to open their account with
+     */
     function openAccount(uint256 balance) public verifyDepositAmount(balance) {
         // Sets the accountNumber and increments it by 1 per account
         bankDetails.accountNumber++;
@@ -62,9 +77,13 @@ contract TTBank is Initializable, OwnableUpgradeable {
         // Adds the msg.sender's bank account details to the accounts mapping
         accounts[msg.sender] = bankDetails;
 
+        // Maps the msg.sender to the bool true when they open an account
+        accountExists[msg.sender] = true;
+
         // Transfers the TT _balance to the TTBank contract
         token.safeTransferFrom(msg.sender, address(this), balance);
 
+        // Emits the AccountOpened event
         emit AccountOpened(
             bankDetails.accountNumber,
             msg.sender,
@@ -72,7 +91,15 @@ contract TTBank is Initializable, OwnableUpgradeable {
         );
     }
 
-    function deposit(uint256 amount) public verifyDepositAmount(amount) {
+    /**
+     * @dev Allows the msg.sender to deposit TT into their existing account balance
+     * @param amount The amount of TT the msg.sender wants to deposit into their account balance
+     */
+    function deposit(uint256 amount)
+        public
+        verifyDepositAmount(amount)
+        verifyAccountExists(msg.sender)
+    {
         // Increments the msg.sender's account balance by their deposit
         accounts[msg.sender].balance += amount;
 
@@ -80,10 +107,16 @@ contract TTBank is Initializable, OwnableUpgradeable {
         token.safeTransferFrom(msg.sender, address(this), amount);
     }
 
+    /**
+     * @dev Returns the BankDetails of the msg.sender's account
+     */
     function viewAccount() public view returns (BankDetails memory) {
         return accounts[msg.sender];
     }
 
+    /**
+     * @dev Returns the TT balance of TTBank
+     */
     function bankBalance() public view returns (uint256) {
         return token.balanceOf(address(this));
     }

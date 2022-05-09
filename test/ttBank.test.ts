@@ -15,29 +15,36 @@ describe.only("TT Bank", () => {
   );
 
   beforeEach(async () => {
+    // Returns the Hardhat test accounts
     signers = await ethers.getSigners();
 
+    // Returns the Token.sol contract factory
     const Token = await ethers.getContractFactory("Token", signers[0]);
 
+    // Deploys and initializes the Token.sol proxy as an upgradeable contract
     token = (await upgrades.deployProxy(Token, ["TEST TOKEN", "TT"])) as Token;
-
     await token.deployed();
 
+    // Returns the TTBank.sol contract factory
     const TTBank = await ethers.getContractFactory("TTBank", signers[0]);
 
+    // Deploys and initializes the TTBank.sol proxy as an upgradeable contract
     ttBank = (await upgrades.deployProxy(TTBank, [token.address])) as TTBank;
-
     await ttBank.deployed();
 
+    // Mints one million TT to Token.sol
     await token.mint(1000000);
 
+    // Sets the fundAmount to 100 TT
     await token.setFundAmount(100);
 
+    // Funds signers[0] 100 TT
     await token.fundAccount();
   });
 
   describe("#initialize", () => {
     it("Should revert if the contract is already initialized", async () => {
+      // Reverts due to an second initialization
       await expect(ttBank.initialize(token.address)).to.be.revertedWith(
         "Initializable: contract is already initialized"
       );
@@ -94,51 +101,93 @@ describe.only("TT Bank", () => {
     });
 
     it("Should open an account", async () => {
+      // Approve the bank for 100 TT
       await token.approve(ttBank.address, BigInt(100e18));
 
       await ttBank.openAccount(BigInt(10e18));
 
-      const onChainChecking = await ttBank.viewAccount();
+      const filter = ttBank.filters.AccountOpened(null, null, null);
+      const queryFilter = (await ttBank.queryFilter(filter))[0];
 
-      expect(onChainChecking.accountNumber).to.equal(1);
-      expect(onChainChecking.accountName).to.equal(signers[0].address);
-      expect(onChainChecking.balance).to.equal(BigInt(10e18));
+      const onChainAcct = await ttBank.viewAccount();
+
+      expect(onChainAcct.accountNumber).to.equal(1);
+      expect(onChainAcct.accountName).to.equal(signers[0].address);
+      expect(onChainAcct.balance).to.equal(BigInt(10e18));
+
+      expect(queryFilter.args.accountNumber).to.equal(
+        onChainAcct.accountNumber
+      );
+      expect(queryFilter.args.accountName).to.equal(onChainAcct.accountName);
+      expect(queryFilter.args.balance).to.equal(onChainAcct.balance);
+    });
+  });
+
+  describe("#deposit", () => {
+    // The amount to open the account
+    const initialDeposit = BigInt(10e18);
+
+    beforeEach(async () => {
+      for (let i = 0; i < 2; i++) {
+        await token.connect(signers[1]).fundAccount();
+      }
     });
 
     it("Should revert if the deposit amount exceeds the callers balance", async () => {
+      // Approve the bank for 200 TT
       await token.approve(ttBank.address, BigInt(200e18));
 
+      // Opens an account with 10 TT
       await ttBank.openAccount(BigInt(10e18));
 
+      // reverts the function due to an insufficient balance
       await expect(ttBank.deposit(BigInt(101e18))).to.be.revertedWith(
         "ERC20: transfer amount exceeds balance"
       );
     });
 
-    it.only("Should deposit into an account", async () => {
-      // The amount to open the account
-      const initialDeposit = BigInt(10e18);
+    it("Should revert if the deposit amount exceeds the allowance", async () => {
+      // Approve the bank for 80 TT
+      await token.approve(ttBank.address, BigInt(80e18));
 
+      // Open an account with 10 TT
+      await ttBank.openAccount(initialDeposit);
+
+      // Reverts due to insufficient allowance
+      await expect(ttBank.deposit(BigInt(71e18))).to.be.revertedWith(
+        "ERC20: insufficient allowance"
+      );
+    });
+
+    it("Should revert if an account does not exist", async () => {
+      // Reverts due to the public address not having an open account
+      await expect(
+        ttBank.connect(signers[1]).deposit(BigInt(initialDeposit))
+      ).to.be.revertedWith("TTBank: Account does not exist");
+    });
+
+    it("Should deposit into an account", async () => {
       // The amount to deposit after opening an account
       const depositAmt = BigInt(20e18);
 
+      // Return sthr TT balance of the bank
       const bankPreOpen = await ttBank.bankBalance();
 
       // Approve TTBank for 100 TT
       await token.approve(ttBank.address, BigInt(100e18));
 
       // Open an account with 10 TT
-      const openAccountTx = await ttBank.openAccount(BigInt(initialDeposit));
-
-      await openAccountTx.wait();
+      await ttBank.openAccount(BigInt(initialDeposit));
 
       const bankPostOpen = await ttBank.bankBalance();
 
       // Return the on chain account details
       const onChainAcct = await ttBank.viewAccount();
 
+      // The bank balance should be 0 before opening an initial account
       expect(bankPreOpen).to.equal(0);
 
+      // The bank balance should be the initial deposit after opening the initial account
       expect(bankPostOpen).to.equal(initialDeposit);
 
       // The first account number should equal 1
@@ -153,13 +202,17 @@ describe.only("TT Bank", () => {
       // Deposit 20 TT into the account
       await ttBank.deposit(depositAmt);
 
+      // Returns the bank account details after making a deposit
       const postDeposit = await ttBank.viewAccount();
 
+      // Returns the bank balance after a deposit was made
       const bankPostDeposit = await ttBank.bankBalance();
 
-      expect(bankPostDeposit).to.equal(initialDeposit + depositAmt);
-
+      // The bank accout balance should now equal the initial deposit and the second deposit
       expect(postDeposit.balance).to.equal(initialDeposit + depositAmt);
+
+      // The bank balance should now equal the initial deposit and second deposit
+      expect(bankPostDeposit).to.equal(initialDeposit + depositAmt);
     });
   });
 });
