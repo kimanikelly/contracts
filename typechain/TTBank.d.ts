@@ -30,6 +30,7 @@ interface TTBankInterface extends ethers.utils.Interface {
     "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "viewAccount()": FunctionFragment;
+    "viewBalance()": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
   };
 
@@ -61,6 +62,10 @@ interface TTBankInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "viewBalance",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdraw",
     values: [BigNumberish]
   ): string;
@@ -89,24 +94,30 @@ interface TTBankInterface extends ethers.utils.Interface {
     functionFragment: "viewAccount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "viewBalance",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "AccountOpened(uint256,address,uint256)": EventFragment;
     "Deposit(uint256,address,uint256,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "Withdraw(uint256,address,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AccountOpened"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
 }
 
 export type AccountOpenedEvent = TypedEvent<
   [BigNumber, string, BigNumber] & {
     accountNumber: BigNumber;
     accountName: string;
-    balance: BigNumber;
+    startingBalance: BigNumber;
   }
 >;
 
@@ -114,13 +125,22 @@ export type DepositEvent = TypedEvent<
   [BigNumber, string, BigNumber, BigNumber] & {
     accountNumber: BigNumber;
     accountName: string;
-    amount: BigNumber;
+    depositAmount: BigNumber;
     newBalance: BigNumber;
   }
 >;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
+>;
+
+export type WithdrawEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber] & {
+    accountNumber: BigNumber;
+    accountName: string;
+    withdrawAmount: BigNumber;
+    newBalance: BigNumber;
+  }
 >;
 
 export class TTBank extends BaseContract {
@@ -209,6 +229,8 @@ export class TTBank extends BaseContract {
       ]
     >;
 
+    viewBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     withdraw(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -255,6 +277,8 @@ export class TTBank extends BaseContract {
     }
   >;
 
+  viewBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
   withdraw(
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -293,6 +317,8 @@ export class TTBank extends BaseContract {
       }
     >;
 
+    viewBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
   };
 
@@ -300,32 +326,40 @@ export class TTBank extends BaseContract {
     "AccountOpened(uint256,address,uint256)"(
       accountNumber?: null,
       accountName?: null,
-      balance?: null
+      startingBalance?: null
     ): TypedEventFilter<
       [BigNumber, string, BigNumber],
-      { accountNumber: BigNumber; accountName: string; balance: BigNumber }
+      {
+        accountNumber: BigNumber;
+        accountName: string;
+        startingBalance: BigNumber;
+      }
     >;
 
     AccountOpened(
       accountNumber?: null,
       accountName?: null,
-      balance?: null
+      startingBalance?: null
     ): TypedEventFilter<
       [BigNumber, string, BigNumber],
-      { accountNumber: BigNumber; accountName: string; balance: BigNumber }
+      {
+        accountNumber: BigNumber;
+        accountName: string;
+        startingBalance: BigNumber;
+      }
     >;
 
     "Deposit(uint256,address,uint256,uint256)"(
       accountNumber?: null,
       accountName?: null,
-      amount?: null,
+      depositAmount?: null,
       newBalance?: null
     ): TypedEventFilter<
       [BigNumber, string, BigNumber, BigNumber],
       {
         accountNumber: BigNumber;
         accountName: string;
-        amount: BigNumber;
+        depositAmount: BigNumber;
         newBalance: BigNumber;
       }
     >;
@@ -333,14 +367,14 @@ export class TTBank extends BaseContract {
     Deposit(
       accountNumber?: null,
       accountName?: null,
-      amount?: null,
+      depositAmount?: null,
       newBalance?: null
     ): TypedEventFilter<
       [BigNumber, string, BigNumber, BigNumber],
       {
         accountNumber: BigNumber;
         accountName: string;
-        amount: BigNumber;
+        depositAmount: BigNumber;
         newBalance: BigNumber;
       }
     >;
@@ -359,6 +393,36 @@ export class TTBank extends BaseContract {
     ): TypedEventFilter<
       [string, string],
       { previousOwner: string; newOwner: string }
+    >;
+
+    "Withdraw(uint256,address,uint256,uint256)"(
+      accountNumber?: null,
+      accountName?: null,
+      withdrawAmount?: null,
+      newBalance?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber, BigNumber],
+      {
+        accountNumber: BigNumber;
+        accountName: string;
+        withdrawAmount: BigNumber;
+        newBalance: BigNumber;
+      }
+    >;
+
+    Withdraw(
+      accountNumber?: null,
+      accountName?: null,
+      withdrawAmount?: null,
+      newBalance?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber, BigNumber],
+      {
+        accountNumber: BigNumber;
+        accountName: string;
+        withdrawAmount: BigNumber;
+        newBalance: BigNumber;
+      }
     >;
   };
 
@@ -394,6 +458,8 @@ export class TTBank extends BaseContract {
     ): Promise<BigNumber>;
 
     viewAccount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    viewBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
     withdraw(
       amount: BigNumberish,
@@ -433,6 +499,8 @@ export class TTBank extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     viewAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    viewBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     withdraw(
       amount: BigNumberish,

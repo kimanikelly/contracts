@@ -4,6 +4,7 @@ import { solidity } from "ethereum-waffle";
 import { ethers, upgrades } from "hardhat";
 import { BigNumber, ContractTransaction, Event } from "ethers";
 import { TTBank, Token } from "../typechain";
+import { exec } from "child_process";
 
 describe.only("TT Bank", () => {
   let ttBank: TTBank;
@@ -118,7 +119,7 @@ describe.only("TT Bank", () => {
         onChainAcct.accountNumber
       );
       expect(queryFilter.args.accountName).to.equal(onChainAcct.accountName);
-      expect(queryFilter.args.balance).to.equal(onChainAcct.balance);
+      expect(queryFilter.args.startingBalance).to.equal(onChainAcct.balance);
     });
   });
 
@@ -131,6 +132,14 @@ describe.only("TT Bank", () => {
       expect(zeroValAcct.accountName).to.equal(ethers.constants.AddressZero);
 
       expect(zeroValAcct.balance).to.equal(0);
+    });
+  });
+
+  describe("#viewBalance", () => {
+    it("Should return zero values if the account does not exist", async () => {
+      const zeroValAcct = await ttBank.viewBalance();
+
+      expect(zeroValAcct).to.equal(0);
     });
   });
 
@@ -214,8 +223,6 @@ describe.only("TT Bank", () => {
 
       const queryFilter = (await ttBank.queryFilter(filter))[0];
 
-      console.log(queryFilter);
-
       // Returns the bank account details after making a deposit
       const postDeposit = await ttBank.viewAccount();
 
@@ -236,25 +243,85 @@ describe.only("TT Bank", () => {
 
       expect(queryFilter.args.accountName).to.equal(postDeposit.accountName);
 
-      expect(queryFilter.args.amount).to.equal(depositAmt);
+      expect(queryFilter.args.depositAmount).to.equal(depositAmt);
 
       expect(queryFilter.args.newBalance).to.equal(initialDeposit + depositAmt);
     });
   });
 
-  describe.only("#withdraw", () => {
+  describe("#withdraw", () => {
     beforeEach(async () => {
-      await token.approve(ttBank.address, BigInt(100e18));
+      // Funds signers[1] with 100 TT
+      await token.connect(signers[1]).fundAccount();
 
+      // Signer[0] approves TTBank for 100 TT
+      await token.approve(ttBank.address, BigInt(200e18));
+
+      // Signers[1] approves TTBank for 100 TT
+      await token.connect(signers[1]).approve(ttBank.address, BigInt(200e18));
+
+      // Signers[0] opens an account with 10 TT
       await ttBank.openAccount(initialDeposit);
 
+      // Signers[1] opens an account with 10 TT
+      await ttBank.connect(signers[1]).openAccount(initialDeposit);
+
+      // Signers[0] deposits 90 TT into their account
       await ttBank.deposit(BigInt(90e18));
+
+      // Signers[1] deposits 90 TT into their account
+      await ttBank.connect(signers[1]).deposit(BigInt(90e18));
     });
 
     it("Should revert if the account does not exist", async () => {
       await expect(
-        ttBank.connect(signers[1]).withdraw(initialDeposit)
+        ttBank.connect(signers[2]).withdraw(initialDeposit)
       ).to.be.revertedWith("TTBank: Account does not exist");
+    });
+
+    it("Should revert if the amount exceeds the balance", async () => {
+      await expect(ttBank.withdraw(BigInt(101e18))).to.be.revertedWith(
+        "TTBank: Amount exceeds balance"
+      );
+    });
+
+    it("Should withdraw from balance", async () => {
+      const preBalance = await token.balanceOf(signers[0].address);
+      expect(preBalance).to.equal(0);
+
+      const acctPreWithdraw = await ttBank.viewBalance();
+      expect(acctPreWithdraw).to.equal(BigInt(100e18));
+
+      const bankPreWithdraw = await ttBank.bankBalance();
+      expect(bankPreWithdraw).to.equal(BigInt(200e18));
+
+      const filter = ttBank.filters.Withdraw(null, null, null, null);
+
+      await ttBank.withdraw(BigInt(10e18));
+
+      const queryFilter = (await ttBank.queryFilter(filter))[0];
+
+      const postBalance = await token.balanceOf(signers[0].address);
+      expect(postBalance).to.be.equal(BigInt(10e18));
+
+      const acctPostWithdraw = await ttBank.viewBalance();
+      expect(acctPostWithdraw).to.equal(BigInt(90e18));
+
+      const bankPostWithdraw = await ttBank.bankBalance();
+      expect(bankPostWithdraw).to.equal(BigInt(190e18));
+
+      const acctDetails = await ttBank.viewAccount();
+
+      expect(queryFilter.event).to.equal("Withdraw");
+      expect(queryFilter.args.accountNumber).to.equal(
+        acctDetails.accountNumber
+      );
+      expect(queryFilter.args.accountName).to.equal(acctDetails.accountName);
+      expect(queryFilter.args.withdrawAmount).to.equal(BigInt(10e18));
+
+      expect(queryFilter.args.newBalance).to.equal(
+        BigInt(100e18) - BigInt(10e18)
+      );
     });
   });
 });

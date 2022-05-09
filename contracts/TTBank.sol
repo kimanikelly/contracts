@@ -13,13 +13,20 @@ contract TTBank is Initializable, OwnableUpgradeable {
     event AccountOpened(
         uint256 accountNumber,
         address accountName,
-        uint256 balance
+        uint256 startingBalance
     );
 
     event Deposit(
         uint256 accountNumber,
         address accountName,
-        uint256 amount,
+        uint256 depositAmount,
+        uint256 newBalance
+    );
+
+    event Withdraw(
+        uint256 accountNumber,
+        address accountName,
+        uint256 withdrawAmount,
         uint256 newBalance
     );
 
@@ -122,13 +129,44 @@ contract TTBank is Initializable, OwnableUpgradeable {
         );
     }
 
-    function withdraw(uint256 amount) public verifyAccountExists(msg.sender) {}
+    /**
+     * @dev Allows the msg.sender to withdraw a specified amount TT from their bank account
+     * @param amount The amount of TT to withdraw from the msg.senders bank account
+     */
+    function withdraw(uint256 amount) public verifyAccountExists(msg.sender) {
+        // Prevents the msg.sender from withdrawing more than their balance
+        require(
+            amount <= accounts[msg.sender].balance,
+            "TTBank: Amount exceeds balance"
+        );
+
+        // Subtract the TT amount from the msg.senders balance
+        accounts[msg.sender].balance -= amount;
+
+        // Transfers the TT amount from TTBank to the msg.sender
+        token.safeTransfer(msg.sender, amount);
+
+        // Emits the Withdraw event
+        emit Withdraw(
+            accounts[msg.sender].accountNumber,
+            msg.sender,
+            amount,
+            accounts[msg.sender].balance
+        );
+    }
 
     /**
      * @dev Returns the BankDetails of the msg.sender's account
      */
     function viewAccount() public view returns (BankDetails memory) {
         return accounts[msg.sender];
+    }
+
+    /**
+     * @dev Returns msg.senders bank account balance
+     */
+    function viewBalance() public view returns (uint256) {
+        return accounts[msg.sender].balance;
     }
 
     /**
