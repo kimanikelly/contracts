@@ -77,7 +77,7 @@ describe.only("TT Bank", () => {
 
   describe("#openAccount", () => {
     it("Should revert if the deposit amount is zero", async () => {
-      await token.approve(ttBank.address, 100);
+      await token.approve(ttBank.address, BigInt(100e18));
 
       await expect(ttBank.openAccount(0)).to.be.revertedWith(
         "TTBank: Deposit amount is 0"
@@ -97,6 +97,16 @@ describe.only("TT Bank", () => {
     it("Should revert if the deposit amount exceeds the allowance", async () => {
       await expect(ttBank.openAccount(100)).to.be.revertedWith(
         "ERC20: insufficient allowance"
+      );
+    });
+
+    it("Should revert if the account already exists", async () => {
+      await token.approve(ttBank.address, BigInt(100e18));
+
+      await ttBank.openAccount(BigInt(10e18));
+
+      await expect(ttBank.openAccount(BigInt(10e18))).to.be.revertedWith(
+        "TTBank: Account already exists"
       );
     });
 

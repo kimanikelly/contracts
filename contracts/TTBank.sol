@@ -10,12 +10,18 @@ import "hardhat/console.sol";
 contract TTBank is Initializable, OwnableUpgradeable {
     using SafeERC20Upgradeable for Token;
 
+    /**
+     * @dev Emits after a bank account is opened
+     */
     event AccountOpened(
         uint256 accountNumber,
         address accountName,
         uint256 startingBalance
     );
 
+    /**
+     * @dev Emits after a deposit is made into a bank account
+     */
     event Deposit(
         uint256 accountNumber,
         address accountName,
@@ -23,6 +29,9 @@ contract TTBank is Initializable, OwnableUpgradeable {
         uint256 newBalance
     );
 
+    /**
+     * @dev Emits after a withdrawal is made on a bank account
+     */
     event Withdraw(
         uint256 accountNumber,
         address accountName,
@@ -76,9 +85,16 @@ contract TTBank is Initializable, OwnableUpgradeable {
 
     /**
      * @dev Allows the msg.sender to open an account with TTBank and make an initial deposit
-     * @param balance The amount of TT the msg.sender wants to open their account with
+     * @param startingBalance The amount of TT the msg.sender wants to open their account with
      */
-    function openAccount(uint256 balance) public verifyDepositAmount(balance) {
+    function openAccount(uint256 startingBalance)
+        public
+        verifyDepositAmount(startingBalance)
+        returns (bool)
+    {
+        // Prevents an existing account from creating a new account
+        require(!accountExists[msg.sender], "TTBank: Account already exists");
+
         // Sets the accountNumber and increments it by 1 per account
         bankDetails.accountNumber++;
 
@@ -86,7 +102,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
         bankDetails.accountName = msg.sender;
 
         // Sets the initial balance to the balance value passed in by the msg.sender
-        bankDetails.balance = balance;
+        bankDetails.balance = startingBalance;
 
         // Adds the msg.sender's bank account details to the accounts mapping
         accounts[msg.sender] = bankDetails;
@@ -95,7 +111,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
         accountExists[msg.sender] = true;
 
         // Transfers the TT _balance to the TTBank contract
-        token.safeTransferFrom(msg.sender, address(this), balance);
+        token.safeTransferFrom(msg.sender, address(this), startingBalance);
 
         // Emits the AccountOpened event
         emit AccountOpened(
@@ -103,6 +119,8 @@ contract TTBank is Initializable, OwnableUpgradeable {
             msg.sender,
             bankDetails.balance
         );
+
+        return true;
     }
 
     /**
@@ -113,6 +131,7 @@ contract TTBank is Initializable, OwnableUpgradeable {
         public
         verifyDepositAmount(amount)
         verifyAccountExists(msg.sender)
+        returns (bool)
     {
         // Increments the msg.sender's account balance by their deposit
         accounts[msg.sender].balance += amount;
@@ -127,13 +146,19 @@ contract TTBank is Initializable, OwnableUpgradeable {
             amount,
             accounts[msg.sender].balance
         );
+
+        return true;
     }
 
     /**
      * @dev Allows the msg.sender to withdraw a specified amount TT from their bank account
      * @param amount The amount of TT to withdraw from the msg.senders bank account
      */
-    function withdraw(uint256 amount) public verifyAccountExists(msg.sender) {
+    function withdraw(uint256 amount)
+        public
+        verifyAccountExists(msg.sender)
+        returns (bool)
+    {
         // Prevents the msg.sender from withdrawing more than their balance
         require(
             amount <= accounts[msg.sender].balance,
@@ -153,6 +178,8 @@ contract TTBank is Initializable, OwnableUpgradeable {
             amount,
             accounts[msg.sender].balance
         );
+
+        return true;
     }
 
     /**

@@ -200,7 +200,7 @@ export class TTBank extends BaseContract {
     ): Promise<ContractTransaction>;
 
     openAccount(
-      balance: BigNumberish,
+      startingBalance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -250,7 +250,7 @@ export class TTBank extends BaseContract {
   ): Promise<ContractTransaction>;
 
   openAccount(
-    balance: BigNumberish,
+    startingBalance: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -287,14 +287,14 @@ export class TTBank extends BaseContract {
   callStatic: {
     bankBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    deposit(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    deposit(amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
     initialize(tokenAddress: string, overrides?: CallOverrides): Promise<void>;
 
     openAccount(
-      balance: BigNumberish,
+      startingBalance: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<boolean>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -319,7 +319,7 @@ export class TTBank extends BaseContract {
 
     viewBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
   };
 
   filters: {
@@ -440,7 +440,7 @@ export class TTBank extends BaseContract {
     ): Promise<BigNumber>;
 
     openAccount(
-      balance: BigNumberish,
+      startingBalance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -481,7 +481,7 @@ export class TTBank extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     openAccount(
-      balance: BigNumberish,
+      startingBalance: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
