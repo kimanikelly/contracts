@@ -4,7 +4,7 @@ import { solidity } from "ethereum-waffle";
 import { ethers, upgrades } from "hardhat";
 import { BigNumber, ContractTransaction, Event } from "ethers";
 import { TTBank, Token } from "../typechain";
-import { exec } from "child_process";
+import { showThrottleMessage } from "@ethersproject/providers";
 
 describe.only("TT Bank", () => {
   let ttBank: TTBank;
