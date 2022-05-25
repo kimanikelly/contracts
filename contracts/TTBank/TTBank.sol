@@ -27,7 +27,7 @@ contract TTBank is Initializable, OwnableUpgradeable, ITTBank {
     Token public token;
 
     // Instance of the struct BankDetails
-    BankDetails private bankDetails;
+    ITTBank.BankDetails private bankDetails;
 
     // Maps the msg.sender to their bank account details
     mapping(address => BankDetails) private accounts;
