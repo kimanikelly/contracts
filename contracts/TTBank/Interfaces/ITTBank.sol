@@ -30,4 +30,11 @@ interface ITTBank {
         uint256 withdrawAmount,
         uint256 newBalance
     );
+
+    // Structures the bank account details
+    struct BankDetails {
+        uint256 accountNumber;
+        address accountName;
+        uint256 balance;
+    }
 }

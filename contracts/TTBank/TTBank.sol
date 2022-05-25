@@ -11,13 +11,6 @@ import "hardhat/console.sol";
 contract TTBank is Initializable, OwnableUpgradeable, ITTBank {
     using SafeERC20Upgradeable for Token;
 
-    // Structures the bank account details
-    struct BankDetails {
-        uint256 accountNumber;
-        address accountName;
-        uint256 balance;
-    }
-
     modifier verifyDepositAmount(uint256 amount) {
         // Requires the deposit amount to be greater than 0
         require(amount > 0, "TTBank: Deposit amount is 0");
