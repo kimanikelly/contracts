@@ -11,6 +11,8 @@ import {
   PopulatedTransaction,
   BaseContract,
   ContractTransaction,
+  Overrides,
+  CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
@@ -18,7 +20,25 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ITTBankInterface extends ethers.utils.Interface {
-  functions: {};
+  functions: {
+    "deposit(uint256)": FunctionFragment;
+    "openAccount(uint256)": FunctionFragment;
+  };
+
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "openAccount",
+    values: [BigNumberish]
+  ): string;
+
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "openAccount",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AccountOpened(uint256,address,uint256)": EventFragment;
@@ -100,9 +120,36 @@ export class ITTBank extends BaseContract {
 
   interface: ITTBankInterface;
 
-  functions: {};
+  functions: {
+    deposit(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-  callStatic: {};
+    openAccount(
+      startingBalance: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+  };
+
+  deposit(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  openAccount(
+    startingBalance: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  callStatic: {
+    deposit(amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+    openAccount(
+      startingBalance: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+  };
 
   filters: {
     "AccountOpened(uint256,address,uint256)"(
@@ -192,7 +239,27 @@ export class ITTBank extends BaseContract {
     >;
   };
 
-  estimateGas: {};
+  estimateGas: {
+    deposit(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
-  populateTransaction: {};
+    openAccount(
+      startingBalance: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+  };
+
+  populateTransaction: {
+    deposit(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    openAccount(
+      startingBalance: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+  };
 }

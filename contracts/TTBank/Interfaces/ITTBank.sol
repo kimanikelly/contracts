@@ -37,4 +37,8 @@ interface ITTBank {
         address accountName;
         uint256 balance;
     }
+
+    function openAccount(uint256 startingBalance) external returns (bool);
+
+    function deposit(uint256 amount) external returns (bool);
 }
