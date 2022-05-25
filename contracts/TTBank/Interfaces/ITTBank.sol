@@ -5,6 +5,7 @@ interface ITTBank {
     /**
      * @dev Emits after a bank account is opened
      */
+
     event AccountOpened(
         uint256 accountNumber,
         address accountName,
