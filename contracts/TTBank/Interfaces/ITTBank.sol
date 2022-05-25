@@ -43,4 +43,8 @@ interface ITTBank {
     function deposit(uint256 amount) external returns (bool);
 
     function withdraw(uint256 amount) external returns (bool);
+
+    function viewAccount() external returns (BankDetails memory);
+
+    function bankBalance() external returns (uint256);
 }

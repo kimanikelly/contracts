@@ -95,6 +95,19 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [],
+    name: "bankBalance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -122,6 +135,55 @@ const _abi = [
       },
     ],
     name: "openAccount",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "viewAccount",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "accountNumber",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "accountName",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "balance",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct ITTBank.BankDetails",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "withdraw",
     outputs: [
       {
         internalType: "bool",
