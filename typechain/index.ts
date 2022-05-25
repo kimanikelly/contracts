@@ -6,7 +6,6 @@ export type { ERC20Upgradeable } from "./ERC20Upgradeable";
 export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
 export type { IERC20Upgradeable } from "./IERC20Upgradeable";
 export type { Ownable } from "./Ownable";
-export type { Attack } from "./Attack";
 export type { Token } from "./Token";
 export type { TTBank } from "./TTBank";
 
@@ -15,6 +14,5 @@ export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";
 export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__factory";
 export { Ownable__factory } from "./factories/Ownable__factory";
-export { Attack__factory } from "./factories/Attack__factory";
 export { Token__factory } from "./factories/Token__factory";
 export { TTBank__factory } from "./factories/TTBank__factory";
