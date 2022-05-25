@@ -4,7 +4,7 @@ pragma solidity 0.8.9;
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {SafeERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
-import {Token} from "./Token.sol";
+import {Token} from "../Token.sol";
 import "hardhat/console.sol";
 
 contract TTBank is Initializable, OwnableUpgradeable {
