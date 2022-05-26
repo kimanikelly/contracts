@@ -12,6 +12,7 @@ import { recordAddress } from "../utils/recordAddresses";
 
 async function main() {
   let tokenAddress = "";
+
   const chainId = await (await ethers.provider.getNetwork()).chainId;
 
   const signers: SignerWithAddress[] = await ethers.getSigners();
