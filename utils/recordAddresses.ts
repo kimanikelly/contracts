@@ -11,25 +11,26 @@ export const recordAddress = (
 
   // Checks if the network is Localhost
   if (chainId == 31337) {
-    // Reads the JSON file of the Localhost addresses
-    // Returns the file as a Buffer and parses it to a readable string
     addressJson = fs.readFileSync("addresses/31337.json").toString();
 
+    //
     addressObj = JSON.parse(addressJson);
 
+    // Checks if the contract is "ttBank"
     if (contract == "ttBank") {
-      // Assign the ttBank property the value of the ttBank address
+      // Assigns the ttBank property the value of the TTBank.sol address
       addressObj.ttBank = address;
     }
 
+    // Checks if the contract is "token"
     if (contract == "token") {
-      // Assign the token property the value of the token address
+      // Assigns the token property the value of the Token.sol address
       addressObj.token = address;
     }
 
-    newObjData = JSON.stringify(addressObj);
+    addressObj = JSON.stringify(addressObj);
 
-    fs.writeFile("addresses/31337.json", newObjData, (err) => {
+    fs.writeFile("addresses/31337.json", addressObj, (err) => {
       if (err) throw err;
 
       console.log(`New ${contract} address added on Localhost`);

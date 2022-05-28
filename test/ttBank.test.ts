@@ -6,7 +6,7 @@ import { BigNumber, ContractTransaction, Event } from "ethers";
 import { TTBank, Token } from "../typechain";
 import { showThrottleMessage } from "@ethersproject/providers";
 
-describe.only("TT Bank", () => {
+describe("TT Bank", () => {
   let ttBank: TTBank;
   let token: Token;
   let signers: SignerWithAddress[];
