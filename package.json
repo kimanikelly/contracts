@@ -9,8 +9,10 @@
     "dist"
   ],
   "scripts": {
-    "local": "npx hardhat run --network localhost scripts/deploy.ts",
-    "rinkeby": "npx hardhat run --network rinkeby scripts/deploy.ts",
+    "token-local": "npx hardhat run --network localhost scripts/deployToken.ts",
+    "token-rinkeby": "npx hardhat run --network rinkeby scripts/deployToken.ts",
+    "ttBank-local": "npx hardhat run --network localhost scripts/deployTTBank.ts",
+    "ttBank-rinkeby": "npx hardhat run --network rinkeby scripts/deployTTBank.ts",
     "test": "hardhat test",
     "build": "rm -rf dist && tsc && cp -R addresses dist"
   },
