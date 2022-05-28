@@ -1,9 +1,9 @@
-# Token.sol Instance With @kimanikelly/core-contracts
+# TTBank.sol Instance With @kimanikelly/core-contracts
 
 ```
 require("dotenv").config();
 
-const { Token__factory } = require("@kimanikelly/core-contracts");
+const { TTBank__factory } = require("@kimanikelly/core-contracts");
 
 const rinkebyAddress = require("@kimanikelly/core-contracts/dist/addresses/4.json");
 
@@ -15,5 +15,5 @@ const provider = new ethers.providers.JsonRpcProvider(rinkebyUrl, 4);
 
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
-const token = Token__factory.connect(rinkebyAddress.token, signer);
+const token = Token__factory.connect(rinkebyAddress.ttBank, signer);
 ```

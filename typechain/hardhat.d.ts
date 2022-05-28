@@ -29,9 +29,25 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Upgradeable__factory>;
     getContractFactory(
+      name: "ITTBank",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ITTBank__factory>;
+    getContractFactory(
       name: "Token",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Token__factory>;
+    getContractFactory(
+      name: "TTBank",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TTBank__factory>;
+    getContractFactory(
+      name: "ITTBank",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ITTBank__factory>;
+    getContractFactory(
+      name: "TTBank",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TTBank__factory>;
 
     getContractAt(
       name: "OwnableUpgradeable",
@@ -54,10 +70,30 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20Upgradeable>;
     getContractAt(
+      name: "ITTBank",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ITTBank>;
+    getContractAt(
       name: "Token",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Token>;
+    getContractAt(
+      name: "TTBank",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TTBank>;
+    getContractAt(
+      name: "ITTBank",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ITTBank>;
+    getContractAt(
+      name: "TTBank",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TTBank>;
 
     // default types
     getContractFactory(

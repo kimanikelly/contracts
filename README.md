@@ -5,6 +5,7 @@
 ## Contract Documentation
 
 - [Token](https://github.com/kimanikelly/contracts/blob/main/docs/token.md)
+- [TTBank](https://github.com/kimanikelly/contracts/blob/main/docs/ttBank.md)
 
 ## Installation
 
@@ -42,6 +43,8 @@ npm i @kimanikelly/core-contracts
 
 - [Token.sol Instance With @kimanikelly/core-contracts](https://github.com/kimanikelly/contracts/blob/main/docs/tokenInstance.md)
 
+- [TTBank.sol Instance With @kimanikelly/core-contracts](https://github.com/kimanikelly/contracts/blob/main/docs/ttBankInstance.md)
+
 ## Deployment
 
 A `.env` file has to be configured fro testnet deployment.
@@ -62,12 +65,26 @@ touch .env
 
 - Open one terminal and run the command `npx hardhat node` to start the local node.
 
-- Open another terminal and run the command `npm run local` to deploy Token.sol locally.
+- Open another terminal and run the command `npm run token-local` to deploy Token.sol locally.
 
 - The localhost address will print to the terminal.
 
 ### Token Rinkeby Deployment
 
-- Open one terminal and run the command `npm run rinkeby`.
+- Open one terminal and run the command `npm run token-rinkeby` to deploy Token.sol to Rinkeby.
 
-- The rinkeby address will print to the terminal.
+- The Rinkeby address will print to the terminal.
+
+### TTBank Localhost Deployment
+
+- Open one terminal and run the command `npx hardhat node` to start the local node.
+
+- Open another terminal and run the command `npm run ttBank-local` to deploy TTBank.sol locally.
+
+- The localhost address will print to the terminal.
+
+### TTBank Rinkeby Deployment
+
+- Open one terminal and run the command `npm run ttBank-rinkeby` to deploy TTBank.sol to Rinkeby.
+
+- The Rinkeby address will print to the terminal.

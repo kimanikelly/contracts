@@ -29,6 +29,11 @@
       "address": "0x1F3839Dde4C058DfB8989b9D341491905FB46ddD",
       "txHash": "0x01495f5052d66392d040decdcf0af69afecaec0ef2f0fb3d350a6ecb51e5c554",
       "kind": "transparent"
+    },
+    {
+      "address": "0xfbBb2A07F7a38CDB3025CE91acd94Ab74c4DCc50",
+      "txHash": "0x11440698c72a845bbbc0a25c3f870d93af510f3683bd4143d2b1c3920f8decb1",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -474,6 +479,144 @@
           "t_string_storage": {
             "label": "string",
             "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "756d9be754190cf881c6d382697bec343a10420f9f516822da1aa55827cfcc88": {
+      "address": "0x3E86Ef26930221364A7F12c0cA3F0C4E5c35E9F4",
+      "txHash": "0x383ca26e1f1514a9849fbcb065fd1b5bfafe390166178c61fc2deec692f3a6b9",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:39"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:44"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:87"
+          },
+          {
+            "label": "token",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_contract(Token)1879",
+            "contract": "TTBank",
+            "src": "contracts/TTBank.sol:27"
+          },
+          {
+            "label": "bankDetails",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_struct(BankDetails)1919_storage",
+            "contract": "TTBank",
+            "src": "contracts/TTBank.sol:30"
+          },
+          {
+            "label": "accounts",
+            "offset": 0,
+            "slot": "105",
+            "type": "t_mapping(t_address,t_struct(BankDetails)1919_storage)",
+            "contract": "TTBank",
+            "src": "contracts/TTBank.sol:33"
+          },
+          {
+            "label": "accountExists",
+            "offset": 0,
+            "slot": "106",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "TTBank",
+            "src": "contracts/TTBank.sol:36"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(Token)1879": {
+            "label": "contract Token",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(BankDetails)1919_storage)": {
+            "label": "mapping(address => struct ITTBank.BankDetails)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BankDetails)1919_storage": {
+            "label": "struct ITTBank.BankDetails",
+            "members": [
+              {
+                "label": "accountNumber",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "accountName",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
           },
           "t_uint256": {
             "label": "uint256",
