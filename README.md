@@ -5,6 +5,7 @@
 ## Contract Documentation
 
 - [Token](https://github.com/kimanikelly/contracts/blob/main/docs/token.md)
+- [TTBank](docs/ttBank.md)
 
 ## Installation
 
