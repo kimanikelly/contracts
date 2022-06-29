@@ -21,4 +21,28 @@ interface ILender {
         uint256 dateOfLoan, /// Date the loan was taken out
         uint256 loanMaturityDate /// Date the loan matures
     );
+
+    /// Emits the loan payment details after payer invokes the repayLoan() function
+    event LoanRepaid(
+        address borrower, /// Address of the borrower
+        address payer, /// Address of the loan payer
+        address nftCollateralAddress, /// Address of the collateral ERC-721 contract
+        uint256 nftCollateralTokenId /// TokenId of the collateral ERC-721 token
+    );
+
+    function borrow(
+        address nftCollateralAddress,
+        uint256 tokenId,
+        uint256 amountToBorrow
+    ) external returns (bool);
+
+    function repayLoan(address borrowerAddress) external returns (bool);
+
+    function getBorrowers() external returns (address[] memory);
+
+    function getBorrowerIndex(address borrowerAddress)
+        external
+        returns (uint256);
+
+    function getBorrowerByIndex(uint256 index) external returns (address);
 }
