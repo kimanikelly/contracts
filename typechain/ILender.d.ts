@@ -22,14 +22,44 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface ILenderInterface extends ethers.utils.Interface {
   functions: {
     "borrow(address,uint256,uint256)": FunctionFragment;
+    "getBorrowerByIndex(uint256)": FunctionFragment;
+    "getBorrowerIndex(address)": FunctionFragment;
+    "getBorrowers()": FunctionFragment;
+    "repayLoan(address)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "borrow",
     values: [string, BigNumberish, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "getBorrowerByIndex",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBorrowerIndex",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBorrowers",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "repayLoan", values: [string]): string;
 
   decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getBorrowerByIndex",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getBorrowerIndex",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getBorrowers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "repayLoan", data: BytesLike): Result;
 
   events: {
     "LoanBorrowed(address,address,uint256,uint256,uint256,uint256)": EventFragment;
@@ -110,6 +140,25 @@ export class ILender extends BaseContract {
       amountToBorrow: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    getBorrowerByIndex(
+      index: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    getBorrowerIndex(
+      borrowerAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    getBorrowers(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    repayLoan(
+      borrowerAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   borrow(
@@ -119,11 +168,47 @@ export class ILender extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  getBorrowerByIndex(
+    index: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  getBorrowerIndex(
+    borrowerAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  getBorrowers(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  repayLoan(
+    borrowerAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     borrow(
       nftCollateralAddress: string,
       tokenId: BigNumberish,
       amountToBorrow: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    getBorrowerByIndex(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    getBorrowerIndex(
+      borrowerAddress: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getBorrowers(overrides?: CallOverrides): Promise<string[]>;
+
+    repayLoan(
+      borrowerAddress: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -205,6 +290,25 @@ export class ILender extends BaseContract {
       amountToBorrow: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    getBorrowerByIndex(
+      index: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    getBorrowerIndex(
+      borrowerAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    getBorrowers(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    repayLoan(
+      borrowerAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -212,6 +316,25 @@ export class ILender extends BaseContract {
       nftCollateralAddress: string,
       tokenId: BigNumberish,
       amountToBorrow: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getBorrowerByIndex(
+      index: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getBorrowerIndex(
+      borrowerAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getBorrowers(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    repayLoan(
+      borrowerAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

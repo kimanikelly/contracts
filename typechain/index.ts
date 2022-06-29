@@ -7,6 +7,7 @@ export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
 export type { IERC20Upgradeable } from "./IERC20Upgradeable";
 export type { ILender } from "./ILender";
 export type { ITTBank } from "./ITTBank";
+export type { Lender } from "./Lender";
 export type { Token } from "./Token";
 export type { TTBank } from "./TTBank";
 
@@ -16,5 +17,6 @@ export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUp
 export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__factory";
 export { ILender__factory } from "./factories/ILender__factory";
 export { ITTBank__factory } from "./factories/ITTBank__factory";
+export { Lender__factory } from "./factories/Lender__factory";
 export { Token__factory } from "./factories/Token__factory";
 export { TTBank__factory } from "./factories/TTBank__factory";
