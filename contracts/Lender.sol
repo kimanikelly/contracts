@@ -26,11 +26,10 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
         __Ownable_init();
     }
 
-    function borrow(
-        address tokenCollateralAddress,
-        uint256 tokenId,
-        uint256 loanAmount
-    ) public returns (bool) {
+    function borrow(address tokenCollateralAddress, uint256 loanAmount)
+        public
+        returns (bool)
+    {
         /// Instantiates an ERC-721 contract from the nftCollateralAddress argument
         IERC20Upgradeable tokenCollateral = IERC20Upgradeable(
             tokenCollateralAddress
