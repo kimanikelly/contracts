@@ -42,17 +42,7 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
         __Ownable_init();
     }
 
-    function borrow(address tokenCollateralAddress, uint256 loanAmount)
-        public
-        pure
-        checkAddress(tokenCollateralAddress)
-        returns (bool)
-    {
-        /// Instantiates an ERC-20 contract from the nftCollateralAddress argument
-        IERC20Upgradeable tokenCollateral = IERC20Upgradeable(
-            tokenCollateralAddress
-        );
-
+    function borrow(uint256 loanAmount) public pure returns (bool) {
         /// Prevents a loan amount of 0 from being lent out
         require(loanAmount > 0, "Lender: Loan amount can not be 0");
 
