@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
-/// Imports the Token contract
-import {Token} from "./Token.sol";
-
 /// Imports the ILender interface
 import {ILender} from "./interfaces/ILender.sol";
 
@@ -20,11 +17,27 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 
 contract Lender is Initializable, OwnableUpgradeable, ILender {
+    modifier checkAddress(address tokenAddress) {
+        require(tokenAddress != address(0), "Lender: Cannot be a zero address");
+
+        _;
+    }
+
+    /// Declare the ERC-20 token instance
+    IERC20Upgradeable public token;
+
     /**
      * @dev Deploys Lender.sol as an upgradeable smart contract by refactoring the
      * `constructor` with the `initialize` function
      */
-    function initialize() public initializer {
+    function initialize(address stableCoinAddress)
+        public
+        initializer
+        checkAddress(stableCoinAddress)
+    {
+        /// Instantiates the ERC-20 contract with value of the stableCoinAddress argument
+        token = IERC20Upgradeable(stableCoinAddress);
+
         /// Initializes OwnableUpgradeable.sol and assigns the msg.sender as the owner
         __Ownable_init();
     }
@@ -32,6 +45,7 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
     function borrow(address tokenCollateralAddress, uint256 loanAmount)
         public
         pure
+        checkAddress(tokenCollateralAddress)
         returns (bool)
     {
         /// Instantiates an ERC-20 contract from the nftCollateralAddress argument
