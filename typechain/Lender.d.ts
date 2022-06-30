@@ -21,9 +21,8 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface LenderInterface extends ethers.utils.Interface {
   functions: {
-    "borrow(address,uint256,uint256)": FunctionFragment;
+    "borrow(address,uint256)": FunctionFragment;
     "initialize()": FunctionFragment;
-    "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
@@ -31,15 +30,11 @@ interface LenderInterface extends ethers.utils.Interface {
 
   encodeFunctionData(
     functionFragment: "borrow",
-    values: [string, BigNumberish, BigNumberish]
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onERC721Received",
-    values: [string, string, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -53,10 +48,6 @@ interface LenderInterface extends ethers.utils.Interface {
 
   decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "onERC721Received",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
@@ -68,8 +59,8 @@ interface LenderInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
-    "LoanBorrowed(address,address,uint256,uint256,uint256,uint256)": EventFragment;
-    "LoanRepaid(address,address,address,uint256)": EventFragment;
+    "LoanBorrowed(address,address,uint256,uint256,uint256)": EventFragment;
+    "LoanRepaid(address,address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
@@ -79,10 +70,9 @@ interface LenderInterface extends ethers.utils.Interface {
 }
 
 export type LoanBorrowedEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
+  [string, string, BigNumber, BigNumber, BigNumber] & {
     borrower: string;
-    nftCollateralAddress: string;
-    nftCollateralTokenId: BigNumber;
+    tokenCollateralAddress: string;
     principalAmount: BigNumber;
     dateOfLoan: BigNumber;
     loanMaturityDate: BigNumber;
@@ -90,11 +80,10 @@ export type LoanBorrowedEvent = TypedEvent<
 >;
 
 export type LoanRepaidEvent = TypedEvent<
-  [string, string, string, BigNumber] & {
+  [string, string, string] & {
     borrower: string;
     payer: string;
-    nftCollateralAddress: string;
-    nftCollateralTokenId: BigNumber;
+    tokenCollateralAddress: string;
   }
 >;
 
@@ -147,21 +136,12 @@ export class Lender extends BaseContract {
 
   functions: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       loanAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     initialize(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    onERC721Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -178,21 +158,12 @@ export class Lender extends BaseContract {
   };
 
   borrow(
-    nftCollateralAddress: string,
-    tokenId: BigNumberish,
+    tokenCollateralAddress: string,
     loanAmount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   initialize(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  onERC721Received(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish,
-    arg3: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -209,21 +180,12 @@ export class Lender extends BaseContract {
 
   callStatic: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       loanAmount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     initialize(overrides?: CallOverrides): Promise<void>;
-
-    onERC721Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -236,19 +198,17 @@ export class Lender extends BaseContract {
   };
 
   filters: {
-    "LoanBorrowed(address,address,uint256,uint256,uint256,uint256)"(
+    "LoanBorrowed(address,address,uint256,uint256,uint256)"(
       borrower?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null,
+      tokenCollateralAddress?: null,
       principalAmount?: null,
       dateOfLoan?: null,
       loanMaturityDate?: null
     ): TypedEventFilter<
-      [string, string, BigNumber, BigNumber, BigNumber, BigNumber],
+      [string, string, BigNumber, BigNumber, BigNumber],
       {
         borrower: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
+        tokenCollateralAddress: string;
         principalAmount: BigNumber;
         dateOfLoan: BigNumber;
         loanMaturityDate: BigNumber;
@@ -257,51 +217,37 @@ export class Lender extends BaseContract {
 
     LoanBorrowed(
       borrower?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null,
+      tokenCollateralAddress?: null,
       principalAmount?: null,
       dateOfLoan?: null,
       loanMaturityDate?: null
     ): TypedEventFilter<
-      [string, string, BigNumber, BigNumber, BigNumber, BigNumber],
+      [string, string, BigNumber, BigNumber, BigNumber],
       {
         borrower: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
+        tokenCollateralAddress: string;
         principalAmount: BigNumber;
         dateOfLoan: BigNumber;
         loanMaturityDate: BigNumber;
       }
     >;
 
-    "LoanRepaid(address,address,address,uint256)"(
+    "LoanRepaid(address,address,address)"(
       borrower?: null,
       payer?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null
+      tokenCollateralAddress?: null
     ): TypedEventFilter<
-      [string, string, string, BigNumber],
-      {
-        borrower: string;
-        payer: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
-      }
+      [string, string, string],
+      { borrower: string; payer: string; tokenCollateralAddress: string }
     >;
 
     LoanRepaid(
       borrower?: null,
       payer?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null
+      tokenCollateralAddress?: null
     ): TypedEventFilter<
-      [string, string, string, BigNumber],
-      {
-        borrower: string;
-        payer: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
-      }
+      [string, string, string],
+      { borrower: string; payer: string; tokenCollateralAddress: string }
     >;
 
     "OwnershipTransferred(address,address)"(
@@ -323,21 +269,12 @@ export class Lender extends BaseContract {
 
   estimateGas: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       loanAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     initialize(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    onERC721Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -355,21 +292,12 @@ export class Lender extends BaseContract {
 
   populateTransaction: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       loanAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    onERC721Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

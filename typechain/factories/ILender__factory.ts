@@ -19,14 +19,8 @@ const _abi = [
       {
         indexed: false,
         internalType: "address",
-        name: "nftCollateralAddress",
+        name: "tokenCollateralAddress",
         type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "nftCollateralTokenId",
-        type: "uint256",
       },
       {
         indexed: false,
@@ -68,14 +62,8 @@ const _abi = [
       {
         indexed: false,
         internalType: "address",
-        name: "nftCollateralAddress",
+        name: "tokenCollateralAddress",
         type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "nftCollateralTokenId",
-        type: "uint256",
       },
     ],
     name: "LoanRepaid",
@@ -85,13 +73,8 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "nftCollateralAddress",
+        name: "tokenCollateralAddress",
         type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
       },
       {
         internalType: "uint256",

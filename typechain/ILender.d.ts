@@ -21,19 +21,19 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ILenderInterface extends ethers.utils.Interface {
   functions: {
-    "borrow(address,uint256,uint256)": FunctionFragment;
+    "borrow(address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "borrow",
-    values: [string, BigNumberish, BigNumberish]
+    values: [string, BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
 
   events: {
-    "LoanBorrowed(address,address,uint256,uint256,uint256,uint256)": EventFragment;
-    "LoanRepaid(address,address,address,uint256)": EventFragment;
+    "LoanBorrowed(address,address,uint256,uint256,uint256)": EventFragment;
+    "LoanRepaid(address,address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "LoanBorrowed"): EventFragment;
@@ -41,10 +41,9 @@ interface ILenderInterface extends ethers.utils.Interface {
 }
 
 export type LoanBorrowedEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
+  [string, string, BigNumber, BigNumber, BigNumber] & {
     borrower: string;
-    nftCollateralAddress: string;
-    nftCollateralTokenId: BigNumber;
+    tokenCollateralAddress: string;
     principalAmount: BigNumber;
     dateOfLoan: BigNumber;
     loanMaturityDate: BigNumber;
@@ -52,11 +51,10 @@ export type LoanBorrowedEvent = TypedEvent<
 >;
 
 export type LoanRepaidEvent = TypedEvent<
-  [string, string, string, BigNumber] & {
+  [string, string, string] & {
     borrower: string;
     payer: string;
-    nftCollateralAddress: string;
-    nftCollateralTokenId: BigNumber;
+    tokenCollateralAddress: string;
   }
 >;
 
@@ -105,43 +103,38 @@ export class ILender extends BaseContract {
 
   functions: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       amountToBorrow: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   borrow(
-    nftCollateralAddress: string,
-    tokenId: BigNumberish,
+    tokenCollateralAddress: string,
     amountToBorrow: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       amountToBorrow: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
 
   filters: {
-    "LoanBorrowed(address,address,uint256,uint256,uint256,uint256)"(
+    "LoanBorrowed(address,address,uint256,uint256,uint256)"(
       borrower?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null,
+      tokenCollateralAddress?: null,
       principalAmount?: null,
       dateOfLoan?: null,
       loanMaturityDate?: null
     ): TypedEventFilter<
-      [string, string, BigNumber, BigNumber, BigNumber, BigNumber],
+      [string, string, BigNumber, BigNumber, BigNumber],
       {
         borrower: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
+        tokenCollateralAddress: string;
         principalAmount: BigNumber;
         dateOfLoan: BigNumber;
         loanMaturityDate: BigNumber;
@@ -150,58 +143,43 @@ export class ILender extends BaseContract {
 
     LoanBorrowed(
       borrower?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null,
+      tokenCollateralAddress?: null,
       principalAmount?: null,
       dateOfLoan?: null,
       loanMaturityDate?: null
     ): TypedEventFilter<
-      [string, string, BigNumber, BigNumber, BigNumber, BigNumber],
+      [string, string, BigNumber, BigNumber, BigNumber],
       {
         borrower: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
+        tokenCollateralAddress: string;
         principalAmount: BigNumber;
         dateOfLoan: BigNumber;
         loanMaturityDate: BigNumber;
       }
     >;
 
-    "LoanRepaid(address,address,address,uint256)"(
+    "LoanRepaid(address,address,address)"(
       borrower?: null,
       payer?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null
+      tokenCollateralAddress?: null
     ): TypedEventFilter<
-      [string, string, string, BigNumber],
-      {
-        borrower: string;
-        payer: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
-      }
+      [string, string, string],
+      { borrower: string; payer: string; tokenCollateralAddress: string }
     >;
 
     LoanRepaid(
       borrower?: null,
       payer?: null,
-      nftCollateralAddress?: null,
-      nftCollateralTokenId?: null
+      tokenCollateralAddress?: null
     ): TypedEventFilter<
-      [string, string, string, BigNumber],
-      {
-        borrower: string;
-        payer: string;
-        nftCollateralAddress: string;
-        nftCollateralTokenId: BigNumber;
-      }
+      [string, string, string],
+      { borrower: string; payer: string; tokenCollateralAddress: string }
     >;
   };
 
   estimateGas: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       amountToBorrow: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -209,8 +187,7 @@ export class ILender extends BaseContract {
 
   populateTransaction: {
     borrow(
-      nftCollateralAddress: string,
-      tokenId: BigNumberish,
+      tokenCollateralAddress: string,
       amountToBorrow: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

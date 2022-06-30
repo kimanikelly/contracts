@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
+/// Imports the Token contract
+import {Token} from "./Token.sol";
+
 /// Imports the ILender interface
 import {ILender} from "./interfaces/ILender.sol";
 
@@ -28,14 +31,17 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
 
     function borrow(address tokenCollateralAddress, uint256 loanAmount)
         public
+        pure
         returns (bool)
     {
-        /// Instantiates an ERC-721 contract from the nftCollateralAddress argument
+        /// Instantiates an ERC-20 contract from the nftCollateralAddress argument
         IERC20Upgradeable tokenCollateral = IERC20Upgradeable(
             tokenCollateralAddress
         );
 
         /// Prevents a loan amount of 0 from being lent out
         require(loanAmount > 0, "Lender: Loan amount can not be 0");
+
+        return true;
     }
 }
