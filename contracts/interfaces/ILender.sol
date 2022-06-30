@@ -36,13 +36,13 @@ interface ILender {
         uint256 amountToBorrow
     ) external returns (bool);
 
-    function repayLoan(address borrowerAddress) external returns (bool);
+    // function repayLoan(address borrowerAddress) external returns (bool);
 
-    function getBorrowers() external returns (address[] memory);
+    // function getBorrowers() external returns (address[] memory);
 
-    function getBorrowerIndex(address borrowerAddress)
-        external
-        returns (uint256);
+    // function getBorrowerIndex(address borrowerAddress)
+    //     external
+    //     returns (uint256);
 
-    function getBorrowerByIndex(uint256 index) external returns (address);
+    // function getBorrowerByIndex(uint256 index) external returns (address);
 }
