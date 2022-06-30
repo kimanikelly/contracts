@@ -5,8 +5,7 @@ interface ILender {
     /// Loan details of a borrower
     struct Vault {
         address borrower; /// Address of the borrower
-        address nftCollateralAddress; /// Address of the collateral ERC-721 contract
-        uint256 nftCollateralTokenId; /// TokenId of the collateral ERC-721 token
+        address tokenCollateralAddress; /// Address of the collateral ERC-20 contract
         uint256 principalAmount; /// ERC-20 loan amount
         uint256 dateOfLoan; /// Date the loan was taken out
         uint256 loanMaturityDate; /// Date the loan matures
@@ -15,8 +14,7 @@ interface ILender {
     /// Emits the loan details after the borrower invokes the borrow() function
     event LoanBorrowed(
         address borrower, /// Address of the borrower
-        address nftCollateralAddress, /// Address of the collateral ERC-721 contract
-        uint256 nftCollateralTokenId, /// TokenId of the collateral ERC-721 token
+        address tokenCollateralAddress, /// Address of the collateral ERC-20 contract
         uint256 principalAmount, /// ERC-20 loan amount
         uint256 dateOfLoan, /// Date the loan was taken out
         uint256 loanMaturityDate /// Date the loan matures
@@ -26,12 +24,11 @@ interface ILender {
     event LoanRepaid(
         address borrower, /// Address of the borrower
         address payer, /// Address of the loan payer
-        address nftCollateralAddress, /// Address of the collateral ERC-721 contract
-        uint256 nftCollateralTokenId /// TokenId of the collateral ERC-721 token
+        address tokenCollateralAddress /// Address of the collateral ERC-20 contract
     );
 
     function borrow(
-        address nftCollateralAddress,
+        address tokenCollateralAddress,
         uint256 tokenId,
         uint256 amountToBorrow
     ) external returns (bool);

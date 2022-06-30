@@ -4,22 +4,19 @@ pragma solidity 0.8.9;
 /// Imports the ILender interface
 import {ILender} from "./interfaces/ILender.sol";
 
+/// Imports the Initializable contract
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 /// Imports the OwnableUpgradeable contract
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-/// Imports the ERC721HolderUpgradeable contract and allows Lender to receive ERC-721's
-import {ERC721HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol";
+// /// Imports the ERC721HolderUpgradeable contract to allow Lender to receive ERC-721's as collateral
+// import {ERC721HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol";
 
-import {IERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
+/// Imports the IERC20Upgradeable contract to create an ERC-20 instance
+import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 
-contract Lender is
-    Initializable,
-    OwnableUpgradeable,
-    ERC721HolderUpgradeable,
-    ILender
-{
+contract Lender is Initializable, OwnableUpgradeable, ILender {
     /**
      * @dev Deploys Lender.sol as an upgradeable smart contract by refactoring the
      * `constructor` with the `initialize` function
@@ -30,13 +27,13 @@ contract Lender is
     }
 
     function borrow(
-        address nftCollateralAddress,
+        address tokenCollateralAddress,
         uint256 tokenId,
         uint256 loanAmount
     ) public returns (bool) {
         /// Instantiates an ERC-721 contract from the nftCollateralAddress argument
-        IERC721Upgradeable nftCollateral = IERC721Upgradeable(
-            nftCollateralAddress
+        IERC20Upgradeable tokenCollateral = IERC20Upgradeable(
+            tokenCollateralAddress
         );
 
         /// Prevents a loan amount of 0 from being lent out
