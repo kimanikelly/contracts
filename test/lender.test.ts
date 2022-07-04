@@ -30,7 +30,6 @@ describe.only("Lender", () => {
 
   describe("#initialize", () => {
     it("Should revert if the stableCoinAddress is a zero address", async () => {
-      // Deploys and initializes the Lender.sol proxy as an upgradeable contract
       await expect(
         upgrades.deployProxy(Lender, [
           ethers.constants.AddressZero,
@@ -39,6 +38,15 @@ describe.only("Lender", () => {
       ).to.be.revertedWith(
         "Lender: stableCoinAddress cannot be a zero address"
       );
+    });
+
+    it("Should revert if the oracleAddress is a zero address", async () => {
+      await expect(
+        upgrades.deployProxy(Lender, [
+          token.address,
+          ethers.constants.AddressZero,
+        ])
+      ).to.be.revertedWith("Lender: oracleAddress cannot be a zero address");
     });
   });
 });
