@@ -62,15 +62,19 @@ interface LenderInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
+    "Initialized(uint8)": EventFragment;
     "LoanBorrowed(address,address,uint256,uint256,uint256)": EventFragment;
     "LoanRepaid(address,address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LoanBorrowed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LoanRepaid"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export type InitializedEvent = TypedEvent<[number] & { version: number }>;
 
 export type LoanBorrowedEvent = TypedEvent<
   [string, string, BigNumber, BigNumber, BigNumber] & {
@@ -209,6 +213,14 @@ export class Lender extends BaseContract {
   };
 
   filters: {
+    "Initialized(uint8)"(
+      version?: null
+    ): TypedEventFilter<[number], { version: number }>;
+
+    Initialized(
+      version?: null
+    ): TypedEventFilter<[number], { version: number }>;
+
     "LoanBorrowed(address,address,uint256,uint256,uint256)"(
       borrower?: null,
       tokenCollateralAddress?: null,

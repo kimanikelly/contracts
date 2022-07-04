@@ -2,13 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { OwnableUpgradeable } from "./OwnableUpgradeable";
+export type { Initializable } from "./Initializable";
 export type { ERC20Upgradeable } from "./ERC20Upgradeable";
+export type { IERC20PermitUpgradeable } from "./IERC20PermitUpgradeable";
 export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
 export type { IERC20Upgradeable } from "./IERC20Upgradeable";
-export type { IERC721ReceiverUpgradeable } from "./IERC721ReceiverUpgradeable";
-export type { IERC721Upgradeable } from "./IERC721Upgradeable";
-export type { ERC721HolderUpgradeable } from "./ERC721HolderUpgradeable";
-export type { IERC165Upgradeable } from "./IERC165Upgradeable";
+export type { ContextUpgradeable } from "./ContextUpgradeable";
 export type { AggregatorV3Interface } from "./AggregatorV3Interface";
 export type { ILender } from "./ILender";
 export type { ITTBank } from "./ITTBank";
@@ -19,13 +18,12 @@ export type { Token } from "./Token";
 export type { TTBank } from "./TTBank";
 
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
+export { Initializable__factory } from "./factories/Initializable__factory";
 export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory";
+export { IERC20PermitUpgradeable__factory } from "./factories/IERC20PermitUpgradeable__factory";
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";
 export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__factory";
-export { IERC721ReceiverUpgradeable__factory } from "./factories/IERC721ReceiverUpgradeable__factory";
-export { IERC721Upgradeable__factory } from "./factories/IERC721Upgradeable__factory";
-export { ERC721HolderUpgradeable__factory } from "./factories/ERC721HolderUpgradeable__factory";
-export { IERC165Upgradeable__factory } from "./factories/IERC165Upgradeable__factory";
+export { ContextUpgradeable__factory } from "./factories/ContextUpgradeable__factory";
 export { AggregatorV3Interface__factory } from "./factories/AggregatorV3Interface__factory";
 export { ILender__factory } from "./factories/ILender__factory";
 export { ITTBank__factory } from "./factories/ITTBank__factory";
