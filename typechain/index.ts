@@ -13,6 +13,7 @@ export type { AggregatorV3Interface } from "./AggregatorV3Interface";
 export type { ILender } from "./ILender";
 export type { ITTBank } from "./ITTBank";
 export type { Lender } from "./Lender";
+export type { PriceConsumerV3 } from "./PriceConsumerV3";
 export type { MockOracle } from "./MockOracle";
 export type { Token } from "./Token";
 export type { TTBank } from "./TTBank";
@@ -29,6 +30,7 @@ export { AggregatorV3Interface__factory } from "./factories/AggregatorV3Interfac
 export { ILender__factory } from "./factories/ILender__factory";
 export { ITTBank__factory } from "./factories/ITTBank__factory";
 export { Lender__factory } from "./factories/Lender__factory";
+export { PriceConsumerV3__factory } from "./factories/PriceConsumerV3__factory";
 export { MockOracle__factory } from "./factories/MockOracle__factory";
 export { Token__factory } from "./factories/Token__factory";
 export { TTBank__factory } from "./factories/TTBank__factory";

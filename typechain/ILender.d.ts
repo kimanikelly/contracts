@@ -21,12 +21,12 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ILenderInterface extends ethers.utils.Interface {
   functions: {
-    "borrow(address,uint256)": FunctionFragment;
+    "borrow(uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "borrow",
-    values: [string, BigNumberish]
+    values: [BigNumberish]
   ): string;
 
   decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
@@ -103,22 +103,19 @@ export class ILender extends BaseContract {
 
   functions: {
     borrow(
-      tokenCollateralAddress: string,
-      amountToBorrow: BigNumberish,
+      loanAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   borrow(
-    tokenCollateralAddress: string,
-    amountToBorrow: BigNumberish,
+    loanAmount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     borrow(
-      tokenCollateralAddress: string,
-      amountToBorrow: BigNumberish,
+      loanAmount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -179,16 +176,14 @@ export class ILender extends BaseContract {
 
   estimateGas: {
     borrow(
-      tokenCollateralAddress: string,
-      amountToBorrow: BigNumberish,
+      loanAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     borrow(
-      tokenCollateralAddress: string,
-      amountToBorrow: BigNumberish,
+      loanAmount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

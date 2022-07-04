@@ -9,8 +9,14 @@ contract MockOracle {
     int256 private price;
 
     constructor() {
-        /// Set the test price to 1 ether
-        price = 1 ether;
+        /*
+        // Thursday, July 30th 2022, 4:19pm
+        // TestToken price is 200 usd for testing purposes
+        // 200 usd = 0.2 eth
+        // 0.2 eth = 200000000 gwei
+        // 200000000 gwei = 200000000000000000 wei
+        */
+        price = 200000000000000000;
 
         /// Set the test contract to the zero address for ETH
         priceFeed = AggregatorV3Interface(

@@ -61,6 +61,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Lender__factory>;
     getContractFactory(
+      name: "PriceConsumerV3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PriceConsumerV3__factory>;
+    getContractFactory(
       name: "MockOracle",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockOracle__factory>;
@@ -133,6 +137,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Lender>;
+    getContractAt(
+      name: "PriceConsumerV3",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PriceConsumerV3>;
     getContractAt(
       name: "MockOracle",
       address: string,

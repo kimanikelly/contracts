@@ -72,13 +72,8 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "tokenCollateralAddress",
-        type: "address",
-      },
-      {
         internalType: "uint256",
-        name: "amountToBorrow",
+        name: "loanAmount",
         type: "uint256",
       },
     ],
