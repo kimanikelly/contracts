@@ -24,7 +24,7 @@ describe("Token", function () {
     token = (await upgrades.deployProxy(Token, ["Test Token", "TT"])) as Token;
   });
 
-  describe("#initializer", () => {
+  describe("#initialize", () => {
     it("Should revert if the contract is already initialized", async () => {
       await expect(token.initialize("Test Token", "TT")).to.be.revertedWith(
         "Initializable: contract is already initialized"

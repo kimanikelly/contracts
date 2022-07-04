@@ -36,8 +36,12 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
     function initialize(address stableCoinAddress, address oracleAddress)
         public
         initializer
-        checkAddress(stableCoinAddress)
     {
+        require(
+            stableCoinAddress != address(0),
+            "Lender: stableCoinAddress cannot be a zero address"
+        );
+
         /// Instantiates the ERC-20 contract with the value of the stableCoinAddress argument
         token = IERC20Upgradeable(stableCoinAddress);
 
