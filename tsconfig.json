@@ -18,7 +18,8 @@
     "./addresses",
     "index.ts",
     "./hardhat.config.ts",
-    "./scripts/"
+    "./scripts/",
+    "./test"
   ],
   "files": ["hardhat.config.ts"]
 }
