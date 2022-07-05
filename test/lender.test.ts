@@ -60,6 +60,36 @@ describe.only("Lender", () => {
       ).to.be.revertedWith("Initializable: contract is already initialized");
     });
 
+    it("Should emit the Initialized event", async () => {
+      let lender = await upgrades.deployProxy(Lender, [
+        token.address,
+        mockOracle.address,
+      ]);
+
+      let filter = lender.filters.Initialized(null);
+
+      let queryFilter = (await lender.queryFilter(filter))[0];
+
+      expect(queryFilter.event).to.equal("Initialized");
+    });
+
+    it("Should emit the OwnershipTransferred event", async () => {
+      let lender = await upgrades.deployProxy(Lender, [
+        token.address,
+        mockOracle.address,
+      ]);
+
+      let filter = lender.filters.OwnershipTransferred(null, null);
+
+      let queryFilter = (await lender.queryFilter(filter))[0];
+
+      expect(queryFilter.event).to.equal("OwnershipTransferred");
+      expect(queryFilter.args.previousOwner).to.equal(
+        ethers.constants.AddressZero
+      );
+      expect(queryFilter.args.newOwner).to.equal(signers[0].address);
+    });
+
     it("Should get the the owner", async () => {
       let lender = await upgrades.deployProxy(Lender, [
         token.address,
