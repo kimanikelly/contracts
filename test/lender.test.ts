@@ -59,5 +59,14 @@ describe.only("Lender", () => {
         lender.initialize(token.address, mockOracle.address)
       ).to.be.revertedWith("Initializable: contract is already initialized");
     });
+
+    it("Should get the the owner", async () => {
+      let lender = await upgrades.deployProxy(Lender, [
+        token.address,
+        mockOracle.address,
+      ]);
+
+      expect(await lender.owner()).to.equal(signers[0].address);
+    });
   });
 });
