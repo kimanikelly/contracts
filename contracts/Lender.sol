@@ -37,11 +37,13 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
         public
         initializer
     {
+        /// Prevents stableCoinAddress from being a zero address
         require(
             stableCoinAddress != address(0),
             "Lender: stableCoinAddress cannot be a zero address"
         );
 
+        /// Prevents oracleAddress from being a zero address
         require(
             oracleAddress != address(0),
             "Lender: oracleAddress cannot be a zero address"

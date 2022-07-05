@@ -48,5 +48,16 @@ describe.only("Lender", () => {
         ])
       ).to.be.revertedWith("Lender: oracleAddress cannot be a zero address");
     });
+
+    it("Should revert if initialized twice", async () => {
+      let lender = await upgrades.deployProxy(Lender, [
+        token.address,
+        mockOracle.address,
+      ]);
+
+      await expect(
+        lender.initialize(token.address, mockOracle.address)
+      ).to.be.revertedWith("Initializable: contract is already initialized");
+    });
   });
 });
