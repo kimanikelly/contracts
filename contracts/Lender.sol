@@ -16,6 +16,8 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 /// Imports the IERC20Upgradeable contract to create an ERC-20 instance
 import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 
+import "hardhat/console.sol";
+
 contract Lender is Initializable, OwnableUpgradeable, ILender {
     modifier checkAddress(address tokenAddress) {
         require(tokenAddress != address(0), "Lender: Cannot be a zero address");
@@ -59,10 +61,10 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
         __Ownable_init();
     }
 
-    function borrow(uint256 loanAmount) public pure returns (bool) {
-        /// Prevents a loan amount of 0 from being lent out
-        require(loanAmount > 0, "Lender: Loan amount can not be 0");
+    function borrow(uint256 loanAmount) public view returns (int256) {
+        // cannot borrow more than 70% of the collateral price =
+        // require(deposit == msg.value, "Lender: Incorrect Eth amount");
 
-        return true;
+        return oracle.getLatestPrice();
     }
 }

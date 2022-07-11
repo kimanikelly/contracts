@@ -117,7 +117,7 @@ export class ILender extends BaseContract {
     borrow(
       loanAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
   };
 
   filters: {

@@ -99,4 +99,18 @@ describe.only("Lender", () => {
       expect(await lender.owner()).to.equal(signers[0].address);
     });
   });
+
+  describe("#borrow", () => {
+    let lender: Lender;
+    beforeEach(async () => {
+      lender = (await upgrades.deployProxy(Lender, [
+        token.address,
+        mockOracle.address,
+      ])) as Lender;
+    });
+
+    it("Testing", async () => {
+      let testing = "hello";
+    });
+  });
 });

@@ -80,9 +80,9 @@ const _abi = [
     name: "borrow",
     outputs: [
       {
-        internalType: "bool",
+        internalType: "int256",
         name: "",
-        type: "bool",
+        type: "int256",
       },
     ],
     stateMutability: "nonpayable",

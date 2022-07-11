@@ -145,7 +145,7 @@ export class Lender extends BaseContract {
     borrow(
       loanAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[BigNumber]>;
 
     initialize(
       stableCoinAddress: string,
@@ -167,7 +167,10 @@ export class Lender extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  borrow(loanAmount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+  borrow(
+    loanAmount: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   initialize(
     stableCoinAddress: string,
@@ -192,7 +195,7 @@ export class Lender extends BaseContract {
     borrow(
       loanAmount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
 
     initialize(
       stableCoinAddress: string,
