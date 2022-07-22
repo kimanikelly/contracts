@@ -62,6 +62,7 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
     }
 
     receive() external payable {
+        require(msg.value > 0, "Lender: Cannot deposit a zero amount");
         emit EthReceived(msg.sender, msg.value);
     }
 }

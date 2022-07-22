@@ -110,6 +110,15 @@ describe.only("Lender", () => {
       ])) as Lender;
     });
 
+    it("Should revert if the deposit amount is 0 ETH", async () => {
+      await expect(
+        signers[0].sendTransaction({
+          to: lender.address,
+          value: 0,
+        })
+      ).to.be.revertedWith("Lender: Cannot deposit a zero amount");
+    });
+
     it("Should receive ETH as collateral", async () => {
       // Lender balance before the signers[0] deposits their ETH
       const lenderPreBal = await ethers.provider.getBalance(lender.address);
