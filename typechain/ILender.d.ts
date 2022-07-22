@@ -21,13 +21,19 @@ interface ILenderInterface extends ethers.utils.Interface {
   functions: {};
 
   events: {
+    "EthReceived(address,uint256)": EventFragment;
     "LoanBorrowed(address,address,uint256,uint256,uint256)": EventFragment;
     "LoanRepaid(address,address,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "EthReceived"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LoanBorrowed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LoanRepaid"): EventFragment;
 }
+
+export type EthReceivedEvent = TypedEvent<
+  [string, BigNumber] & { from: string; amount: BigNumber }
+>;
 
 export type LoanBorrowedEvent = TypedEvent<
   [string, string, BigNumber, BigNumber, BigNumber] & {
@@ -95,6 +101,22 @@ export class ILender extends BaseContract {
   callStatic: {};
 
   filters: {
+    "EthReceived(address,uint256)"(
+      from?: null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { from: string; amount: BigNumber }
+    >;
+
+    EthReceived(
+      from?: null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { from: string; amount: BigNumber }
+    >;
+
     "LoanBorrowed(address,address,uint256,uint256,uint256)"(
       borrower?: null,
       tokenCollateralAddress?: null,

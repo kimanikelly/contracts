@@ -61,5 +61,7 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
         __Ownable_init();
     }
 
-    receive() external payable {}
+    receive() external payable {
+        emit EthReceived(msg.sender, msg.value);
+    }
 }

@@ -102,6 +102,7 @@ describe.only("Lender", () => {
 
   describe.only("#receive-eth", () => {
     let lender: Lender;
+    let depositAmt: any = ethers.BigNumber.from("1000000000000000000");
     beforeEach(async () => {
       lender = (await upgrades.deployProxy(Lender, [
         token.address,
@@ -110,13 +111,24 @@ describe.only("Lender", () => {
     });
 
     it("Should receive ETH as collateral", async () => {
+      // Lender balance before the signers[0] deposits their ETH
+      const lenderPreBal = await ethers.provider.getBalance(lender.address);
+
       // Signers[0] sends 100 ETH to Lender.sol
       await signers[0].sendTransaction({
         to: lender.address,
-        value: BigInt(100e18),
+        value: depositAmt,
       });
 
-      console.log(await ethers.provider.getBalance(lender.address));
+      const filter = lender.filters.EthReceived(null, null);
+      const queryFilter = (await lender.queryFilter(filter))[0];
+
+      const lenderPostBal = await ethers.provider.getBalance(lender.address);
+
+      expect(lenderPostBal).to.equal(lenderPreBal + depositAmt);
+      expect(queryFilter.event).to.equal("EthReceived");
+      expect(queryFilter.args.from).to.equal(signers[0].address);
+      expect(queryFilter.args.amount).to.equal(depositAmt);
     });
   });
 });

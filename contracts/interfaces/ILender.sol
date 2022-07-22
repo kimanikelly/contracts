@@ -11,6 +11,9 @@ interface ILender {
         uint256 loanMaturityDate; /// Date the loan matures
     }
 
+    /// Emits the transfer details after a user sends ETH to Lender.sol
+    event EthReceived(address from, uint256 amount);
+
     /// Emits the loan details after the borrower invokes the borrow() function
     event LoanBorrowed(
         address borrower, /// Address of the borrower

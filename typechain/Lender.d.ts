@@ -56,17 +56,23 @@ interface LenderInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
+    "EthReceived(address,uint256)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "LoanBorrowed(address,address,uint256,uint256,uint256)": EventFragment;
     "LoanRepaid(address,address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "EthReceived"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LoanBorrowed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LoanRepaid"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export type EthReceivedEvent = TypedEvent<
+  [string, BigNumber] & { from: string; amount: BigNumber }
+>;
 
 export type InitializedEvent = TypedEvent<[number] & { version: number }>;
 
@@ -195,6 +201,22 @@ export class Lender extends BaseContract {
   };
 
   filters: {
+    "EthReceived(address,uint256)"(
+      from?: null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { from: string; amount: BigNumber }
+    >;
+
+    EthReceived(
+      from?: null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { from: string; amount: BigNumber }
+    >;
+
     "Initialized(uint8)"(
       version?: null
     ): TypedEventFilter<[number], { version: number }>;
