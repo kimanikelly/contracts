@@ -69,25 +69,6 @@ const _abi = [
     name: "LoanRepaid",
     type: "event",
   },
-  {
-    inputs: [
-      {
-        internalType: "int256",
-        name: "loanAmount",
-        type: "int256",
-      },
-    ],
-    name: "borrow",
-    outputs: [
-      {
-        internalType: "int256",
-        name: "",
-        type: "int256",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
 ];
 
 export class ILender__factory {

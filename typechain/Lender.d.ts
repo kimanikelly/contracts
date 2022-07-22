@@ -21,7 +21,6 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface LenderInterface extends ethers.utils.Interface {
   functions: {
-    "borrow(int256)": FunctionFragment;
     "initialize(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -29,10 +28,6 @@ interface LenderInterface extends ethers.utils.Interface {
     "transferOwnership(address)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "borrow",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [string, string]
@@ -48,7 +43,6 @@ interface LenderInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
-  decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -142,11 +136,6 @@ export class Lender extends BaseContract {
   interface: LenderInterface;
 
   functions: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,
@@ -166,11 +155,6 @@ export class Lender extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  borrow(
-    loanAmount: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
 
   initialize(
     stableCoinAddress: string,
@@ -192,11 +176,6 @@ export class Lender extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,
@@ -294,11 +273,6 @@ export class Lender extends BaseContract {
   };
 
   estimateGas: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,
@@ -320,11 +294,6 @@ export class Lender extends BaseContract {
   };
 
   populateTransaction: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,

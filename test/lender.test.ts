@@ -100,7 +100,7 @@ describe.only("Lender", () => {
     });
   });
 
-  describe.only("#borrow", () => {
+  describe.only("#receive-eth", () => {
     let lender: Lender;
     beforeEach(async () => {
       lender = (await upgrades.deployProxy(Lender, [
@@ -109,10 +109,14 @@ describe.only("Lender", () => {
       ])) as Lender;
     });
 
-    it("Testing", async () => {
-      let testing = await lender.borrow(BigInt(10e18));
+    it("Should receive ETH as collateral", async () => {
+      // Signers[0] sends 100 ETH to Lender.sol
+      await signers[0].sendTransaction({
+        to: lender.address,
+        value: BigInt(100e18),
+      });
 
-      console.log(testing);
+      console.log(await ethers.provider.getBalance(lender.address));
     });
   });
 });

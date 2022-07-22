@@ -61,10 +61,5 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
         __Ownable_init();
     }
 
-    function borrow(int256 loanAmount) public view returns (int256) {
-        // cannot borrow more than 70% of the collateral price =
-        // require(deposit == msg.value, "Lender: Incorrect Eth amount");
-
-        return (oracle.getLatestPrice() * 70) / 100;
-    }
+    receive() external payable {}
 }

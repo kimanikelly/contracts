@@ -11,8 +11,6 @@ import {
   PopulatedTransaction,
   BaseContract,
   ContractTransaction,
-  Overrides,
-  CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
@@ -20,16 +18,7 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ILenderInterface extends ethers.utils.Interface {
-  functions: {
-    "borrow(int256)": FunctionFragment;
-  };
-
-  encodeFunctionData(
-    functionFragment: "borrow",
-    values: [BigNumberish]
-  ): string;
-
-  decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
+  functions: {};
 
   events: {
     "LoanBorrowed(address,address,uint256,uint256,uint256)": EventFragment;
@@ -101,24 +90,9 @@ export class ILender extends BaseContract {
 
   interface: ILenderInterface;
 
-  functions: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-  };
+  functions: {};
 
-  borrow(
-    loanAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-  };
+  callStatic: {};
 
   filters: {
     "LoanBorrowed(address,address,uint256,uint256,uint256)"(
@@ -174,17 +148,7 @@ export class ILender extends BaseContract {
     >;
   };
 
-  estimateGas: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-  };
+  estimateGas: {};
 
-  populateTransaction: {
-    borrow(
-      loanAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+  populateTransaction: {};
 }
