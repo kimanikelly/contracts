@@ -21,7 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ILenderInterface extends ethers.utils.Interface {
   functions: {
-    "borrow(uint256)": FunctionFragment;
+    "borrow(int256)": FunctionFragment;
   };
 
   encodeFunctionData(

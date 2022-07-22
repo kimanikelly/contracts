@@ -21,7 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface LenderInterface extends ethers.utils.Interface {
   functions: {
-    "borrow(uint256)": FunctionFragment;
+    "borrow(int256)": FunctionFragment;
     "initialize(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;

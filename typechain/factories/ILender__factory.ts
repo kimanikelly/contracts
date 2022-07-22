@@ -72,9 +72,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
+        internalType: "int256",
         name: "loanAmount",
-        type: "uint256",
+        type: "int256",
       },
     ],
     name: "borrow",

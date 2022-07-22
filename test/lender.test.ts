@@ -100,7 +100,7 @@ describe.only("Lender", () => {
     });
   });
 
-  describe("#borrow", () => {
+  describe.only("#borrow", () => {
     let lender: Lender;
     beforeEach(async () => {
       lender = (await upgrades.deployProxy(Lender, [
@@ -110,7 +110,9 @@ describe.only("Lender", () => {
     });
 
     it("Testing", async () => {
-      let testing = "hello";
+      let testing = await lender.borrow(BigInt(10e18));
+
+      console.log(testing);
     });
   });
 });
