@@ -11,6 +11,8 @@ import {
   PopulatedTransaction,
   BaseContract,
   ContractTransaction,
+  Overrides,
+  CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
@@ -18,7 +20,19 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ILenderInterface extends ethers.utils.Interface {
-  functions: {};
+  functions: {
+    "getCollateralBalance()": FunctionFragment;
+  };
+
+  encodeFunctionData(
+    functionFragment: "getCollateralBalance",
+    values?: undefined
+  ): string;
+
+  decodeFunctionResult(
+    functionFragment: "getCollateralBalance",
+    data: BytesLike
+  ): Result;
 
   events: {
     "EthReceived(address,uint256)": EventFragment;
@@ -96,9 +110,19 @@ export class ILender extends BaseContract {
 
   interface: ILenderInterface;
 
-  functions: {};
+  functions: {
+    getCollateralBalance(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+  };
 
-  callStatic: {};
+  getCollateralBalance(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  callStatic: {
+    getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
+  };
 
   filters: {
     "EthReceived(address,uint256)"(
@@ -170,7 +194,15 @@ export class ILender extends BaseContract {
     >;
   };
 
-  estimateGas: {};
+  estimateGas: {
+    getCollateralBalance(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+  };
 
-  populateTransaction: {};
+  populateTransaction: {
+    getCollateralBalance(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+  };
 }

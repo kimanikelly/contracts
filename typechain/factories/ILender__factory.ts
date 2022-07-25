@@ -88,6 +88,19 @@ const _abi = [
     name: "LoanRepaid",
     type: "event",
   },
+  {
+    inputs: [],
+    name: "getCollateralBalance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
 export class ILender__factory {

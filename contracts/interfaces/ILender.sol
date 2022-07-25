@@ -39,4 +39,6 @@ interface ILender {
     //     returns (uint256);
 
     // function getBorrowerByIndex(uint256 index) external returns (address);
+
+    function getCollateralBalance() external returns (uint256);
 }

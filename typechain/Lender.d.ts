@@ -21,6 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface LenderInterface extends ethers.utils.Interface {
   functions: {
+    "getCollateralBalance()": FunctionFragment;
     "initialize(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -28,6 +29,10 @@ interface LenderInterface extends ethers.utils.Interface {
     "transferOwnership(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "getCollateralBalance",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [string, string]
@@ -43,6 +48,10 @@ interface LenderInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "getCollateralBalance",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -142,6 +151,8 @@ export class Lender extends BaseContract {
   interface: LenderInterface;
 
   functions: {
+    getCollateralBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,
@@ -161,6 +172,8 @@ export class Lender extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
   initialize(
     stableCoinAddress: string,
@@ -182,6 +195,8 @@ export class Lender extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,
@@ -295,6 +310,8 @@ export class Lender extends BaseContract {
   };
 
   estimateGas: {
+    getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,
@@ -316,6 +333,10 @@ export class Lender extends BaseContract {
   };
 
   populateTransaction: {
+    getCollateralBalance(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     initialize(
       stableCoinAddress: string,
       oracleAddress: string,

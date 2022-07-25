@@ -103,6 +103,7 @@ describe.only("Lender", () => {
   describe.only("#receive-eth", () => {
     let lender: Lender;
     let depositAmt: any = ethers.BigNumber.from("1000000000000000000");
+
     beforeEach(async () => {
       lender = (await upgrades.deployProxy(Lender, [
         token.address,
@@ -132,7 +133,7 @@ describe.only("Lender", () => {
       const filter = lender.filters.EthReceived(null, null);
       const queryFilter = (await lender.queryFilter(filter))[0];
 
-      const lenderPostBal = await ethers.provider.getBalance(lender.address);
+      const lenderPostBal = await lender.getCollateralBalance();
 
       expect(lenderPostBal).to.equal(lenderPreBal + depositAmt);
       expect(queryFilter.event).to.equal("EthReceived");
