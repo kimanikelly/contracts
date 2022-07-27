@@ -31,7 +31,8 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
     /// Declare the oracle instance
     PriceConsumerV3 private oracle;
 
-    mapping(address => uint256) private collateralBalance;
+    /// Maps a borrowers address
+    mapping(address => Vault) private vault;
 
     /**
      * @dev Deploys Lender.sol as an upgradeable smart contract by refactoring the
@@ -64,14 +65,17 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
     }
 
     receive() external payable {
+        /// Prevents a 0 ETH msg.value
         require(msg.value > 0, "Lender: Cannot deposit a zero amount");
 
-        collateralBalance[msg.sender] += msg.value;
+        ///
+        vault[msg.sender].ethCollateralAmount += msg.value;
 
+        /// Emits
         emit EthReceived(msg.sender, msg.value);
     }
 
     function getCollateralBalance() public view returns (uint256) {
-        return collateralBalance[msg.sender];
+        return vault[msg.sender].ethCollateralAmount;
     }
 }
