@@ -30,6 +30,8 @@ interface ILender {
         address tokenCollateralAddress /// Address of the collateral ERC-20 contract
     );
 
+    function borrow(uint256 amount) external returns (bool);
+
     // function repayLoan(address borrowerAddress) external returns (bool);
 
     // function getBorrowers() external returns (address[] memory);

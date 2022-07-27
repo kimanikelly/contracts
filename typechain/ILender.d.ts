@@ -21,14 +21,20 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ILenderInterface extends ethers.utils.Interface {
   functions: {
+    "borrow(uint256)": FunctionFragment;
     "getCollateralBalance()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "borrow",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "getCollateralBalance",
     values?: undefined
   ): string;
 
+  decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getCollateralBalance",
     data: BytesLike
@@ -111,16 +117,28 @@ export class ILender extends BaseContract {
   interface: ILenderInterface;
 
   functions: {
+    borrow(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     getCollateralBalance(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  borrow(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   getCollateralBalance(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    borrow(amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
     getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
@@ -195,12 +213,22 @@ export class ILender extends BaseContract {
   };
 
   estimateGas: {
+    borrow(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     getCollateralBalance(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    borrow(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     getCollateralBalance(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

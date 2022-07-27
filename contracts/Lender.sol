@@ -75,6 +75,10 @@ contract Lender is Initializable, OwnableUpgradeable, ILender {
         emit EthReceived(msg.sender, msg.value);
     }
 
+    function borrow(uint256 amount) public returns (bool) {
+        return true;
+    }
+
     function getCollateralBalance() public view returns (uint256) {
         return vault[msg.sender].ethCollateralAmount;
     }

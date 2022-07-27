@@ -21,6 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface LenderInterface extends ethers.utils.Interface {
   functions: {
+    "borrow(uint256)": FunctionFragment;
     "getCollateralBalance()": FunctionFragment;
     "initialize(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
@@ -29,6 +30,10 @@ interface LenderInterface extends ethers.utils.Interface {
     "transferOwnership(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "borrow",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "getCollateralBalance",
     values?: undefined
@@ -48,6 +53,7 @@ interface LenderInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "borrow", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getCollateralBalance",
     data: BytesLike
@@ -151,6 +157,11 @@ export class Lender extends BaseContract {
   interface: LenderInterface;
 
   functions: {
+    borrow(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     getCollateralBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     initialize(
@@ -172,6 +183,11 @@ export class Lender extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  borrow(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -195,6 +211,8 @@ export class Lender extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    borrow(amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
     getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
@@ -310,6 +328,11 @@ export class Lender extends BaseContract {
   };
 
   estimateGas: {
+    borrow(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     getCollateralBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
@@ -333,6 +356,11 @@ export class Lender extends BaseContract {
   };
 
   populateTransaction: {
+    borrow(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     getCollateralBalance(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
