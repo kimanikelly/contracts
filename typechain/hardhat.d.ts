@@ -21,10 +21,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Upgradeable__factory>;
     getContractFactory(
-      name: "IERC20PermitUpgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20PermitUpgradeable__factory>;
-    getContractFactory(
       name: "IERC20MetadataUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20MetadataUpgradeable__factory>;
@@ -33,29 +29,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Upgradeable__factory>;
     getContractFactory(
-      name: "AggregatorV3Interface",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.AggregatorV3Interface__factory>;
-    getContractFactory(
-      name: "ILender",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ILender__factory>;
-    getContractFactory(
       name: "ITTBank",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ITTBank__factory>;
-    getContractFactory(
-      name: "Lender",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Lender__factory>;
-    getContractFactory(
-      name: "PriceConsumerV3",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PriceConsumerV3__factory>;
-    getContractFactory(
-      name: "MockOracle",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MockOracle__factory>;
     getContractFactory(
       name: "Token",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -76,11 +52,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20Upgradeable>;
     getContractAt(
-      name: "IERC20PermitUpgradeable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20PermitUpgradeable>;
-    getContractAt(
       name: "IERC20MetadataUpgradeable",
       address: string,
       signer?: ethers.Signer
@@ -91,35 +62,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20Upgradeable>;
     getContractAt(
-      name: "AggregatorV3Interface",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.AggregatorV3Interface>;
-    getContractAt(
-      name: "ILender",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ILender>;
-    getContractAt(
       name: "ITTBank",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ITTBank>;
-    getContractAt(
-      name: "Lender",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Lender>;
-    getContractAt(
-      name: "PriceConsumerV3",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.PriceConsumerV3>;
-    getContractAt(
-      name: "MockOracle",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.MockOracle>;
     getContractAt(
       name: "Token",
       address: string,

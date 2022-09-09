@@ -3,28 +3,16 @@
 /* eslint-disable */
 export type { OwnableUpgradeable } from "./OwnableUpgradeable";
 export type { ERC20Upgradeable } from "./ERC20Upgradeable";
-export type { IERC20PermitUpgradeable } from "./IERC20PermitUpgradeable";
 export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
 export type { IERC20Upgradeable } from "./IERC20Upgradeable";
-export type { AggregatorV3Interface } from "./AggregatorV3Interface";
-export type { ILender } from "./ILender";
 export type { ITTBank } from "./ITTBank";
-export type { Lender } from "./Lender";
-export type { PriceConsumerV3 } from "./PriceConsumerV3";
-export type { MockOracle } from "./MockOracle";
 export type { Token } from "./Token";
 export type { TTBank } from "./TTBank";
 
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
 export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory";
-export { IERC20PermitUpgradeable__factory } from "./factories/IERC20PermitUpgradeable__factory";
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";
 export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__factory";
-export { AggregatorV3Interface__factory } from "./factories/AggregatorV3Interface__factory";
-export { ILender__factory } from "./factories/ILender__factory";
 export { ITTBank__factory } from "./factories/ITTBank__factory";
-export { Lender__factory } from "./factories/Lender__factory";
-export { PriceConsumerV3__factory } from "./factories/PriceConsumerV3__factory";
-export { MockOracle__factory } from "./factories/MockOracle__factory";
 export { Token__factory } from "./factories/Token__factory";
 export { TTBank__factory } from "./factories/TTBank__factory";
