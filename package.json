@@ -17,7 +17,7 @@
     "build": "rm -rf dist && tsc && cp -R addresses dist"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@typechain/ethers-v5": "^7.2.0",
@@ -37,7 +37,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-promise": "^5.2.0",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.6.4",
+    "ethers": "^5.7.0",
     "hardhat": "^2.9.6",
     "hardhat-gas-reporter": "^1.0.8",
     "prettier": "^2.5.1",
