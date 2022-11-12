@@ -7,6 +7,7 @@ import { ethers, upgrades } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { TTBank } from "../typechain";
 import * as rinkebyAddress from "../addresses/4.json";
+import * as goerliAddress from "../addresses/5.json";
 import * as localAddress from "../addresses/31337.json";
 import { recordAddress } from "../utils/recordAddresses";
 
@@ -24,6 +25,10 @@ async function main() {
 
     case 4:
       tokenAddress = rinkebyAddress.token;
+      break;
+
+    case 5:
+      tokenAddress = goerliAddress.token;
       break;
   }
 
