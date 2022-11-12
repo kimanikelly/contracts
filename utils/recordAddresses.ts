@@ -63,4 +63,30 @@ export const recordAddress = (
       console.log(`New ${contract} address added on Rinkeby`);
     });
   }
+
+  if (chainId == 5) {
+    // Reads the JSON file of the Goerli addresses
+    // Returns the file as a Buffer and parses it to a readable string
+    addressJson = fs.readFileSync("addresses/5.json").toString();
+
+    addressObj = JSON.parse(addressJson);
+
+    if (contract == "ttBank") {
+      // Assign the ttBank property the value of the ttBank address
+      addressObj.ttBank = address;
+    }
+
+    if (contract == "token") {
+      // Assign the token property the value of the token address
+      addressObj.token = address;
+    }
+
+    newObjData = JSON.stringify(addressObj);
+
+    fs.writeFile("addresses/5.json", newObjData, (err) => {
+      if (err) throw err;
+
+      console.log(`New ${contract} address added on Goerli`);
+    });
+  }
 };

@@ -57,7 +57,7 @@ touch .env
 
 - Use the `.env.example` file as a template to input the credentials needed for testnet deployment inside the `.env` file.
 
-- Verify `RINKEBY_URL=https://rinkeby.infura.io/v3/<YOUR INFURA KEY>` has a valid key.
+- Verify `GOERLI_URL=https://goerli.infura.io/v3/<YOUR INFURA KEY>` has a valid key.
 
 - Verify the `PRIVATE_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abc1` is a valid wallet private key.
 
@@ -69,11 +69,11 @@ touch .env
 
 - The localhost address will print to the terminal.
 
-### Token Rinkeby Deployment
+### Token Goerli Deployment
 
-- Open one terminal and run the command `npm run token-rinkeby` to deploy Token.sol to Rinkeby.
+- Open one terminal and run the command `npm run token-goerli` to deploy Token.sol to Goerli.
 
-- The Rinkeby address will print to the terminal.
+- The Goerli address will print to the terminal.
 
 ### TTBank Localhost Deployment
 
@@ -83,8 +83,8 @@ touch .env
 
 - The localhost address will print to the terminal.
 
-### TTBank Rinkeby Deployment
+### TTBank Goerli Deployment
 
-- Open one terminal and run the command `npm run ttBank-rinkeby` to deploy TTBank.sol to Rinkeby.
+- Open one terminal and run the command `npm run ttBank-goerli` to deploy TTBank.sol to Goerli.
 
-- The Rinkeby address will print to the terminal.
+- The Goerli address will print to the terminal.
