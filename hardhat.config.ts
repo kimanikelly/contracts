@@ -13,7 +13,10 @@ dotenv.config();
 
 const config = {
   solidity: {
-    compilers: [{ version: ["0.8.9", "0.8.19"], settings: {} }],
+    compilers: [
+      { version: "0.8.9", settings: {} },
+      { version: "0.8.19", settings: {} },
+    ],
   },
   networks: {
     rinkeby: {

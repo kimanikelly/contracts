@@ -17,6 +17,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OwnableUpgradeable__factory>;
     getContractFactory(
+      name: "VestingWalletUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VestingWalletUpgradeable__factory>;
+    getContractFactory(
       name: "ERC20Upgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Upgradeable__factory>;
@@ -46,6 +50,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.OwnableUpgradeable>;
+    getContractAt(
+      name: "VestingWalletUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VestingWalletUpgradeable>;
     getContractAt(
       name: "ERC20Upgradeable",
       address: string,

@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { OwnableUpgradeable } from "./OwnableUpgradeable";
+export type { VestingWalletUpgradeable } from "./VestingWalletUpgradeable";
 export type { ERC20Upgradeable } from "./ERC20Upgradeable";
 export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
 export type { IERC20Upgradeable } from "./IERC20Upgradeable";
@@ -10,6 +11,7 @@ export type { Token } from "./Token";
 export type { TTBank } from "./TTBank";
 
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
+export { VestingWalletUpgradeable__factory } from "./factories/VestingWalletUpgradeable__factory";
 export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory";
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";
 export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__factory";
