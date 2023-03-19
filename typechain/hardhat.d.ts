@@ -41,9 +41,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ContextUpgradeable__factory>;
     getContractFactory(
-      name: "IDoctorRegistry",
+      name: "Doctor",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IDoctorRegistry__factory>;
+    ): Promise<Contracts.Doctor__factory>;
+    getContractFactory(
+      name: "IDoctor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDoctor__factory>;
     getContractFactory(
       name: "ITTBank",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -93,10 +97,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ContextUpgradeable>;
     getContractAt(
-      name: "IDoctorRegistry",
+      name: "Doctor",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IDoctorRegistry>;
+    ): Promise<Contracts.Doctor>;
+    getContractAt(
+      name: "IDoctor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDoctor>;
     getContractAt(
       name: "ITTBank",
       address: string,
