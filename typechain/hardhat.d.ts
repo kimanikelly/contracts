@@ -17,13 +17,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.OwnableUpgradeable__factory>;
     getContractFactory(
-      name: "VestingWalletUpgradeable",
+      name: "Initializable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.VestingWalletUpgradeable__factory>;
+    ): Promise<Contracts.Initializable__factory>;
     getContractFactory(
       name: "ERC20Upgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Upgradeable__factory>;
+    getContractFactory(
+      name: "IERC20PermitUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20PermitUpgradeable__factory>;
     getContractFactory(
       name: "IERC20MetadataUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -32,6 +36,14 @@ declare module "hardhat/types/runtime" {
       name: "IERC20Upgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Upgradeable__factory>;
+    getContractFactory(
+      name: "ContextUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ContextUpgradeable__factory>;
+    getContractFactory(
+      name: "IDoctorRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IDoctorRegistry__factory>;
     getContractFactory(
       name: "ITTBank",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -51,15 +63,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.OwnableUpgradeable>;
     getContractAt(
-      name: "VestingWalletUpgradeable",
+      name: "Initializable",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.VestingWalletUpgradeable>;
+    ): Promise<Contracts.Initializable>;
     getContractAt(
       name: "ERC20Upgradeable",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20Upgradeable>;
+    getContractAt(
+      name: "IERC20PermitUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20PermitUpgradeable>;
     getContractAt(
       name: "IERC20MetadataUpgradeable",
       address: string,
@@ -70,6 +87,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20Upgradeable>;
+    getContractAt(
+      name: "ContextUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ContextUpgradeable>;
+    getContractAt(
+      name: "IDoctorRegistry",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IDoctorRegistry>;
     getContractAt(
       name: "ITTBank",
       address: string,

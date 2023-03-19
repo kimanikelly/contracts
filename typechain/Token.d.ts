@@ -151,12 +151,14 @@ interface TokenInterface extends ethers.utils.Interface {
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "FundAmountSet(uint256,uint256)": EventFragment;
+    "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FundAmountSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
@@ -172,6 +174,8 @@ export type ApprovalEvent = TypedEvent<
 export type FundAmountSetEvent = TypedEvent<
   [BigNumber, BigNumber] & { previousAmount: BigNumber; newAmount: BigNumber }
 >;
+
+export type InitializedEvent = TypedEvent<[number] & { version: number }>;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
@@ -501,6 +505,14 @@ export class Token extends BaseContract {
       [BigNumber, BigNumber],
       { previousAmount: BigNumber; newAmount: BigNumber }
     >;
+
+    "Initialized(uint8)"(
+      version?: null
+    ): TypedEventFilter<[number], { version: number }>;
+
+    Initialized(
+      version?: null
+    ): TypedEventFilter<[number], { version: number }>;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,

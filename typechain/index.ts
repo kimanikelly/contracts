@@ -2,19 +2,25 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { OwnableUpgradeable } from "./OwnableUpgradeable";
-export type { VestingWalletUpgradeable } from "./VestingWalletUpgradeable";
+export type { Initializable } from "./Initializable";
 export type { ERC20Upgradeable } from "./ERC20Upgradeable";
+export type { IERC20PermitUpgradeable } from "./IERC20PermitUpgradeable";
 export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
 export type { IERC20Upgradeable } from "./IERC20Upgradeable";
+export type { ContextUpgradeable } from "./ContextUpgradeable";
+export type { IDoctorRegistry } from "./IDoctorRegistry";
 export type { ITTBank } from "./ITTBank";
 export type { Token } from "./Token";
 export type { TTBank } from "./TTBank";
 
 export { OwnableUpgradeable__factory } from "./factories/OwnableUpgradeable__factory";
-export { VestingWalletUpgradeable__factory } from "./factories/VestingWalletUpgradeable__factory";
+export { Initializable__factory } from "./factories/Initializable__factory";
 export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory";
+export { IERC20PermitUpgradeable__factory } from "./factories/IERC20PermitUpgradeable__factory";
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";
 export { IERC20Upgradeable__factory } from "./factories/IERC20Upgradeable__factory";
+export { ContextUpgradeable__factory } from "./factories/ContextUpgradeable__factory";
+export { IDoctorRegistry__factory } from "./factories/IDoctorRegistry__factory";
 export { ITTBank__factory } from "./factories/ITTBank__factory";
 export { Token__factory } from "./factories/Token__factory";
 export { TTBank__factory } from "./factories/TTBank__factory";
