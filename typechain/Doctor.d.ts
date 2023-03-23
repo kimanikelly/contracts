@@ -21,8 +21,8 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface DoctorInterface extends ethers.utils.Interface {
   functions: {
-    "_healthRecord()": FunctionFragment;
     "addDoctor(bytes32)": FunctionFragment;
+    "healthRecordAddress()": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -30,12 +30,12 @@ interface DoctorInterface extends ethers.utils.Interface {
   };
 
   encodeFunctionData(
-    functionFragment: "_healthRecord",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "addDoctor",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "healthRecordAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "initialize", values: [string]): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -48,11 +48,11 @@ interface DoctorInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "addDoctor", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "_healthRecord",
+    functionFragment: "healthRecordAddress",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "addDoctor", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -123,15 +123,15 @@ export class Doctor extends BaseContract {
   interface: DoctorInterface;
 
   functions: {
-    _healthRecord(overrides?: CallOverrides): Promise<[string]>;
-
     addDoctor(
       cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    healthRecordAddress(overrides?: CallOverrides): Promise<[string]>;
+
     initialize(
-      healthRecordAddress: string,
+      _healthRecordAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -147,15 +147,15 @@ export class Doctor extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  _healthRecord(overrides?: CallOverrides): Promise<string>;
-
   addDoctor(
     cid: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  healthRecordAddress(overrides?: CallOverrides): Promise<string>;
+
   initialize(
-    healthRecordAddress: string,
+    _healthRecordAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -171,12 +171,12 @@ export class Doctor extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    _healthRecord(overrides?: CallOverrides): Promise<string>;
-
     addDoctor(cid: BytesLike, overrides?: CallOverrides): Promise<void>;
 
+    healthRecordAddress(overrides?: CallOverrides): Promise<string>;
+
     initialize(
-      healthRecordAddress: string,
+      _healthRecordAddress: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -217,15 +217,15 @@ export class Doctor extends BaseContract {
   };
 
   estimateGas: {
-    _healthRecord(overrides?: CallOverrides): Promise<BigNumber>;
-
     addDoctor(
       cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    healthRecordAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialize(
-      healthRecordAddress: string,
+      _healthRecordAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -242,15 +242,17 @@ export class Doctor extends BaseContract {
   };
 
   populateTransaction: {
-    _healthRecord(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     addDoctor(
       cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    healthRecordAddress(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     initialize(
-      healthRecordAddress: string,
+      _healthRecordAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

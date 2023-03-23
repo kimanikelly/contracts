@@ -1,6 +1,7 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect, use } from "chai";
 import { ethers, upgrades } from "hardhat";
+import { doc } from "prettier";
 import { Doctor, HealthRecord } from "../typechain";
 
 describe.only("Doctor", function () {
@@ -22,6 +23,7 @@ describe.only("Doctor", function () {
       HealthRecord,
       []
     )) as HealthRecord;
+    await healthRecord.deployed();
 
     const Doctor = await ethers.getContractFactory("Doctor", signers[0]);
 
@@ -29,6 +31,7 @@ describe.only("Doctor", function () {
     doctor = (await upgrades.deployProxy(Doctor, [
       healthRecord.address,
     ])) as Doctor;
+    await doctor.deployed();
   });
 
   describe("#initializer", () => {
@@ -36,6 +39,32 @@ describe.only("Doctor", function () {
       await expect(doctor.initialize(healthRecord.address)).to.be.revertedWith(
         "Initializable: contract is already initialized"
       );
+    });
+
+    it("Should emit the OwnershipTransferred on deployment", async () => {
+      const filter = doctor.filters.OwnershipTransferred(null, null);
+
+      const queryFilter = (await doctor.queryFilter(filter))[0];
+
+      expect(queryFilter.event).to.equal("OwnershipTransferred");
+
+      expect(queryFilter.args.previousOwner).to.equal(
+        ethers.constants.AddressZero
+      );
+
+      expect(queryFilter.args.newOwner).to.equal(signers[0].address);
+    });
+
+    it("Should get the owner", async () => {
+      const owner = await doctor.owner();
+
+      expect(owner).to.equal(signers[0].address);
+    });
+
+    it("Should get the HealthRecord address", async () => {
+      const healthRecordAddress = await doctor.healthRecordAddress();
+
+      expect(healthRecordAddress).to.equal(healthRecord.address);
     });
   });
 });
