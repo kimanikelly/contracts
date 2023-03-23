@@ -19,19 +19,22 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface IDoctorRegistryInterface extends ethers.utils.Interface {
+interface IHealthRecordInterface extends ethers.utils.Interface {
   functions: {
-    "addDoctor()": FunctionFragment;
+    "addDoctor(bytes32)": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "addDoctor", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "addDoctor",
+    values: [BytesLike]
+  ): string;
 
   decodeFunctionResult(functionFragment: "addDoctor", data: BytesLike): Result;
 
   events: {};
 }
 
-export class IDoctorRegistry extends BaseContract {
+export class IHealthRecord extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -72,32 +75,36 @@ export class IDoctorRegistry extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: IDoctorRegistryInterface;
+  interface: IHealthRecordInterface;
 
   functions: {
     addDoctor(
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   addDoctor(
+    cid: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    addDoctor(overrides?: CallOverrides): Promise<boolean>;
+    addDoctor(cid: BytesLike, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {};
 
   estimateGas: {
     addDoctor(
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     addDoctor(
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

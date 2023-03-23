@@ -45,9 +45,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Doctor__factory>;
     getContractFactory(
+      name: "HealthRecord",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.HealthRecord__factory>;
+    getContractFactory(
       name: "IDoctor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IDoctor__factory>;
+    getContractFactory(
+      name: "IHealthRecord",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IHealthRecord__factory>;
     getContractFactory(
       name: "ITTBank",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -102,10 +110,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Doctor>;
     getContractAt(
+      name: "HealthRecord",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.HealthRecord>;
+    getContractAt(
       name: "IDoctor",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IDoctor>;
+    getContractAt(
+      name: "IHealthRecord",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IHealthRecord>;
     getContractAt(
       name: "ITTBank",
       address: string,

@@ -2,16 +2,21 @@
 pragma solidity 0.8.19;
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-
-import {IHealthRecord} from "./interfaces/IHealthRecord.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {IDoctor} from "./interfaces/IDoctor.sol";
 
-contract Doctor is IDoctor, Initializable {
+import {IHealthRecord} from "./interfaces/IHealthRecord.sol";
+
+contract Doctor is IDoctor, Initializable, OwnableUpgradeable {
     address public _healthRecord;
 
     function initialize(address healthRecordAddress) public initializer {
+        /// Initializes OwnableUpgradeable.sol and assigns the msg.sender as the owner
+        __Ownable_init();
         healthRecordAddress = _healthRecord;
     }
 
-    function addDoctor(bytes32 cid) public returns (bool) {}
+    function addDoctor(bytes32 cid) public {
+        IHealthRecord(_healthRecord).addDoctor(cid);
+    }
 }
