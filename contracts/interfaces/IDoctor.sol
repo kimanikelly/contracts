@@ -2,5 +2,7 @@
 pragma solidity 0.8.19;
 
 interface IDoctor {
-    function signUp(bytes32 detailsCid) external returns (bool);
+    function addDoctor(bytes32 cid) external returns (bool);
+
+    function deleteDoctor() external returns (bool);
 }
