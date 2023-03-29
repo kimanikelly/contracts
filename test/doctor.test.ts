@@ -32,6 +32,8 @@ describe.only("Doctor", function () {
       healthRecord.address,
     ])) as Doctor;
     await doctor.deployed();
+
+    await healthRecord.setDoctorContract(doctor.address);
   });
 
   describe("#initializer", () => {

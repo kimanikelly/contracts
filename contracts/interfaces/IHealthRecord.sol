@@ -9,5 +9,7 @@ interface IHealthRecord {
         uint256 timeAdded;
     }
 
-    function addDoctor(bytes32 cid) external;
+    function setDoctorContract(address _doctorContract) external;
+
+    function addDoctor(address doctor, bytes32 cid) external;
 }

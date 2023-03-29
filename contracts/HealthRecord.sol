@@ -3,10 +3,15 @@ pragma solidity 0.8.19;
 
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-
 import {IHealthRecord} from "./interfaces/IHealthRecord.sol";
 
+import "hardhat/console.sol";
+
 contract HealthRecord is IHealthRecord, Initializable, OwnableUpgradeable {
+    address public doctorContract;
+
+    bool public doctorContractConfigured;
+
     mapping(address doctorAddress => bool doctorStatus) public isDoctorVerified;
 
     function initialize() public initializer {
@@ -14,5 +19,17 @@ contract HealthRecord is IHealthRecord, Initializable, OwnableUpgradeable {
         __Ownable_init();
     }
 
-    function addDoctor(bytes32 cid) external {}
+    function setDoctorContract(address _doctorContract) public onlyOwner {
+        doctorContractConfigured = true;
+        doctorContract = _doctorContract;
+    }
+
+    function addDoctor(address doctor, bytes32 cid) external {
+        require(
+            msg.sender == doctorContract,
+            "HealthRecord: Only the Doctor contract can call"
+        );
+
+        isDoctorVerified[doctor] = true;
+    }
 }
