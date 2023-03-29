@@ -6,7 +6,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "typechain"
   ],
   "scripts": {
     "token-local": "npx hardhat run --network localhost scripts/deployToken.ts",
