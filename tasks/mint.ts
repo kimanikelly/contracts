@@ -1,5 +1,4 @@
 import { task } from "hardhat/config";
-
 import { Token__factory } from "../typechain";
 
 task(
