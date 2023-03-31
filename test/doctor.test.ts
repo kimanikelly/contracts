@@ -64,7 +64,7 @@ describe.only("Doctor", function () {
     });
 
     it("Should get the HealthRecord contract address", async () => {
-      const healthRecordAddress = await doctor.healthRecordAddress();
+      const healthRecordAddress = await doctor.healthRecordContract();
 
       expect(healthRecordAddress).to.equal(healthRecord.address);
     });

@@ -8,16 +8,16 @@ import {IHealthRecord} from "./interfaces/IHealthRecord.sol";
 import "hardhat/console.sol";
 
 contract Doctor is IDoctor, Initializable, OwnableUpgradeable {
-    address public healthRecordAddress;
+    address public healthRecordContract;
 
-    function initialize(address _healthRecordAddress) public initializer {
-        healthRecordAddress = _healthRecordAddress;
+    function initialize(address _healthRecordContract) public initializer {
+        healthRecordContract = _healthRecordContract;
 
         /// Initializes OwnableUpgradeable.sol and assigns the msg.sender as the owner
         __Ownable_init();
     }
 
     function addDoctor(address doctor, bytes32 cid) public {
-        IHealthRecord(healthRecordAddress).addDoctor(doctor, cid);
+        IHealthRecord(healthRecordContract).addDoctor(doctor, cid);
     }
 }
