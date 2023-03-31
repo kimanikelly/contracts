@@ -2,6 +2,13 @@
 pragma solidity 0.8.19;
 
 interface IHealthRecord {
+    event DoctorContractSet(
+        address owner,
+        address doctorContract,
+        bool isSet,
+        uint256 dateSet
+    );
+
     struct DoctorInformation {
         bytes32 cid;
         bytes32 filename;
