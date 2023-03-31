@@ -20,6 +20,7 @@ contract HealthRecord is IHealthRecord, Initializable, OwnableUpgradeable {
     }
 
     function setDoctorContract(address _doctorContract) public onlyOwner {
+        require(!doctorContractConfigured, "HealthRecord: Doctor.sol is set");
         doctorContractConfigured = true;
         doctorContract = _doctorContract;
 
