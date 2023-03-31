@@ -22,6 +22,8 @@ contract HealthRecord is IHealthRecord, Initializable, OwnableUpgradeable {
     function setDoctorContract(address _doctorContract) public onlyOwner {
         doctorContractConfigured = true;
         doctorContract = _doctorContract;
+
+        emit DoctorContractSet(owner(), doctorContract, true, block.timestamp);
     }
 
     function addDoctor(address doctor, bytes32 cid) external {
