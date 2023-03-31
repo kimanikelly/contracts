@@ -57,6 +57,25 @@ describe.only("Doctor", function () {
       expect(queryFilter.args.newOwner).to.equal(signers[0].address);
     });
 
+    it("Should emit the DoctorContractSet event", async () => {
+      const filter = healthRecord.filters.DoctorContractSet(
+        null,
+        null,
+        null,
+        null
+      );
+
+      const queryFilter = (await healthRecord.queryFilter(filter))[0];
+
+      expect(queryFilter.event).to.equal("DoctorContractSet");
+      expect(queryFilter.args.owner).to.equal(await healthRecord.owner());
+      expect(queryFilter.args.doctorContract).to.equal(doctor.address);
+      expect(queryFilter.args.doctorContract).to.equal(
+        await healthRecord.doctorContract()
+      );
+      expect(queryFilter.args.isSet).to.be.true;
+    });
+
     it("Should get the owner", async () => {
       const owner = await doctor.owner();
 
