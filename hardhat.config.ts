@@ -2,18 +2,20 @@ import * as dotenv from "dotenv";
 import "@nomiclabs/hardhat-ethers";
 import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-etherscan";
-import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
-
+import "@nomicfoundation/hardhat-chai-matchers";
 import "./tasks/mint";
 
 dotenv.config();
 
 const config = {
   solidity: {
-    compilers: [{ version: "0.8.9", settings: {} }],
+    compilers: [
+      { version: "0.8.9", settings: {} },
+      { version: "0.8.19", settings: {} },
+    ],
   },
   networks: {
     rinkeby: {
