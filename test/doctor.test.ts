@@ -49,7 +49,7 @@ describe.only("Doctor", function () {
       ).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
-    it("Should revert if Doctor contract is already set", async () => {
+    it("Should revert if the Doctor contract is already set", async () => {
       await expect(
         healthRecord.setDoctorContract(doctor.address)
       ).to.be.revertedWith("HealthRecord: Doctor.sol is set");
