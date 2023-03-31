@@ -43,6 +43,12 @@ describe.only("Doctor", function () {
       );
     });
 
+    it("Should revert if setDoctorContract is not called by the owner", async () => {
+      await expect(
+        healthRecord.connect(signers[1]).setDoctorContract(doctor.address)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+
     it("Should emit the OwnershipTransferred on deployment", async () => {
       const filter = doctor.filters.OwnershipTransferred(null, null);
 
