@@ -17,7 +17,7 @@ contract Doctor is IDoctor, Initializable, OwnableUpgradeable {
         __Ownable_init();
     }
 
-    function addDoctor(address doctor, bytes32 cid) public {
+    function addDoctor(bytes32 cid) public {
         IHealthRecord(healthRecordContract).addDoctor(doctor, cid);
     }
 }
