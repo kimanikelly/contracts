@@ -113,7 +113,7 @@ describe.only("Doctor", function () {
   });
 
   describe("#addDoctor", () => {
-    it("Should revert directly called through HealthRecord.sol", async () => {
+    it("Should revert if directly called through HealthRecord.sol", async () => {
       await expect(
         healthRecord.addDoctor(signers[0].address, testStr)
       ).to.be.revertedWith("HealthRecord: only Doctor.sol");
