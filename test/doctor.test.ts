@@ -69,6 +69,15 @@ describe.only("Doctor", function () {
       expect(queryFilter.args.newOwner).to.equal(signers[0].address);
     });
 
+    it("Should emit the Initialized event on deployment", async () => {
+      const filter = doctor.filters.Initialized(null);
+
+      const queryFilter = (await doctor.queryFilter(filter))[0];
+
+      expect(queryFilter.event).to.equal("Initialized");
+      expect(queryFilter.args.version).to.equal(1);
+    });
+
     it("Should emit the DoctorContractSet event", async () => {
       const filter = healthRecord.filters.DoctorContractSet(
         null,
