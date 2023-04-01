@@ -1,6 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect, use } from "chai";
-import { ethers, upgrades } from "hardhat";
+import { ethers } from "hardhat";
 import { BigNumber, ContractTransaction, Event } from "ethers";
 import { TTBank, Token } from "../typechain";
 
