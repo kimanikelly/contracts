@@ -8,6 +8,8 @@ describe.only("Doctor", function () {
   let healthRecord: HealthRecord;
   let doctor: Doctor;
   let signers: SignerWithAddress[];
+  const testStr =
+    "0x74657374696e6700000000000000000000000000000000000000000000000000";
 
   beforeEach(async () => {
     // Returns the Hardhat test accounts
@@ -107,6 +109,14 @@ describe.only("Doctor", function () {
       const healthRecordAddress = await doctor.healthRecordContract();
 
       expect(healthRecordAddress).to.equal(healthRecord.address);
+    });
+  });
+
+  describe("#addDoctor", () => {
+    it("Should revert directly called through HealthRecord.sol", async () => {
+      await expect(
+        healthRecord.addDoctor(signers[0].address, testStr)
+      ).to.be.revertedWith("HealthRecord: only Doctor.sol");
     });
   });
 });

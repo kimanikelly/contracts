@@ -28,10 +28,7 @@ contract HealthRecord is IHealthRecord, Initializable, OwnableUpgradeable {
     }
 
     function addDoctor(address doctor, bytes32 cid) external {
-        // require(
-        //     msg.sender == doctorContract,
-        //     "HealthRecord: Only the Doctor contract can call"
-        // );
+        require(msg.sender == doctorContract, "HealthRecord: only Doctor.sol");
         // isDoctorVerified[doctor] = true;
     }
 }
