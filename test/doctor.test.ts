@@ -4,7 +4,7 @@ import { expect, use } from "chai";
 import { ethers, upgrades } from "hardhat";
 import { Token, Doctor, HealthRecord } from "../typechain";
 
-describe.only("Doctor", function () {
+describe("Doctor", function () {
   let token: Token;
   let healthRecord: HealthRecord;
   let doctor: Doctor;
