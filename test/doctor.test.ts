@@ -1,13 +1,17 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import "@nomicfoundation/hardhat-chai-matchers";
 import { expect, use } from "chai";
 import { ethers, upgrades } from "hardhat";
-import { doc } from "prettier";
-import { Doctor, HealthRecord } from "../typechain";
+import { Token, Doctor, HealthRecord } from "../typechain";
 
 describe.only("Doctor", function () {
+  let token: Token;
   let healthRecord: HealthRecord;
   let doctor: Doctor;
   let signers: SignerWithAddress[];
+  const mintAmt = 1000;
+  const fundAmt = 100;
+  const approveAmt = BigInt(100e18);
   const testStr =
     "0x74657374696e6700000000000000000000000000000000000000000000000000";
 
@@ -15,16 +19,20 @@ describe.only("Doctor", function () {
     // Returns the Hardhat test accounts
     signers = await ethers.getSigners();
 
+    const Token = await ethers.getContractFactory("Token", signers[0]);
+
+    // Deploys and initializes the Token.sol proxy as an upgradeable contract
+    token = (await upgrades.deployProxy(Token, ["Test Token", "TT"])) as Token;
+
     const HealthRecord = await ethers.getContractFactory(
       "HealthRecord",
       signers[0]
     );
 
     // Deploys and initializes the HealthRecord.sol proxy as an upgradeable contract
-    healthRecord = (await upgrades.deployProxy(
-      HealthRecord,
-      []
-    )) as HealthRecord;
+    healthRecord = (await upgrades.deployProxy(HealthRecord, [
+      token.address,
+    ])) as HealthRecord;
     await healthRecord.deployed();
 
     const Doctor = await ethers.getContractFactory("Doctor", signers[0]);
@@ -36,6 +44,9 @@ describe.only("Doctor", function () {
     await doctor.deployed();
 
     await healthRecord.setDoctorContract(doctor.address);
+
+    await token.mint(mintAmt);
+    await token.setFundAmount(fundAmt);
   });
 
   describe("#initializer", () => {
@@ -117,6 +128,48 @@ describe.only("Doctor", function () {
       await expect(
         healthRecord.addDoctor(signers[0].address, testStr)
       ).to.be.revertedWith("HealthRecord: only Doctor.sol");
+    });
+
+    it("Should revert if the transfer amount exceeds the allowance", async () => {
+      await token.fundAccount();
+
+      await expect(doctor.addDoctor(testStr)).to.be.revertedWith(
+        "ERC20: insufficient allowance"
+      );
+    });
+
+    it("Should revert if the transfer amount exceeds the balance", async () => {
+      await token.approve(healthRecord.address, approveAmt);
+
+      await expect(doctor.addDoctor(testStr)).to.be.revertedWith(
+        "ERC20: transfer amount exceeds balance"
+      );
+    });
+
+    it("Should revert if theres an attempt to add an existing Doctor", async () => {
+      await token.fundAccount();
+
+      await token.approve(healthRecord.address, approveAmt);
+
+      await doctor.addDoctor(testStr);
+
+      await expect(doctor.addDoctor(testStr)).to.be.revertedWith(
+        "HealthRecord: doctor exists"
+      );
+    });
+
+    it("Should add a doctor and return the verification status", async () => {
+      await token.fundAccount();
+
+      await token.approve(healthRecord.address, approveAmt);
+
+      await doctor.addDoctor(testStr);
+
+      const verificationStatus = await healthRecord.doctorVerified(
+        signers[0].address
+      );
+
+      expect(verificationStatus).to.be.true;
     });
   });
 });

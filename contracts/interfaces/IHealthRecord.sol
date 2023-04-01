@@ -9,6 +9,8 @@ interface IHealthRecord {
         uint256 dateSet
     );
 
+    event DoctorAdded(address doctor, uint256 dateAdded);
+
     struct DoctorInformation {
         bytes32 cid;
         bytes32 filename;

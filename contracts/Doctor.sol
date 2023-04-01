@@ -8,6 +8,7 @@ import {IHealthRecord} from "./interfaces/IHealthRecord.sol";
 import "hardhat/console.sol";
 
 contract Doctor is IDoctor, Initializable, OwnableUpgradeable {
+    // HealthRecord.sol address
     address public healthRecordContract;
 
     function initialize(address _healthRecordContract) public initializer {
